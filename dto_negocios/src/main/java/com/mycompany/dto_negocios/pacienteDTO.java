@@ -11,6 +11,7 @@ package com.mycompany.dto_negocios;
 public class pacienteDTO {
     private Long id;
     private String nombre;
+    private String folio;
 //    private String telefono;
     private String correo;
     private Integer edad;
@@ -18,10 +19,11 @@ public class pacienteDTO {
     public pacienteDTO() {
     }
 
-    public pacienteDTO(Long id, String nombre, String correo, Integer edad) {
+    public pacienteDTO(Long id, String nombre, String correo, String folio, Integer edad) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
+        this.folio = folio;
         this.edad = edad;
     }
 
@@ -55,6 +57,14 @@ public class pacienteDTO {
 
     public Integer getEdad() {
         return edad;
+    }
+
+    public String getFolio() {
+        return folio;
+    }
+
+    public void setFolio(String folio) {
+        this.folio = folio;
     }
     
     

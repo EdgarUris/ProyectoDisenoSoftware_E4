@@ -12,6 +12,7 @@ import java.util.List;
 /**
  *
  * @author manue
+ * @Deprecated
  */
 public class HorariosDisponibles {
     List<citaDTO> cita = new ArrayList<>();

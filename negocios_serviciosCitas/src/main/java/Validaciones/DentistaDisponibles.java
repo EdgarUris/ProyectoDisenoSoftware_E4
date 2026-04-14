@@ -11,6 +11,7 @@ import java.util.List;
 /**
  *
  * @author manue
+ * @Deprecated
  */
 public class DentistaDisponibles {
     List<dentistaDTO> dentista = new ArrayList<>();
