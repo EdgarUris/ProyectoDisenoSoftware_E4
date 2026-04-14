@@ -6,7 +6,8 @@ package com.mycompany.presentacion_dentista;
 
 /**
  *
- * @author HP
+ * @author EdgarUris
+ * @author Jenifer Flores
  */
 public class Presentacion_dentista {
 

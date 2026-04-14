@@ -32,7 +32,7 @@ public class frmBitacora extends JFrame {
         String[] columnas = {"Hora", "Paciente", "Tratamiento", "Dentista"};
         Object[][] datos = {
             {"9:00 a.m.", "", "", ""},
-            {"9:30 a.m.", "Chayanne", "Limpieza", "Natanael Cano"},
+            {"9:30 a.m.", "", "", ""},
             {"10:00 a.m.", "", "", ""},
             {"10:30 a.m.", "", "", ""},
             {"11:00 a.m.", "", "", ""},
@@ -67,7 +67,7 @@ public class frmBitacora extends JFrame {
                 if (row % 2 == 0) {
                     c.setBackground(new Color(230, 240, 250)); 
                 } else {
-                    c.setBackground(new Color(48, 128, 235)); 
+                    c.setBackground(new Color(124, 180, 252)); 
                 }
                 return c;
             }
@@ -86,9 +86,17 @@ public class frmBitacora extends JFrame {
                     JOptionPane.showMessageDialog(null, "Este horario ya está ocupado.");
                 }*/
                 citaDTO nueva = new citaDTO();
-                nueva.setFechaHora(LocalDateTime.of(2026,Month.APRIL,13,15,30));
-                nueva.setId(Long.valueOf(1));
+                String hora = String.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 0));
+                String[] horaNum = hora.split(" ");
+                String[] horaNumSeparado = horaNum[0].split(":");
+                int horaSelec = Integer.parseInt(horaNumSeparado[0]);
+                int minutoSelec = Integer.parseInt(horaNumSeparado[1]);
                 
+                nueva.setFechaHora(LocalDateTime.of(2026,Month.APRIL,13,horaSelec,minutoSelec));
+                nueva.setId(Long.valueOf(1));
+                frmAgendarCita agendarCita = new frmAgendarCita(nueva);
+                agendarCita.setVisible(true);
+                dispose();
             }
         });
 
