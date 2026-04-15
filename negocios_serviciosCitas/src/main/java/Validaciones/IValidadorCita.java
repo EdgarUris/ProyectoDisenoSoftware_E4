@@ -4,10 +4,12 @@
  */
 package Validaciones;
 
+import com.mycompany.dto_negocios.citaDTO;
+
 /**
  *
  * @author EdgarUris
  */
-public interface IValidadorGenerico<T> {
-    public boolean validar(T entidad);
+public interface IValidadorCita {
+    public boolean validarCita(citaDTO cita);
 }

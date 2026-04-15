@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 public class citaDTO {
     private Long id;
     private LocalDateTime fechaHora;
-   
-
     private Long pacienteId;
     private Long dentistaId;
     private Long tratamientoId;
