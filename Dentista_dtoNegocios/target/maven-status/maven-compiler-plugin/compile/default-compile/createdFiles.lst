@@ -1,0 +1,5 @@
+com\mycompany\dto_negocios\citaDTO.class
+com\mycompany\dto_negocios\Dto_negocios.class
+com\mycompany\dto_negocios\pacienteDTO.class
+com\mycompany\dto_negocios\dentistaDTO.class
+com\mycompany\dto_negocios\tratamientoDTO.class
