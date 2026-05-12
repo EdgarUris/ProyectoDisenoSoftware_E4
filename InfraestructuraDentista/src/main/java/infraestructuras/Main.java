@@ -16,7 +16,7 @@ public class Main {
      */
     public static void main(String[] args) {
         SistemaCorreoElectronico sce = new SistemaCorreoElectronico();
-        sce.enviarCorreo("jenifermaribelalamea@gmail.com", "mamasota", "rica te amo vengase pa ca mija y mamele mami");
+        sce.enviarCorreo("israel.edgar.ub@gmail.com", "correo desde java", "Esto es increible, logramos mandar un correo desde Java");
     }
     
 }
