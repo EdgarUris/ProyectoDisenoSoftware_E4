@@ -12,7 +12,6 @@ import com.mongodb.client.model.Filters;
 import config.MongoClientProvider;
 import entidades.Cita;
 import entidades.Dentista;
-import entidades.Paciente;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
