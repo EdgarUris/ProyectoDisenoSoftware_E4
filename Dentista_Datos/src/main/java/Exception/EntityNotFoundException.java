@@ -8,23 +8,23 @@ package Exception;
  *
  * @author EdgarUris
  */
-public class DAOException extends Exception {
+public class EntityNotFoundException extends Exception {
 
     /**
-     * Creates a new instance of <code>DAOException</code> without detail
+     * Creates a new instance of <code>EntityNotFoundException</code> without detail
      * message.
      */
-    public DAOException() {
+    public EntityNotFoundException() {
     
     }
 
     /**
-     * Constructs an instance of <code>DAOException</code> with the specified
+     * Constructs an instance of <code>EntityNotFoundException</code> with the specified
      * detail message.
      *
      * @param msg the detail message.
      */
-    public DAOException(String msg) {
+    public EntityNotFoundException(String msg) {
         super(msg);
     }
     
@@ -33,7 +33,7 @@ public class DAOException extends Exception {
      * @param message el mensaje detallado
      * @param cause causa
      */
-    public DAOException(String message, Throwable cause){
+    public EntityNotFoundException(String message, Throwable cause){
         super(message, cause);
     }
 }

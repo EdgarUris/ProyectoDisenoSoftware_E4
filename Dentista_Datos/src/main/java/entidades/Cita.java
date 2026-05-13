@@ -5,6 +5,7 @@
 package entidades;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import org.bson.types.ObjectId;
 
 /**
@@ -86,5 +87,9 @@ public class Cita {
 
     public void setTratamiento(Tratamiento tratamiento) {
         this.tratamiento = tratamiento;
+    }
+    
+    public LocalDate getLocalDate(){
+        return fecha.toLocalDate();
     }
 }

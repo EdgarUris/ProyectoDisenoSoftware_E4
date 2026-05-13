@@ -4,37 +4,99 @@
  */
 package DAOs;
 
+import Exception.DAOException;
+import Exception.EntityNotFoundException;
+import com.mongodb.MongoException;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import entidades.Paciente;
 import java.util.List;
 import java.util.Optional;
+import config.MongoClientProvider;
+import java.time.Instant;
+import java.util.ArrayList;
 import org.bson.types.ObjectId;
 
 
 public class PacienteDAO implements IPacienteDAO {
+    
+    private final MongoCollection<Paciente> col;
 
-    @Override
-    public ObjectId create(Paciente entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public PacienteDAO() {
+        this.col = MongoClientProvider.INSTANCE.getCollection("pacientes", Paciente.class);
     }
 
     @Override
-    public Optional<Paciente> findByID(ObjectId id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean create(Paciente entity) throws DAOException {
+        try {
+            if (entity.getId()== null) {
+                entity.setId(new ObjectId());
+                col.insertOne(entity);
+                return true;
+            }
+        } catch (MongoException e) {
+            throw new DAOException("Error insertando paciente", e);
+        }
+        return false;
     }
 
     @Override
-    public List<Paciente> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Optional<Paciente> findByID(ObjectId id) throws DAOException {
+        try {
+            return Optional.ofNullable(col.find(Filters.eq("_id", id)).first());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando paciente por ID", e);
+        }
+    }
+    
+    @Override
+    public List<Paciente> findAll(int limit) throws DAOException {
+        try {
+            return col.find().limit(limit).into(new ArrayList<>());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando todos los pacientes", e);
+        }
+    }
+    
+    @Override
+    public boolean update(Paciente entity) throws DAOException {
+        try {
+            var result = col.replaceOne(Filters.eq("_id", entity.getId()), entity);
+                    
+            if (result.getMatchedCount() == 0) {
+                throw new EntityNotFoundException("Paciente no encontrado: " + entity.getId());
+            }
+            return result.getModifiedCount() > 0;
+        } catch (MongoException e) {
+            throw new DAOException("Error actualizando paciente", e);
+        } catch (EntityNotFoundException ex) {
+            System.getLogger(PacienteDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
     }
 
     @Override
-    public boolean update(Paciente entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean deleteById(ObjectId id) throws DAOException {
+        try {
+            var result = col.deleteOne(Filters.eq("_id", id));
+            if (result.getDeletedCount() == 0)
+                throw new EntityNotFoundException("Paciente no encontrado: " + id);
+            return true;
+        } catch (MongoException e) {
+            throw new DAOException("Error eliminando paciente", e);
+        } catch (EntityNotFoundException ex) {
+            System.getLogger(PacienteDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
     }
 
     @Override
-    public boolean deleteById(ObjectId id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Optional<Paciente> findByFolio(String folio) throws DAOException {
+        try {
+            return Optional.ofNullable(col.find(Filters.eq("folio", folio)).first());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando paciente por folio", e);
+        }
     }
     
 }

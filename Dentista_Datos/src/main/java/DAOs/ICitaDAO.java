@@ -4,12 +4,19 @@
  */
 package DAOs;
 
+import Exception.DAOException;
 import entidades.Cita;
+import entidades.Dentista;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 /**
  *
- * @author HP
+ * @author EdgarUris
  */
 public interface ICitaDAO extends IGenericoDAO<Cita>{
-    
+    List<Cita> findCitasWithDentistaAndDate(Dentista d, LocalDate fecha) throws DAOException;
+    Optional<Cita> findCitaWithDateTime(LocalDateTime fechaHora) throws DAOException;
 }

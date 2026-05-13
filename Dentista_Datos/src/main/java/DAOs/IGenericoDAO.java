@@ -4,6 +4,7 @@
  */
 package DAOs;
 
+import Exception.DAOException;
 import java.util.List;
 import java.util.Optional;
 import org.bson.types.ObjectId;
@@ -14,9 +15,9 @@ import org.bson.types.ObjectId;
  * Interfaz generica para los DAOs
  */
 public interface IGenericoDAO<T> {
-    ObjectId create(T entity);
-    Optional<T> findByID(ObjectId id);
-    List<T> findAll();
-    boolean update(T entity);
-    boolean deleteById(ObjectId id);
+    boolean create(T entity) throws DAOException;
+    Optional<T> findByID(ObjectId id) throws DAOException;
+    List<T> findAll(int limit) throws DAOException;
+    boolean update(T entity) throws DAOException;
+    boolean deleteById(ObjectId id) throws DAOException;
 }
