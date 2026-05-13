@@ -18,23 +18,26 @@ public class Cita {
     private Dentista dentista;
     private LocalDateTime fecha;
     private String motivo;
+    private Tratamiento tratamiento;
 
     public Cita() {
     }
 
-    public Cita(Paciente paciente, Dentista dentista, LocalDateTime fecha, String motivo) {
+    public Cita(Paciente paciente, Dentista dentista, LocalDateTime fecha, String motivo, Tratamiento tratamiento) {
         this.paciente = paciente;
         this.dentista = dentista;
         this.fecha = fecha;
         this.motivo = motivo;
+        this.tratamiento = tratamiento;
     }
 
-    public Cita(ObjectId _id, Paciente paciente, Dentista dentista, LocalDateTime fecha, String motivo) {
+    public Cita(ObjectId _id, Paciente paciente, Dentista dentista, LocalDateTime fecha, String motivo, Tratamiento tratamiento) {
         this._id = _id;
         this.paciente = paciente;
         this.dentista = dentista;
         this.fecha = fecha;
         this.motivo = motivo;
+        this.tratamiento = tratamiento;
     }
 
     public ObjectId getId() {
@@ -75,5 +78,13 @@ public class Cita {
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;
+    }
+    
+    public Tratamiento getTratamiento() {
+        return tratamiento;
+    }
+
+    public void setTratamiento(Tratamiento tratamiento) {
+        this.tratamiento = tratamiento;
     }
 }
