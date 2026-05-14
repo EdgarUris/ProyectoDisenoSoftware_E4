@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.Optional;
 import org.bson.types.ObjectId;
 
+/**
+ * 
+ * @author EdgarUris
+ */
 
 public class DentistaDAO implements IDentistaDAO {
     
