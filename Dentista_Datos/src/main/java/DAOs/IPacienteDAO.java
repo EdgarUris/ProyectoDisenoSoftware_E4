@@ -4,12 +4,14 @@
  */
 package DAOs;
 
+import Exception.DAOException;
 import entidades.Paciente;
+import java.util.Optional;
 
 /**
  *
  * @author EdgarUris
  */
 public interface IPacienteDAO extends IGenericoDAO<Paciente> {
-    
+    Optional<Paciente> findByFolio(String folio) throws DAOException;
 }

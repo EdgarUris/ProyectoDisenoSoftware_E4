@@ -14,6 +14,7 @@ import entidades.Cita;
 import entidades.Dentista;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,15 +45,15 @@ public class CitaDAO implements ICitaDAO {
 
     @Override
     public List<Cita> findAll(int limit) throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Metodo no soportado");
     }
 
     @Override
-    public boolean update(Cita entity) throws DAOException {
+    public boolean update(ObjectId id, Cita entityNew) throws DAOException {
         try {
-            var result = col.replaceOne(Filters.eq("_id", entity.getId()), entity);
+            var result = col.replaceOne(Filters.eq("_id", id), entityNew);
             if (result.getMatchedCount() == 0) {
-                throw new EntityNotFoundException("Cita no encontrada: " + entity.getId());
+                throw new EntityNotFoundException("Cita no encontrada: " + id);
             }
             return result.getModifiedCount() > 0;
         } catch (MongoException e) {
@@ -80,36 +81,39 @@ public class CitaDAO implements ICitaDAO {
     
     @Override
     public List<Cita> findCitasWithDentistaAndDate(Dentista d, LocalDate fecha) throws DAOException {
-        try{
+        try {
+            LocalDateTime inicioDia = fecha.atStartOfDay(); //fecha a las 00:00:01
+            LocalDateTime finDia = fecha.atTime(LocalTime.MAX); //fecha a las 23:59:59
+
             List<Document> pipeline = List.of(
-                    new Document("$match", new Document("dentista_id",d.getId())),
-                    new Document("$match",new Document("fecha",fecha))
+                new Document("$match", new Document("dentista_id", d.getId())
+                    .append("fecha", new Document("$gte", inicioDia).append("$lte", finDia)))
             );
+
             return col.aggregate(pipeline, Cita.class).into(new ArrayList<>());
-        }
-        catch(Exception e){
-            throw new DAOException("Error al obtener y ordenar las mascotas", e);
+        } catch (Exception e) {
+            throw new DAOException("Error al obtener las citas", e);
         }
     }
 
     @Override
     public Optional<Cita> findCitaWithDateTime(LocalDateTime fechaHora) throws DAOException {
         try{
-            List<Document> pipeline = List.of(
-                    new Document("$match", new Document("fechaHora",fechaHora))
-            );
-            //nose como hacerlo
-            //return col.aggregate(pipeline, Cita.class).first();
+            return Optional.ofNullable(col.find(Filters.eq("fecha", fechaHora)).first());
         }
         catch(Exception e){
-            throw new DAOException("Error al obtener y ordenar las mascotas", e);
+            throw new DAOException("Error al obtener las citas en una fecha", e);
         }
-        return null;
     }
 
     @Override
     public Optional<Cita> findByID(ObjectId id) throws DAOException {
         throw new UnsupportedOperationException("Metodo no soportado");
+    }
+
+    @Override
+    public boolean update(Cita entity) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

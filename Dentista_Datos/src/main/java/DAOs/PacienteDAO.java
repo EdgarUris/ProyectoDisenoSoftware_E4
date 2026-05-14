@@ -15,6 +15,7 @@ import java.util.Optional;
 import config.MongoClientProvider;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Random;
 import org.bson.types.ObjectId;
 
 
@@ -31,6 +32,13 @@ public class PacienteDAO implements IPacienteDAO {
         try {
             if (entity.getId()== null) {
                 entity.setId(new ObjectId());
+                String folio = generarFolio(entity);
+                
+                if(findByFolio(folio) != null){
+                    folio += String.valueOf((int) (Math.random() * 10));
+                }
+                
+                entity.setFolio(folio);
                 col.insertOne(entity);
                 return true;
             }
@@ -98,5 +106,31 @@ public class PacienteDAO implements IPacienteDAO {
             throw new DAOException("Error consultando paciente por folio", e);
         }
     }
+
+    private String generarFolio(Paciente p) {
+        StringBuilder folio = new StringBuilder();
+        
+        //separar nombre en partes
+        String[] partes = p.getNombre().trim().split("\\s+");
+        folio.append(partes[0].substring(0, 2));
+        folio.append(partes[1].substring(0, 2));
+        folio.append(partes[2].substring(0, 2));
+        
+        //con el numero de telefono hacer el numerito del final
+        int suma = 0;
+        String telefono = p.getNumeroTelefono().replaceAll("\\D", "");
     
+        for (char c : telefono.toCharArray()) {
+            int num = Character.getNumericValue(c);
+            if(num % 2 == 0){ 
+                suma += num*3;
+            }
+            else{
+                suma += num*7;
+            }
+        }
+        folio.append(suma * 5);
+    
+        return folio.toString().toUpperCase();
+    }
 }

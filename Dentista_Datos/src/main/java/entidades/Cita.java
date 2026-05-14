@@ -15,27 +15,27 @@ import org.bson.types.ObjectId;
 public class Cita {
     
     private ObjectId _id;
-    private Paciente paciente;
-    private Dentista dentista;
+    private ObjectId paciente_id;
+    private ObjectId dentista_id;
     private LocalDateTime fecha;
     private String motivo;
     private Tratamiento tratamiento;
 
     public Cita() {
     }
-
-    public Cita(Paciente paciente, Dentista dentista, LocalDateTime fecha, String motivo, Tratamiento tratamiento) {
-        this.paciente = paciente;
-        this.dentista = dentista;
+    
+    public Cita(ObjectId paciente_id, ObjectId dentista_id, LocalDateTime fecha, String motivo, Tratamiento tratamiento) {
+        this.paciente_id = paciente_id;
+        this.dentista_id = dentista_id;
         this.fecha = fecha;
         this.motivo = motivo;
         this.tratamiento = tratamiento;
     }
 
-    public Cita(ObjectId _id, Paciente paciente, Dentista dentista, LocalDateTime fecha, String motivo, Tratamiento tratamiento) {
+    public Cita(ObjectId _id, ObjectId paciente_id, ObjectId dentista_id, LocalDateTime fecha, String motivo, Tratamiento tratamiento) {
         this._id = _id;
-        this.paciente = paciente;
-        this.dentista = dentista;
+        this.paciente_id = paciente_id;
+        this.dentista_id = dentista_id;
         this.fecha = fecha;
         this.motivo = motivo;
         this.tratamiento = tratamiento;
@@ -49,20 +49,20 @@ public class Cita {
         this._id = _id;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
+    public ObjectId getPaciente_id() {
+        return paciente_id;
     }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
+    public void setPaciente_id(ObjectId paciente_id) {
+        this.paciente_id = paciente_id;
     }
 
-    public Dentista getDentista() {
-        return dentista;
+    public ObjectId getDentista_id() {
+        return dentista_id;
     }
 
-    public void setDentista(Dentista dentista) {
-        this.dentista = dentista;
+    public void setDentista_id(ObjectId dentista_id) {
+        this.dentista_id = dentista_id;
     }
 
     public LocalDateTime getFecha() {
@@ -80,7 +80,7 @@ public class Cita {
     public void setMotivo(String motivo) {
         this.motivo = motivo;
     }
-    
+
     public Tratamiento getTratamiento() {
         return tratamiento;
     }
@@ -88,8 +88,11 @@ public class Cita {
     public void setTratamiento(Tratamiento tratamiento) {
         this.tratamiento = tratamiento;
     }
-    
-    public LocalDate getLocalDate(){
-        return fecha.toLocalDate();
+
+    @Override
+    public String toString() {
+        return "Cita{" + "_id=" + _id + ", paciente_id=" + paciente_id + ", dentista_id=" + dentista_id + ", fecha=" + fecha + ", motivo=" + motivo + ", tratamiento=" + tratamiento + '}';
     }
+    
+    
 }

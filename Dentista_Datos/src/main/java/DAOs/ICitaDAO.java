@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -19,4 +20,5 @@ import java.util.Optional;
 public interface ICitaDAO extends IGenericoDAO<Cita>{
     List<Cita> findCitasWithDentistaAndDate(Dentista d, LocalDate fecha) throws DAOException;
     Optional<Cita> findCitaWithDateTime(LocalDateTime fechaHora) throws DAOException;
+    public boolean update(ObjectId id, Cita citaNew) throws DAOException;
 }
