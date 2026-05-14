@@ -13,9 +13,7 @@ import entidades.Paciente;
 import java.util.List;
 import java.util.Optional;
 import config.MongoClientProvider;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Random;
 import org.bson.types.ObjectId;
 
 
@@ -112,9 +110,9 @@ public class PacienteDAO implements IPacienteDAO {
         
         //separar nombre en partes
         String[] partes = p.getNombre().trim().split("\\s+");
-        folio.append(partes[0].substring(0, 2));
-        folio.append(partes[1].substring(0, 2));
-        folio.append(partes[2].substring(0, 2));
+        for (String parte : partes) {
+            folio.append(parte.substring(0,1));
+        }
         
         //con el numero de telefono hacer el numerito del final
         int suma = 0;

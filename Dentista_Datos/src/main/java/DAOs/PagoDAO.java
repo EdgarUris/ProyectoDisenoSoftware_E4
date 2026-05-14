@@ -1,0 +1,112 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package DAOs;
+
+import Exception.DAOException;
+import Exception.EntityNotFoundException;
+import com.mongodb.MongoException;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import config.MongoClientProvider;
+import entidades.Paciente;
+import entidades.Pago;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.bson.types.ObjectId;
+
+/**
+ * 
+ * @author EdgarUris
+ */
+
+
+public class PagoDAO implements IPagoDAO {
+
+    private MongoCollection<Pago> col;
+    private IPacienteDAO pDAO = new PacienteDAO();
+    
+    public PagoDAO(){
+        MongoClientProvider.INSTANCE.getCollection("pagos", Pago.class);
+    }
+    
+    @Override
+    public boolean create(Pago entity) throws DAOException {
+        try {
+            if (entity.getId()== null) {
+                entity.setId(new ObjectId());
+                entity.setHecho_en(Instant.now());
+                col.insertOne(entity);
+                return true;
+            }
+        } catch (MongoException e) {
+            throw new DAOException("Error insertando pago", e);
+        }
+        return false;
+    }
+
+    @Override
+    public Optional<Pago> findByID(ObjectId id) throws DAOException {
+        try {
+            return Optional.ofNullable(col.find(Filters.eq("_id", id)).first());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando pago por ID", e);
+        }
+    }
+
+    @Override
+    public List<Pago> findAll(int limit) throws DAOException {
+        try {
+            return col.find().limit(limit).into(new ArrayList<>());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando todos los pacientes", e);
+        }
+    }
+
+    @Override
+    public boolean update(Pago entity) throws DAOException {
+        try {
+            var result = col.replaceOne(Filters.eq("_id", entity.getId()), entity);
+                    
+            if (result.getMatchedCount() == 0) {
+                throw new EntityNotFoundException("Pago no encontrado: " + entity.getId());
+            }
+            return result.getModifiedCount() > 0;
+        } catch (MongoException e) {
+            throw new DAOException("Error actualizando pago", e);
+        } catch (EntityNotFoundException ex) {
+            System.getLogger(PacienteDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteById(ObjectId id) throws DAOException {
+        try {
+            var result = col.deleteOne(Filters.eq("_id", id));
+            if (result.getDeletedCount() == 0)
+                throw new EntityNotFoundException("Pago no encontrado: " + id);
+            return true;
+        } catch (MongoException e) {
+            throw new DAOException("Error eliminando pago", e);
+        } catch (EntityNotFoundException ex) {
+            System.getLogger(PacienteDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false; 
+    }
+
+    @Override
+    public List<Pago> findByPacient(String folio) throws DAOException {
+        Optional<Paciente> p = pDAO.findByFolio(folio);
+        try {
+            return col.find(Filters.eq("paciente_id", p.get().getId())).into(new ArrayList<>());
+        } catch (MongoException e) {
+            throw new DAOException("Error obteniendo los pagos del paciente", e);
+        }
+    }
+
+    
+}

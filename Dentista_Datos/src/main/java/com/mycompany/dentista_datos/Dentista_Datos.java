@@ -37,13 +37,13 @@ public class Dentista_Datos {
         ICitaDAO cdao = new CitaDAO();
         
         Paciente p = new Paciente();
-        p.setNombre("Edgar Urias");
+        p.setNombre("Edgar Urias Berrelleza");
         p.setCorreo("edgar.urias@gmail.com");
         p.setNumeroTelefono("6442064743");
         pdao.create(p);
         
         Paciente p1 = new Paciente();
-        p1.setNombre("Jenifer Flores");
+        p1.setNombre("Jenifer Alamea Flores");
         p1.setCorreo("natanaelcano@gmail.com");
         p1.setNumeroTelefono("6442479933");
         pdao.create(p1);

@@ -21,6 +21,11 @@ import java.util.Optional;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+/**
+ * 
+ * @author EdgarUris
+ */
+
 public class CitaDAO implements ICitaDAO {
     
     private final MongoCollection<Cita> col;
