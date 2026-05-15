@@ -5,7 +5,7 @@
 package DAOs;
 
 import Exception.DAOException;
-import entidades.Paciente;
+import dominio.dentista_dominio.Paciente;
 import java.util.Optional;
 
 /**

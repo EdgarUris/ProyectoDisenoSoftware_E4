@@ -5,8 +5,8 @@
 package DAOs;
 
 import Exception.DAOException;
-import entidades.Cita;
-import entidades.Dentista;
+import dominio.dentista_dominio.Cita;
+import dominio.dentista_dominio.Dentista;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;

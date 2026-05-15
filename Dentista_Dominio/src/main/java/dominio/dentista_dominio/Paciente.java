@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package entidades;
+package dominio.dentista_dominio;
 
+import java.time.LocalDate;
 import org.bson.types.ObjectId;
 
 /**
@@ -17,24 +18,34 @@ public class Paciente {
     private String nombre;
     private String folio;
     private String correo;
-    private String numeroTelefono;
+    private String numero_telefono;
+    private LocalDate fecha_nacimiento;
 
     public Paciente() {
     }
 
-    public Paciente(String nombre, String folio, String correo, String numeroTelefono) {
+    public Paciente(String nombre, String correo, String numero_telefono, LocalDate fecha_nacimiento) {
+        this.nombre = nombre;
+        this.correo = correo;
+        this.numero_telefono = numero_telefono;
+        this.fecha_nacimiento = fecha_nacimiento;
+    }
+
+    public Paciente(String nombre, String folio, String correo, String numero_telefono, LocalDate fecha_nacimiento) {
         this.nombre = nombre;
         this.folio = folio;
         this.correo = correo;
-        this.numeroTelefono = numeroTelefono;
+        this.numero_telefono = numero_telefono;
+        this.fecha_nacimiento = fecha_nacimiento;
     }
 
-    public Paciente(ObjectId _id, String nombre, String folio, String correo, String numeroTelefono) {
+    public Paciente(ObjectId _id, String nombre, String folio, String correo, String numero_telefono, LocalDate fecha_nacimiento) {
         this._id = _id;
         this.nombre = nombre;
         this.folio = folio;
         this.correo = correo;
-        this.numeroTelefono = numeroTelefono;
+        this.numero_telefono = numero_telefono;
+        this.fecha_nacimiento = fecha_nacimiento;
     }
 
     public ObjectId getId() {
@@ -70,10 +81,18 @@ public class Paciente {
     }
 
     public String getNumeroTelefono() {
-        return numeroTelefono;
+        return numero_telefono;
     }
 
-    public void setNumeroTelefono(String numeroTelefono) {
-        this.numeroTelefono = numeroTelefono;
+    public void setNumeroTelefono(String numero_telefono) {
+        this.numero_telefono = numero_telefono;
+    }
+
+    public LocalDate getFecha_nacimiento() {
+        return fecha_nacimiento;
+    }
+
+    public void setFecha_nacimiento(LocalDate fecha_nacimiento) {
+        this.fecha_nacimiento = fecha_nacimiento;
     }
 }

@@ -4,7 +4,7 @@
  */
 package DAOs;
 
-import entidades.Dentista;
+import dominio.dentista_dominio.Dentista;
 
 /**
  *

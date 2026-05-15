@@ -10,7 +10,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import config.MongoClientProvider;
-import entidades.Insumo;
+import dominio.dentista_dominio.Insumo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

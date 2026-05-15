@@ -5,7 +5,7 @@
 package DAOs;
 
 import Exception.DAOException;
-import entidades.Insumo;
+import dominio.dentista_dominio.Insumo;
 import java.util.Optional;
 
 /**
