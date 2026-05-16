@@ -5,6 +5,7 @@
 package objetosnegocio.dentista_objetosnegocio;
 
 import entidades.Cita;
+import entidades.Tratamiento;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
