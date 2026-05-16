@@ -16,6 +16,10 @@ import config.MongoClientProvider;
 import java.util.ArrayList;
 import org.bson.types.ObjectId;
 
+/**
+ * 
+ * @author EdgarUris
+ */
 
 public class PacienteDAO implements IPacienteDAO {
     
@@ -100,6 +104,24 @@ public class PacienteDAO implements IPacienteDAO {
     public Optional<Paciente> findByFolio(String folio) throws DAOException {
         try {
             return Optional.ofNullable(col.find(Filters.eq("folio", folio)).first());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando paciente por folio", e);
+        }
+    }
+    
+    @Override
+    public Optional<Paciente> findByCorreo(String correo) throws DAOException {
+        try {
+            return Optional.ofNullable(col.find(Filters.eq("correo", correo)).first());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando paciente por folio", e);
+        }
+    }
+    
+    @Override
+    public Optional<Paciente> findByTelefono(String telefono) throws DAOException {
+        try {
+            return Optional.ofNullable(col.find(Filters.eq("num_telefono", telefono)).first());
         } catch (MongoException e) {
             throw new DAOException("Error consultando paciente por folio", e);
         }

@@ -84,6 +84,13 @@ public class CitaDAO implements ICitaDAO {
         return false;
     }
     
+    /**
+     * 
+     * @param d el dentista
+     * @param fecha la fecha de la cita (sin hora)
+     * @return las citas de ese dia
+     * @throws DAOException si no se puede acceder a la bd
+     */
     @Override
     public List<Cita> findCitasWithDentistaAndDate(Dentista d, LocalDate fecha) throws DAOException {
         try {
@@ -101,6 +108,12 @@ public class CitaDAO implements ICitaDAO {
         }
     }
 
+    /**
+     * 
+     * @param fechaHora la fecha y hora de la citas
+     * @return la cita, null si no
+     * @throws DAOException si no puede acceder a la bd
+     */
     @Override
     public Optional<Cita> findCitaWithDateTime(LocalDateTime fechaHora) throws DAOException {
         try{
@@ -118,7 +131,7 @@ public class CitaDAO implements ICitaDAO {
 
     @Override
     public boolean update(Cita entity) throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Metodo no soportado, necesitas el id"); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

@@ -14,4 +14,6 @@ import java.util.Optional;
  */
 public interface IPacienteDAO extends IGenericoDAO<Paciente> {
     Optional<Paciente> findByFolio(String folio) throws DAOException;
+    Optional<Paciente> findByCorreo(String correo) throws DAOException;
+    Optional<Paciente> findByTelefono(String numero) throws DAOException;
 }
