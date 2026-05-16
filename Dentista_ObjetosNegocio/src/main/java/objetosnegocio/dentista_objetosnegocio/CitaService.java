@@ -4,13 +4,16 @@
  */
 package objetosnegocio.dentista_objetosnegocio;
 
+import DAOs.DentistaDAO;
 import DAOs.ICitaDAO;
 import DAOs.IDentistaDAO;
 import DAOs.IPacienteDAO;
+import DAOs.PacienteDAO;
 import Exception.DAOException;
 import entidades.Cita;
 import entidades.Dentista;
 import entidades.Paciente;
+import entidades.Tratamiento;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,10 +30,12 @@ public class CitaService implements ICitaService {
     
     public CitaService(ICitaDAO dao){
         this.cDAO = dao;
+        this.pDAO = new PacienteDAO();
+        this.dDAO = new DentistaDAO();
     }
     
     @Override
-    public boolean agendar(String folioPaciente, String folioDentista, LocalDateTime fechaHora, String motivo, String estado) throws BOException {
+    public boolean agendar(String folioPaciente, String folioDentista, LocalDateTime fechaHora, String motivo, String estado, Tratamiento tratamiento) throws BOException {
         try {
             Optional<Paciente> p = pDAO.findByFolio(folioPaciente);
             Optional<Dentista> d = dDAO.findByFolio(folioDentista);
@@ -39,6 +44,9 @@ public class CitaService implements ICitaService {
             }
             if(d.get() != null){
                 throw new BOException("Dentista no encontrado");
+            }
+            if(tratamiento == null){
+                
             }
             if(fechaHora.isBefore(LocalDateTime.now())){
                 throw new BOException("No puede agendar una cita en el pasado");
