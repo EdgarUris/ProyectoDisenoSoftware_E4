@@ -2,33 +2,31 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dominio.dentista_dominio;
+package entidades;
 
-import java.util.List;
 import org.bson.types.ObjectId;
 
 /**
  *
- * @author jeniferfl
+ * @author EdgarUris
  */
-public class Dentista {
-    
-   private ObjectId _id;
+public class Insumo {
+    private ObjectId _id;
     private String nombre;
-    private String especialidad;
+    private Integer stock;
 
-    public Dentista() {
+    public Insumo() {
     }
 
-    public Dentista(String nombre, String especialidad) {
+    public Insumo(String nombre, Integer stock) {
         this.nombre = nombre;
-        this.especialidad = especialidad;
+        this.stock = stock;
     }
 
-    public Dentista(ObjectId _id, String nombre, String especialidad) {
+    public Insumo(ObjectId _id, String nombre, Integer stock) {
         this._id = _id;
         this.nombre = nombre;
-        this.especialidad = especialidad;
+        this.stock = stock;
     }
 
     public ObjectId getId() {
@@ -47,11 +45,14 @@ public class Dentista {
         this.nombre = nombre;
     }
 
-    public String getEspecialidad() {
-        return especialidad;
+    public Integer getStock() {
+        return stock;
     }
 
-    public void setEspecialidad(String especialidad) {
-        this.especialidad = especialidad;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
+    
+    
+    
 }

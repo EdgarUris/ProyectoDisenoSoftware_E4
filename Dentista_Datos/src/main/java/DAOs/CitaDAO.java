@@ -10,8 +10,8 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import config.MongoClientProvider;
-import dominio.dentista_dominio.Cita;
-import dominio.dentista_dominio.Dentista;
+import entidades.Cita;
+import entidades.Dentista;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -115,9 +115,9 @@ public class CitaDAO implements ICitaDAO {
      * @throws DAOException si no puede acceder a la bd
      */
     @Override
-    public Optional<Cita> findCitaWithDateTime(LocalDateTime fechaHora) throws DAOException {
+    public List<Cita> findCitaWithDateTime(LocalDateTime fechaHora) throws DAOException {
         try{
-            return Optional.ofNullable(col.find(Filters.eq("fecha", fechaHora)).first());
+            return col.find(Filters.eq("fecha", fechaHora)).into(new ArrayList<>());
         }
         catch(Exception e){
             throw new DAOException("Error al obtener las citas en una fecha", e);
