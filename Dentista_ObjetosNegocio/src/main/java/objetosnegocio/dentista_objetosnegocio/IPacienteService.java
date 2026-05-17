@@ -4,7 +4,7 @@
  */
 package objetosnegocio.dentista_objetosnegocio;
 
-import dominio.dentista_dominio.Paciente;
+import entidades.Paciente;
 import java.time.LocalDate;
 import java.util.List;
 import objetosnegocio.Excepciones.BOException;

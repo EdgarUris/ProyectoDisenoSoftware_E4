@@ -9,13 +9,17 @@ import Exception.EntityNotFoundException;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import dominio.dentista_dominio.Paciente;
+import entidades.Paciente;
 import java.util.List;
 import java.util.Optional;
 import config.MongoClientProvider;
 import java.util.ArrayList;
 import org.bson.types.ObjectId;
 
+/**
+ * 
+ * @author EdgarUris
+ */
 
 public class PacienteDAO implements IPacienteDAO {
     
@@ -100,6 +104,24 @@ public class PacienteDAO implements IPacienteDAO {
     public Optional<Paciente> findByFolio(String folio) throws DAOException {
         try {
             return Optional.ofNullable(col.find(Filters.eq("folio", folio)).first());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando paciente por folio", e);
+        }
+    }
+    
+    @Override
+    public Optional<Paciente> findByCorreo(String correo) throws DAOException {
+        try {
+            return Optional.ofNullable(col.find(Filters.eq("correo", correo)).first());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando paciente por folio", e);
+        }
+    }
+    
+    @Override
+    public Optional<Paciente> findByTelefono(String telefono) throws DAOException {
+        try {
+            return Optional.ofNullable(col.find(Filters.eq("num_telefono", telefono)).first());
         } catch (MongoException e) {
             throw new DAOException("Error consultando paciente por folio", e);
         }

@@ -10,8 +10,8 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import config.MongoClientProvider;
-import dominio.dentista_dominio.Cita;
-import dominio.dentista_dominio.Dentista;
+import entidades.Cita;
+import entidades.Dentista;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -84,6 +84,13 @@ public class CitaDAO implements ICitaDAO {
         return false;
     }
     
+    /**
+     * 
+     * @param d el dentista
+     * @param fecha la fecha de la cita (sin hora)
+     * @return las citas de ese dia
+     * @throws DAOException si no se puede acceder a la bd
+     */
     @Override
     public List<Cita> findCitasWithDentistaAndDate(Dentista d, LocalDate fecha) throws DAOException {
         try {
@@ -101,10 +108,16 @@ public class CitaDAO implements ICitaDAO {
         }
     }
 
+    /**
+     * 
+     * @param fechaHora la fecha y hora de la citas
+     * @return la cita, null si no
+     * @throws DAOException si no puede acceder a la bd
+     */
     @Override
-    public Optional<Cita> findCitaWithDateTime(LocalDateTime fechaHora) throws DAOException {
+    public List<Cita> findCitaWithDateTime(LocalDateTime fechaHora) throws DAOException {
         try{
-            return Optional.ofNullable(col.find(Filters.eq("fecha", fechaHora)).first());
+            return col.find(Filters.eq("fecha", fechaHora)).into(new ArrayList<>());
         }
         catch(Exception e){
             throw new DAOException("Error al obtener las citas en una fecha", e);
@@ -118,7 +131,7 @@ public class CitaDAO implements ICitaDAO {
 
     @Override
     public boolean update(Cita entity) throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Metodo no soportado, necesitas el id"); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

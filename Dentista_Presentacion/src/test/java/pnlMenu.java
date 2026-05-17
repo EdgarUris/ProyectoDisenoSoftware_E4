@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
  * @author Jenifer Flores
  */
 public class pnlMenu extends JPanel{
+    
     public pnlMenu(MainFrame frame){
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
@@ -48,7 +49,7 @@ public class pnlMenu extends JPanel{
     private JButton crearBoton(String texto, String rutaIcono, MainFrame frame, String panelDestino) {
         JButton boton = new JButton(texto);
 
-        // Buscar la imagen en el classpath
+        //Buscar la imagen en el classpath
         URL url = getClass().getResource("/recursos/" + rutaIcono);
         System.out.println("Cargando: " + url); 
 
@@ -60,11 +61,11 @@ public class pnlMenu extends JPanel{
             System.out.println("No se encontró la imagen: " + rutaIcono);
         }
 
-        // Texto debajo de la imagen
+        //Texto debajo de la imagen
         boton.setHorizontalTextPosition(SwingConstants.CENTER);
         boton.setVerticalTextPosition(SwingConstants.BOTTOM);
 
-        // Estilo visual
+        //Estilo visual
         boton.setBackground(Color.WHITE);
         boton.setFocusPainted(false);
         boton.setBorder(BorderFactory.createCompoundBorder(
@@ -73,7 +74,7 @@ public class pnlMenu extends JPanel{
         ));
         boton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
-        // Acción al hacer clic
+        //Acción al hacer clic
         boton.addActionListener(e -> frame.mostrarPanel(panelDestino));
 
         return boton;

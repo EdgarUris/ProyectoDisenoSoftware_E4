@@ -5,6 +5,13 @@
     <artifactId>Dentista_Presentacion</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
+    </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
@@ -13,15 +20,12 @@
     
     <build>
     <resources>
-        <!-- Carpeta estándar de Maven -->
         <resource>
             <directory>src/main/resources</directory>
             <includes>
                 <include>**/*</include>
             </includes>
         </resource>
-
-        <!-- Carpeta personalizada que ya tienes -->
         <resource>
             <directory>${basedir}/recursos</directory>
             <includes>

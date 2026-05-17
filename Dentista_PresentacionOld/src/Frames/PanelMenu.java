@@ -6,6 +6,7 @@ package Frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -21,18 +22,18 @@ public class PanelMenu extends javax.swing.JPanel {
      * Creates new form PanelMenu
      */
     public PanelMenu() {
-         setOpaque(false);
+        setOpaque(false);
         initComponents();
-       SpinnerDateModel modeloHora = new SpinnerDateModel();
-spHora.setModel(modeloHora);
+        SpinnerDateModel modeloHora = new SpinnerDateModel();
+        spHora.setModel(modeloHora);
 
-JSpinner.DateEditor editor =
+        JSpinner.DateEditor editor =
         new JSpinner.DateEditor(spHora, "HH:mm");
 
-spHora.setEditor(editor);
-Siguiente.setBackground(new Color(0, 150, 136, 80));
-Regresar.setBackground(new Color(0, 150, 136, 80));
-Btn1.setBackground(new Color(0, 150, 136, 80));
+        spHora.setEditor(editor);
+        Siguiente.setBackground(new Color(0, 150, 136, 80));
+        Regresar.setBackground(new Color(0, 150, 136, 80));
+        Btn1.setBackground(new Color(0, 150, 136, 80));
 
     }
 
@@ -60,6 +61,8 @@ Btn1.setBackground(new Color(0, 150, 136, 80));
             }
         });
 
+        dcFecha.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 153, 153)));
+
         Siguiente.setText("Siguiente");
         Siguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,7 +82,8 @@ Btn1.setBackground(new Color(0, 150, 136, 80));
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(dcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(dcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -89,7 +93,7 @@ Btn1.setBackground(new Color(0, 150, 136, 80));
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Siguiente, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
                             .addComponent(Regresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-            .addComponent(Btn1)
+            .addComponent(Btn1, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,32 +121,33 @@ Btn1.setBackground(new Color(0, 150, 136, 80));
 
     private void SiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SiguienteActionPerformed
         // TODO add your handling code here:
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        Date dia = dcFecha.getDate();
+        
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
-    PanelFondo fondo = new PanelFondo();
-    fondo.setLayout(new BorderLayout());
+        PanelFondo fondo = new PanelFondo();
+        fondo.setLayout(new BorderLayout());
 
-    fondo.add(new PanelAgendarCita(), BorderLayout.CENTER);
+        fondo.add(new PanelAgendarCita(), BorderLayout.CENTER);
 
-    frame.setContentPane(fondo);
-    frame.revalidate();
-    frame.repaint();
+        frame.setContentPane(fondo);
+        frame.revalidate();
+        frame.repaint();
         
     }//GEN-LAST:event_SiguienteActionPerformed
 
     private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
         // TODO add your handling code here:
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
-    PanelFondo fondo = new PanelFondo();
-    fondo.setLayout(new BorderLayout());
+        PanelFondo fondo = new PanelFondo();
+        fondo.setLayout(new BorderLayout());
 
-    fondo.add(new PanelPrincipal(), BorderLayout.CENTER);
+        fondo.add(new PanelPrincipal(), BorderLayout.CENTER);
 
-    frame.setContentPane(fondo);
-    frame.revalidate();
-    frame.repaint();
-        
+        frame.setContentPane(fondo);
+        frame.revalidate();
+        frame.repaint();
     }//GEN-LAST:event_RegresarActionPerformed
 
 

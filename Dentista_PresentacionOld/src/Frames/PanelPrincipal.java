@@ -28,22 +28,22 @@ public class PanelPrincipal extends javax.swing.JPanel {
                 setOpaque(false);
 
         Usuario.setBounds(200, 300, 250, 40);
- Btn1.setOpaque(false);
-Btn1.setBorder(null);
-Btn1.setBackground(new Color(0, 150, 136, 80));
-Texto1.setBorder(javax.swing.BorderFactory.createEmptyBorder(40, 0, 0, 0));
-Texto2.setBorder(javax.swing.BorderFactory.createEmptyBorder(120, 0, 0, 0));
-Texto3.setBorder(javax.swing.BorderFactory.createEmptyBorder(120, 0, 0, 0));
-Texto1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-Texto1.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
-    Texto2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-Texto2.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
-    Texto3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-Texto3.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
-Usuario.setBackground(new Color(0, 150, 136, 80));
-Contrasena.setBackground(new Color(0, 150, 136, 80));
-BtnSesion.setBackground(new Color(0, 150, 136, 80));
-BtnRegistro.setBackground(new Color(0, 150, 136, 80));
+        Btn1.setOpaque(false);
+        Btn1.setBorder(null);
+        Btn1.setBackground(new Color(0, 150, 136, 80));
+        Texto1.setBorder(javax.swing.BorderFactory.createEmptyBorder(40, 0, 0, 0));
+        Texto2.setBorder(javax.swing.BorderFactory.createEmptyBorder(120, 0, 0, 0));
+        Texto3.setBorder(javax.swing.BorderFactory.createEmptyBorder(120, 0, 0, 0));
+        Texto1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Texto1.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        Texto2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Texto2.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        Texto3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Texto3.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        Usuario.setBackground(new Color(0, 150, 136, 80));
+        Contrasena.setBackground(new Color(0, 150, 136, 80));
+        BtnSesion.setBackground(new Color(0, 150, 136, 80));
+        BtnRegistro.setBackground(new Color(0, 150, 136, 80));
 ;
 
     
@@ -83,7 +83,7 @@ BtnRegistro.setBackground(new Color(0, 150, 136, 80));
         Texto2.setText("Usuario");
 
         Texto3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        Texto3.setText("Contrasena");
+        Texto3.setText("Contraseña");
 
         Contrasena.setText("jPasswordField1");
 
@@ -122,20 +122,14 @@ BtnRegistro.setBackground(new Color(0, 150, 136, 80));
                 .addComponent(Texto2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(734, 734, 734)
-                        .addComponent(Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(369, 369, 369)
-                        .addComponent(Texto3, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(733, 733, 733)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BtnSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BtnRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(574, Short.MAX_VALUE))
+                    .addComponent(Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Texto3, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BtnSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BtnRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(937, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,15 +141,15 @@ BtnRegistro.setBackground(new Color(0, 150, 136, 80));
                 .addComponent(Texto2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Texto3)
-                .addGap(28, 28, 28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addGap(30, 30, 30)
                 .addComponent(BtnSesion)
-                .addGap(62, 62, 62)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addComponent(BtnRegistro)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addGap(83, 83, 83))
         );
     }// </editor-fold>//GEN-END:initComponents
 

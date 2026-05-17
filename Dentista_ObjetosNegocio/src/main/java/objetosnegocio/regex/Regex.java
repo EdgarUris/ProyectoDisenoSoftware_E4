@@ -17,6 +17,13 @@ public class Regex {
     
     }
     
+    public boolean validarNombre(String nombre){
+        //nombre y apellidos
+        Pattern patNombre = Pattern.compile("^([A-ZÁ](a-z){2,15}){2,6}$");
+        Matcher m = patNombre.matcher(nombre);
+        return m.matches();
+    }
+    
     public boolean validarCorreo(String correo){
         Pattern patCorreo = Pattern.compile("^(?!.*\\.{2})[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
         Matcher m = patCorreo.matcher(correo);

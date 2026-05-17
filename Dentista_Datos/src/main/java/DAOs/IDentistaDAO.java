@@ -4,12 +4,16 @@
  */
 package DAOs;
 
-import dominio.dentista_dominio.Dentista;
+import Exception.DAOException;
+import entidades.Dentista;
+import java.util.List;
+import java.util.Optional;
 
 /**
  *
  * @author EdgarUris
  */
 public interface IDentistaDAO extends IGenericoDAO<Dentista>{
-    
+    Optional<Dentista> findByFolio(String folio) throws DAOException;
+    List<Dentista> findByEspecialidad(String especialidad) throws DAOException;
 }

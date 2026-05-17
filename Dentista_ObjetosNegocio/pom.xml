@@ -7,8 +7,8 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>dominio</groupId>
-            <artifactId>Dentista_Dominio</artifactId>
+            <groupId>com.mycompany</groupId>
+            <artifactId>Dentista_dtoNegocios</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

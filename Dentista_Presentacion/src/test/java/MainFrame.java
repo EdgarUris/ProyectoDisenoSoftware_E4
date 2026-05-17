@@ -19,7 +19,6 @@ public class MainFrame extends JFrame{
     private JPanel contentPanel;
     private CardLayout cardLayout;
     
-
     public MainFrame() {
         setTitle("Clínica Dental Enríquez");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -6,7 +6,7 @@ package objetosnegocio.dentista_objetosnegocio;
 
 import DAOs.IPacienteDAO;
 import Exception.DAOException;
-import dominio.dentista_dominio.Paciente;
+import entidades.Paciente;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -27,30 +27,45 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public boolean registrar(String nombre, String correo, String telefono, LocalDate fecha_nac) throws BOException {
-        if(nombre.trim().isEmpty()){
-            throw new BOException("El nombre del paciente está vacio");
-        }
-        if(!rgx.validarCorreo(correo) || correo.trim().isEmpty()){
-            throw new BOException("Correo de paciente invalido");
-        }
-        if(!rgx.validarTelefono(telefono.trim()) || telefono.trim().isEmpty()){
-            throw new BOException("El numero de paciente invalido");
-        }
-        Period edad = Period.between(fecha_nac, LocalDate.now());
-        if(edad.getYears() < 10) {
-            throw new BOException("El paciente debe tener al menos 10 años de edad");
-        }
         try {
-            return pDAO.create(new Paciente(nombre, correo, telefono, fecha_nac));
+            if(nombre.trim().isEmpty()){
+                throw new BOException("El nombre del paciente está vacio");
+            }
+            if(!rgx.validarCorreo(correo) || correo.trim().isEmpty()){
+                throw new BOException("Correo de paciente invalido");
+            }
+            if(pDAO.findByCorreo(correo).get() != null){
+                throw new BOException("El correo ya está registrado");
+            }
+            if(!rgx.validarTelefono(telefono.trim()) || telefono.trim().isEmpty()){
+                throw new BOException("El numero de paciente invalido");
+            }
+            if(pDAO.findByTelefono(telefono).get() != null){
+                throw new BOException("El numero de telefono ya esta registrado");
+            }
+            
+            Period edad = Period.between(fecha_nac, LocalDate.now());
+            if(edad.getYears() < 10) {
+                throw new BOException("El paciente debe tener al menos 10 años de edad");
+            }
+            try {
+                return pDAO.create(new Paciente(nombre, correo, telefono, fecha_nac));
+            } catch (DAOException ex) {
+                return false;
+            }
         } catch (DAOException ex) {
-            return false;
+            System.getLogger(PacienteService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
+        return false;
     }
 
     @Override
     public boolean actualizar(String folio, String nombre, String correo, String telefono) throws BOException {
         try {
             Optional<Paciente> p = pDAO.findByFolio(folio);
+            if(p.get() != null){
+                throw new BOException("Paciente no encontrado con el folio: "+folio);
+            }
             if(nombre.trim().isEmpty()){
                 throw new BOException("El nombre del paciente está vacio");
             }
@@ -59,6 +74,12 @@ public class PacienteService implements IPacienteService {
             }
             if(!rgx.validarTelefono(telefono.trim()) || telefono.trim().isEmpty()){
                 throw new BOException("El numero de paciente invalido");
+            }
+            if(pDAO.findByCorreo(correo).get() != null){
+                throw new BOException("El correo ya esta registrado");
+            }
+            if(pDAO.findByTelefono(telefono).get() != null){
+                throw new BOException("El telefono ya está registrado");
             }
             
             Paciente cambiado = p.get();
