@@ -2,6 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+package inicio;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -12,16 +14,14 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-
 /**
  *
- * @author Jenifer Flores
+ * @author HP
  */
-public class pnlMenu extends JPanel{
+public class pnlMenu extends JPanel {
     
     public pnlMenu(MainFrame frame){
         setLayout(new BorderLayout());
@@ -38,7 +38,7 @@ public class pnlMenu extends JPanel{
         botonesPanel.setBackground(Color.WHITE);
         botonesPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
-        botonesPanel.add(crearBoton("Agenda Semanal", "agendarCita.png", frame, "agenda"));
+        botonesPanel.add(crearBoton("Agenda Semanal", "agendarCita.png", frame, "calendario"));
         botonesPanel.add(crearBoton("Generar Receta", "generarReceta.png", frame, "receta"));
         botonesPanel.add(crearBoton("Inventario", "inventario.png", frame, "inventario"));
         botonesPanel.add(crearBoton("Generar Factura", "generarFactura.png", frame, "factura"));

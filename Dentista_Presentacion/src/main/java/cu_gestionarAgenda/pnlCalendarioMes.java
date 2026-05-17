@@ -2,8 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Frames;
+package cu_gestionarAgenda;
 
+import inicio.MainFrame;
+import inicio.PanelFondo;
+import inicio.pnlMenu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.Date;
@@ -14,14 +17,15 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author manue
+ * @author manuel
  */
-public class PanelMenu extends javax.swing.JPanel {
+public class pnlCalendarioMes extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelMenu
      */
-    public PanelMenu() {
+    
+    public pnlCalendarioMes(MainFrame frame) {
         setOpaque(false);
         initComponents();
         SpinnerDateModel modeloHora = new SpinnerDateModel();
@@ -34,6 +38,8 @@ public class PanelMenu extends javax.swing.JPanel {
         Siguiente.setBackground(new Color(0, 150, 136, 80));
         Regresar.setBackground(new Color(0, 150, 136, 80));
         Btn1.setBackground(new Color(0, 150, 136, 80));
+        
+        Btn1.addActionListener(e -> frame.mostrarPanel("agendaDia"));
 
     }
 
@@ -122,17 +128,15 @@ public class PanelMenu extends javax.swing.JPanel {
     private void SiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SiguienteActionPerformed
         // TODO add your handling code here:
         Date dia = dcFecha.getDate();
-        
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
         PanelFondo fondo = new PanelFondo();
         fondo.setLayout(new BorderLayout());
 
-        fondo.add(new PanelAgendarCita(), BorderLayout.CENTER);
+        //fondo.add(new PanelAgendarCita(), BorderLayout.CENTER);
 
-        frame.setContentPane(fondo);
-        frame.revalidate();
-        frame.repaint();
+//        frame.setContentPane(fondo);
+//        frame.revalidate();
+//        frame.repaint();
         
     }//GEN-LAST:event_SiguienteActionPerformed
 
@@ -143,7 +147,7 @@ public class PanelMenu extends javax.swing.JPanel {
         PanelFondo fondo = new PanelFondo();
         fondo.setLayout(new BorderLayout());
 
-        fondo.add(new PanelPrincipal(), BorderLayout.CENTER);
+        fondo.add(new pnlMenu(new MainFrame()), BorderLayout.CENTER);
 
         frame.setContentPane(fondo);
         frame.revalidate();

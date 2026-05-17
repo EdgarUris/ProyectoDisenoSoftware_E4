@@ -1,21 +1,24 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+package inicio;
 
+import cu_gestionarAgenda.pnlAgendaDia;
+import cu_gestionarAgenda.pnlCalendarioMes;
 import java.awt.CardLayout;
+import java.time.Instant;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
 
 /**
  *
- * @author Jenifer Flores
+ * @author HP
  */
 public class MainFrame extends JFrame{
-
+    
     private JPanel contentPanel;
     private CardLayout cardLayout;
     
@@ -28,13 +31,17 @@ public class MainFrame extends JFrame{
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
-        // Paneles
+        //las cartas
+        JPanel pnlCalendarioMes = new pnlCalendarioMes(this);
+        JPanel pnlAgendaDia = new pnlAgendaDia(this, Date.from(Instant.now()));
         JPanel menuPanel = new pnlMenu(this);
         JPanel agendaPanel = new JPanel();
         agendaPanel.add(new JLabel("Panel de Agenda Semanal"));
 
         contentPanel.add(menuPanel, "menu");
         contentPanel.add(agendaPanel, "agenda");
+        contentPanel.add(pnlCalendarioMes, "calendario");
+        contentPanel.add(pnlAgendaDia, "agendaDia");
 
         add(contentPanel);
         cardLayout.show(contentPanel, "menu");
@@ -43,9 +50,9 @@ public class MainFrame extends JFrame{
     public void mostrarPanel(String nombre) {
         cardLayout.show(contentPanel, nombre);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MainFrame().setVisible(true));
+    
+    public void setContentPanel(JPanel panel){
+        this.contentPanel = panel;
     }
 
 }
