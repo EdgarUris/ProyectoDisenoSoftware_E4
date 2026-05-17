@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author 52644
+ * @author Jenifer Flores
  */
 public class MainFrame extends JFrame{
 
