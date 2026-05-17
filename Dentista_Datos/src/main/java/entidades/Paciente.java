@@ -20,7 +20,7 @@ public class Paciente {
     private String correo;
     private String numero_telefono;
     private LocalDate fecha_nacimiento;
-
+    private RFC
     public Paciente() {
     }
 

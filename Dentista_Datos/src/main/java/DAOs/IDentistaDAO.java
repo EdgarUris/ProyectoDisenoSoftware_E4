@@ -6,6 +6,7 @@ package DAOs;
 
 import Exception.DAOException;
 import entidades.Dentista;
+import java.util.List;
 import java.util.Optional;
 
 /**
