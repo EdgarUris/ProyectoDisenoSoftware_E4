@@ -29,7 +29,7 @@ public class pnlMenu extends JPanel{
         // Encabezado
         JLabel titulo = new JLabel("Bienvenido al Sistema", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        titulo.setForeground(new Color(0, 90, 90));
+        titulo.setForeground(new Color(23, 57, 227));
         add(titulo, BorderLayout.NORTH);
 
         // Panel de botones
@@ -37,12 +37,10 @@ public class pnlMenu extends JPanel{
         botonesPanel.setBackground(Color.WHITE);
         botonesPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
-        botonesPanel.add(crearBoton("Agenda Semanal", "prueba.png", frame, "agenda"));
-        botonesPanel.add(crearBoton("Registro Clínico", "prueba.png", frame, "registro"));
-        botonesPanel.add(crearBoton("Generar Receta", "prueba.png", frame, "receta"));
-        botonesPanel.add(crearBoton("Bitácora", "prueba.png", frame, "bitacora"));
-        botonesPanel.add(crearBoton("Inventario", "prueba.png", frame, "inventario"));
-        botonesPanel.add(crearBoton("Generar Factura", "prueba.png", frame, "factura"));
+        botonesPanel.add(crearBoton("Agenda Semanal", "agendarCita.png", frame, "agenda"));
+        botonesPanel.add(crearBoton("Generar Receta", "generarReceta.png", frame, "receta"));
+        botonesPanel.add(crearBoton("Inventario", "inventario.png", frame, "inventario"));
+        botonesPanel.add(crearBoton("Generar Factura", "generarFactura.png", frame, "factura"));
 
         add(botonesPanel, BorderLayout.CENTER);
     }
@@ -51,8 +49,8 @@ public class pnlMenu extends JPanel{
         JButton boton = new JButton(texto);
 
         // Buscar la imagen en el classpath
-        URL url = getClass().getResource("/prueba.png");
-        System.out.println("Cargando: " + url); // Verificación en consola
+        URL url = getClass().getResource("/recursos/" + rutaIcono);
+        System.out.println("Cargando: " + url); 
 
         if (url != null) {
             ImageIcon icono = new ImageIcon(url);
@@ -70,10 +68,10 @@ public class pnlMenu extends JPanel{
         boton.setBackground(Color.WHITE);
         boton.setFocusPainted(false);
         boton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
-            BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        BorderFactory.createLineBorder(new Color(0, 90, 200), 2), // azul más intenso
+        BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
-        boton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        boton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
         // Acción al hacer clic
         boton.addActionListener(e -> frame.mostrarPanel(panelDestino));
