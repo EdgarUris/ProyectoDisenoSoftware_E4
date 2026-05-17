@@ -20,8 +20,16 @@ public class Paciente {
     private String correo;
     private String numero_telefono;
     private LocalDate fecha_nacimiento;
-
+    private String pacienteRFC;
     public Paciente() {
+    }
+
+    public String getPacienteRFC() {
+        return pacienteRFC;
+    }
+
+    public void setPacienteRFC(String pacienteRFC) {
+        this.pacienteRFC = pacienteRFC;
     }
 
     public Paciente(String nombre, String correo, String numero_telefono, LocalDate fecha_nacimiento) {

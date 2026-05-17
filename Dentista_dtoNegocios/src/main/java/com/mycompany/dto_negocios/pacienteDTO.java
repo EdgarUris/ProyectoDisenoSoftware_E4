@@ -12,7 +12,7 @@ public class pacienteDTO {
     private Long id;
     private String nombre;
     private String folio;
-//    private String telefono;
+    private String telefono;
     private String correo;
     private Integer edad;
 
