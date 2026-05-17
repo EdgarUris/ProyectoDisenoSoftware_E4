@@ -10,4 +10,25 @@
         <maven.compiler.release>25</maven.compiler.release>
         <exec.mainClass>com.mycompany.dentista_presentacion.Dentista_Presentacion</exec.mainClass>
     </properties>
+    
+    <build>
+    <resources>
+        <!-- Carpeta estándar de Maven -->
+        <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </resource>
+
+        <!-- Carpeta personalizada que ya tienes -->
+        <resource>
+            <directory>${basedir}/recursos</directory>
+            <includes>
+                <include>**/*.png</include>
+                <include>**/*.jpg</include>
+            </includes>
+        </resource>
+    </resources>
+</build>
 </project>
