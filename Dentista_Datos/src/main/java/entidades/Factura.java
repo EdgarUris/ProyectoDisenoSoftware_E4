@@ -88,4 +88,8 @@ public class Factura {
     public void setEnviadoCorreo(boolean enviadoCorreo) {
         this.enviadoCorreo = enviadoCorreo;
     }
+
+    public String getRfcPaciente() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
