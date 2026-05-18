@@ -19,7 +19,7 @@ import java.awt.*;
 public class pnlindicarMedicamentos extends JPanel {
 
     private final CitaSeleccionada controlador;
-    private final JPanel contenedorListaMedicamentos; // Panel que holdeará dinámicamente las tarjetas
+    private final JPanel contenedorListaMedicamentos; 
     private int contadorMedicamentos = 0; // Para llevar la cuenta (ej: Medicamento 1, Medicamento 2)
 
     public pnlindicarMedicamentos(CitaSeleccionada controlador) {
@@ -33,7 +33,7 @@ public class pnlindicarMedicamentos extends JPanel {
         mainVerticalPanel.setLayout(new BoxLayout(mainVerticalPanel, BoxLayout.Y_AXIS));
         mainVerticalPanel.setOpaque(false);
 
-        // --- TARJETA CONTENEDORA PRINCIPAL DE MEDICAMENTOS ---
+        // TARJETA CONTENEDORA PRINCIPAL DE MEDICAMENTOS
         CitaSeleccionada.RoundedPanel cardRaizMedicamentos = controlador.new RoundedPanel(16, Color.WHITE);
         cardRaizMedicamentos.setLayout(new BorderLayout());
         cardRaizMedicamentos.setBorder(BorderFactory.createCompoundBorder(
@@ -41,7 +41,7 @@ public class pnlindicarMedicamentos extends JPanel {
                 new EmptyBorder(20, 25, 25, 25)
         ));
 
-        // 1. ENCABEZADO DE LA TARJETA (Título y Botón Agregar)
+        // Título y Botón Agregar
         JPanel headerCard = new JPanel(new BorderLayout());
         headerCard.setOpaque(false);
         headerCard.setBorder(new EmptyBorder(0, 0, 15, 0)); // Espacio inferior
@@ -62,13 +62,12 @@ public class pnlindicarMedicamentos extends JPanel {
                 new EmptyBorder(7, 18, 7, 18)
         ));
         
-        // --- ACCIÓN: Agregar un nuevo bloque de medicamento ---
+        // Agregar un nuevo bloque de medicamento 
         btnAgregar.addActionListener(e -> agregarNuevoBloqueMedicamento());
 
         headerCard.add(btnAgregar, BorderLayout.EAST);
         cardRaizMedicamentos.add(headerCard, BorderLayout.NORTH);
 
-        // 2. CUERPO DE LA TARJETA: Panel dinámico con JScrollPane para lista larga
         // Usamos BoxLayout vertical para que los nuevos medicamentos se apilen hacia abajo
         contenedorListaMedicamentos = new JPanel();
         contenedorListaMedicamentos.setLayout(new BoxLayout(contenedorListaMedicamentos, BoxLayout.Y_AXIS));

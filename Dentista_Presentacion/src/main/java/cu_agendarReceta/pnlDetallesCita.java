@@ -11,7 +11,7 @@ import java.awt.geom.RoundRectangle2D;
 
 /**
  *
- * @author 52644
+ * @author Jenifer Flores
  */
 public class pnlDetallesCita extends JPanel{
 
@@ -28,7 +28,7 @@ public class pnlDetallesCita extends JPanel{
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setOpaque(false);
 
-        // BLOQUE 1: Datos del Dentista (Usando la clase RoundedPanel del controlador)
+        // Datos del Dentista (Usando la clase RoundedPanel del controlador)
         CitaSeleccionada.RoundedPanel dentistBlock = controlador.new RoundedPanel(16, Color.WHITE);
         dentistBlock.setLayout(new BoxLayout(dentistBlock, BoxLayout.Y_AXIS));
         dentistBlock.setBorder(BorderFactory.createCompoundBorder(
@@ -53,7 +53,7 @@ public class pnlDetallesCita extends JPanel{
         contentPanel.add(dentistBlock);
         contentPanel.add(Box.createVerticalStrut(25));
 
-        // BLOQUE 2: Datos del Paciente (Usando la clase RoundedPanel del controlador)
+        // Datos del Paciente (Usando la clase RoundedPanel del controlador)
         CitaSeleccionada.RoundedPanel patientBlock = controlador.new RoundedPanel(16, Color.WHITE);
         patientBlock.setLayout(new BoxLayout(patientBlock, BoxLayout.Y_AXIS));
         patientBlock.setBorder(BorderFactory.createCompoundBorder(
@@ -89,7 +89,7 @@ public class pnlDetallesCita extends JPanel{
         contentPanel.add(patientBlock);
         add(contentPanel, BorderLayout.CENTER);
 
-        // --- ACCIONES INFERIORES DERECHAS (REGRESAR Y CONTINUAR) ---
+        
         JPanel footerActionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
         footerActionPanel.setOpaque(false);
 

@@ -228,11 +228,11 @@ public class CitaSeleccionada extends JFrame {
                 new EmptyBorder(15, 15, 15, 15)
         ));
 
-        detailsPanel.add(createInfoRow("👤 Paciente", "Manuel Rios", "Edad: No se"));
+        detailsPanel.add(createInfoRow("👤 Paciente", "Manuel Rios", "Edad: 20"));
         detailsPanel.add(Box.createVerticalStrut(15));
         detailsPanel.add(createInfoRow("📅 Fecha y Hora", "17 may 2026 09:00", null));
         detailsPanel.add(Box.createVerticalStrut(15));
-        detailsPanel.add(createInfoRow("⏱ Motivo de consulta", "Encuentro Sex", null));
+        detailsPanel.add(createInfoRow("⏱ Motivo de consulta", "Extracción de muela", null));
 
         innerContent.add(detailsPanel);
         innerContent.add(Box.createVerticalGlue());
