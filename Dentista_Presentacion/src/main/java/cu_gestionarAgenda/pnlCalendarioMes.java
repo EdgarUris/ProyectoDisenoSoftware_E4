@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingUtilities;
+import objetosnegocio.Excepciones.BOException;
 
 /**
  *
@@ -147,7 +148,11 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
         PanelFondo fondo = new PanelFondo();
         fondo.setLayout(new BorderLayout());
 
-        fondo.add(new pnlMenu(new MainFrame()), BorderLayout.CENTER);
+        try {
+            fondo.add(new pnlMenu(new MainFrame()), BorderLayout.CENTER);
+        } catch (BOException ex) {
+            System.getLogger(pnlCalendarioMes.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
 
         frame.setContentPane(fondo);
         frame.revalidate();

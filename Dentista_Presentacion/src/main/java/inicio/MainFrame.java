@@ -8,21 +8,22 @@ import cu_gestionarAgenda.pnlAgendaDia;
 import cu_gestionarAgenda.pnlCalendarioMes;
 import java.awt.CardLayout;
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import objetosnegocio.Excepciones.BOException;
 
 /**
  *
- * @author HP
+ * @author EdgarUris
  */
 public class MainFrame extends JFrame{
     
     private JPanel contentPanel;
     private CardLayout cardLayout;
     
-    public MainFrame() {
+    public MainFrame() throws BOException {
         setTitle("Clínica Dental Enríquez");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 650);
@@ -33,7 +34,7 @@ public class MainFrame extends JFrame{
 
         //las cartas
         JPanel pnlCalendarioMes = new pnlCalendarioMes(this);
-        JPanel pnlAgendaDia = new pnlAgendaDia(this, Date.from(Instant.now()));
+        JPanel pnlAgendaDia = new pnlAgendaDia(this, LocalDate.from(Instant.now()));
         JPanel menuPanel = new pnlMenu(this);
         JPanel agendaPanel = new JPanel();
         agendaPanel.add(new JLabel("Panel de Agenda Semanal"));

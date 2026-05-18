@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import objetosnegocio.Excepciones.BOException;
 import objetosnegocio.regex.Regex;
+import org.bson.types.ObjectId;
 
 
 public class PacienteService implements IPacienteService {
@@ -113,7 +114,33 @@ public class PacienteService implements IPacienteService {
             return new ArrayList<>();
         }
     }
-    
-    
+
+    @Override
+    public Paciente obtenerPorFolio(String folio) throws BOException {
+        try {
+            Optional<Paciente> p = pDAO.findByFolio(folio);
+            if(p.get() == null){
+                throw new BOException("Paciente no encontrado");
+            }
+            return p.get();
+        } catch (DAOException ex) {
+            System.getLogger(PacienteService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Paciente obtenerPorId(ObjectId id) throws BOException {
+        try {
+            Optional<Paciente> p = pDAO.findByID(id);
+            if(p.get() == null){
+                throw new BOException("Paciente no encontrado");
+            }
+            return p.get();
+        } catch (DAOException ex) {
+            System.getLogger(PacienteService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return null;
+    }
     
 }
