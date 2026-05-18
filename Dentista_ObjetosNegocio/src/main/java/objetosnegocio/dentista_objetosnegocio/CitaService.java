@@ -16,10 +16,12 @@ import entidades.Paciente;
 import entidades.Tratamiento;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import objetosnegocio.Excepciones.BOException;
+import org.bson.types.ObjectId;
 
 
 public class CitaService implements ICitaService {
@@ -94,18 +96,53 @@ public class CitaService implements ICitaService {
     }
 
     @Override
-    public boolean cancelar(Long id) throws BOException {
+    public boolean cancelar(String folioDentista, LocalDateTime fecha) throws BOException {
         return false;
     }
 
     @Override
     public List<Cita> obtenerPorDentistaYFecha(String folioDentista, LocalDate dia) throws BOException {
+        try{
+            Optional<Dentista> d = dDAO.findByFolio(folioDentista);
+            if(d.get() == null){
+                throw new BOException("Dentista no encontrado");
+            }
+            return cDAO.findCitasWithDentistaAndDate(d.get(), dia);
+        } catch (DAOException ex) {
+            System.getLogger(CitaService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
         return new ArrayList<>();
     }
 
     @Override
     public List<Cita> obtenerPorFechaHora(LocalDateTime fechaHora) throws BOException {
+        try {
+            return cDAO.findCitaWithDateTime(fechaHora);
+        } catch (DAOException ex) {
+            System.getLogger(CitaService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
         return new ArrayList<>();
+    }
+    
+    @Override
+    public boolean existeCitaConMedicoEnHora(Dentista d, LocalDate dia, String hora) throws BOException{
+        String[] horaString = hora.split(":");
+        int[] horasplit = new int[2];
+        for(int i = 0; i < 2; i++){
+           horasplit[i] = Integer.parseInt(horaString[i]);
+        }
+        try {
+            List<Cita> citas = cDAO.findCitasWithDentistaAndDate(d, dia);
+            for (Cita cita : citas) {
+                if(cita.getFecha().getHour() == horasplit[0] && cita.getFecha().getMinute() == horasplit[1]){
+                    return true;
+                }
+            }
+            return false;
+        } catch (DAOException ex) {
+            System.getLogger(CitaService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
     }
     
 }

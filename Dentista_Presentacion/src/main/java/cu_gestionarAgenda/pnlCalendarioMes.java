@@ -9,11 +9,16 @@ import inicio.PanelFondo;
 import inicio.pnlMenu;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingUtilities;
+import objetosnegocio.Excepciones.BOException;
 
 /**
  *
@@ -25,7 +30,10 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
      * Creates new form PanelMenu
      */
     
+    private MainFrame padre;
+    
     public pnlCalendarioMes(MainFrame frame) {
+        this.padre = frame;
         setOpaque(false);
         initComponents();
         SpinnerDateModel modeloHora = new SpinnerDateModel();
@@ -127,16 +135,20 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
 
     private void SiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SiguienteActionPerformed
         // TODO add your handling code here:
-        Date dia = dcFecha.getDate();
+        Date diaSelec = dcFecha.getDate();
+        LocalDate dia = LocalDate.ofInstant(diaSelec.toInstant(), ZoneId.systemDefault());
 
         PanelFondo fondo = new PanelFondo();
         fondo.setLayout(new BorderLayout());
+        try {
+            fondo.add(new pnlAgendaDia(padre, LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())), BorderLayout.CENTER);
+        } catch (BOException ex) {
+            System.getLogger(pnlCalendarioMes.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
 
-        //fondo.add(new PanelAgendarCita(), BorderLayout.CENTER);
-
-//        frame.setContentPane(fondo);
-//        frame.revalidate();
-//        frame.repaint();
+        padre.setContentPane(fondo);
+        padre.revalidate();
+        padre.repaint();
         
     }//GEN-LAST:event_SiguienteActionPerformed
 
@@ -147,7 +159,11 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
         PanelFondo fondo = new PanelFondo();
         fondo.setLayout(new BorderLayout());
 
-        fondo.add(new pnlMenu(new MainFrame()), BorderLayout.CENTER);
+        try {
+            fondo.add(new pnlMenu(new MainFrame()), BorderLayout.CENTER);
+        } catch (BOException ex) {
+            System.getLogger(pnlCalendarioMes.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
 
         frame.setContentPane(fondo);
         frame.revalidate();

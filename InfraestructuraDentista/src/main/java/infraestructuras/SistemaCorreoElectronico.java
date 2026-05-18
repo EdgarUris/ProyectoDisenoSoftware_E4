@@ -26,7 +26,7 @@ import javax.mail.internet.MimeMultipart;
  * @author EdgarUris
  * @author JeniferFl
  */
-public class SistemaCorreoElectronico {
+public class SistemaCorreoElectronico implements ISistemaCorreoElectronico{
     
     private String correoDe = "dentistadental255@gmail.com";
     private String contra = "aboj kwkc xoou aizq";
@@ -59,7 +59,8 @@ public class SistemaCorreoElectronico {
      * @param mot el motivo del mensaje 
      * @param cont el contenido del mensaje
      */
-    protected void enviarCorreo(String correoPara, String mot, String cont){
+    @Override
+    public void enviarCorreo(String correoPara, String mot, String cont){
         correoPara = correoPara.trim();
         
         Session mSession = Session.getInstance(propiedades, auth);
@@ -94,7 +95,8 @@ public class SistemaCorreoElectronico {
      * @param cont el contenido del mensaje
      * @param archivos los archivos a adjuntar en el mensaje
      */
-    protected void enviarCorreoConArchivos(String correoPara, String mot, String cont, File[] archivos){
+    @Override
+    public void enviarCorreoConArchivos(String correoPara, String mot, String cont, File[] archivos){
         correoPara = correoPara.trim();
         
         Session mSession = Session.getInstance(propiedades, auth);

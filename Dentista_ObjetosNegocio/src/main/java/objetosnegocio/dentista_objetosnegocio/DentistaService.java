@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import objetosnegocio.Excepciones.BOException;
+import org.bson.types.ObjectId;
 
 
 public class DentistaService implements IDentistaService {
@@ -91,6 +92,19 @@ public class DentistaService implements IDentistaService {
             return dDAO.findByEspecialidad(especialidad);
         } catch (DAOException ex) {
             return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public Dentista obtenerPorId(ObjectId id) throws BOException {
+        try{
+            Optional<Dentista> d = dDAO.findByID(id);
+            if(d.get() == null){
+                throw new BOException("Error al encontrar el dentista");
+            }
+            return d.get();
+        }catch(DAOException e){
+            return null;
         }
     }
     

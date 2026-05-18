@@ -8,6 +8,7 @@ import entidades.Paciente;
 import java.time.LocalDate;
 import java.util.List;
 import objetosnegocio.Excepciones.BOException;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -18,4 +19,6 @@ public interface IPacienteService {
     boolean actualizar(String folio, String nombre, String correo, String telefono) throws BOException;
     boolean eliminar(String folio) throws BOException;
     List<Paciente> obtenerTodos(int limite) throws BOException;
+    Paciente obtenerPorFolio(String folio) throws BOException;
+    Paciente obtenerPorId(ObjectId id) throws BOException;
 }
