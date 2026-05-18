@@ -15,12 +15,17 @@ public class PagoBO implements IPagoBO {
     // ─── Singleton ────────────────────────────────────────────────────────────
     private static PagoBO instancia;
  
+    // ─── Atributos del diagrama ───────────────────────────────────────────────
+    private final IServicioPago servicioPago;   // -servicioPago : IServicioPago
+    private final PagoMapper pagoMapper;        // -pagoMapper   : PagoMapper  ← agregado
     private final IPagoDAO pagoDAO;
-    private final IServicioPago servicioPago;
+ 
+    // ─── Constructor privado (Singleton) ─────────────────────────────────────
  
     private PagoBO(IPagoDAO pagoDAO, IServicioPago servicioPago) {
-        this.pagoDAO = pagoDAO;
+        this.pagoDAO      = pagoDAO;
         this.servicioPago = servicioPago;
+        this.pagoMapper   = new PagoMapper();   // instanciado internamente
     }
  
     public static PagoBO getInstancia(IPagoDAO pagoDAO, IServicioPago servicioPago) {
@@ -33,7 +38,8 @@ public class PagoBO implements IPagoBO {
     // ─── Implementación de IPagoBO ────────────────────────────────────────────
  
     /**
-     * Procesa el pago enviándolo al servicio externo de pagos.
+     * Procesa el pago: valida, convierte a DTO mediante pagoMapper,
+     * lo envía al servicio externo y lo persiste si fue exitoso.
      *
      * @param pago Entidad con los datos del pago a procesar.
      * @return true si el pago fue procesado exitosamente.
@@ -41,15 +47,23 @@ public class PagoBO implements IPagoBO {
      */
     @Override
     public boolean procesarPago(Pago pago) throws BOException {
-        if (!validarPago(pago)) {
-            throw new BOException("Los datos del pago son inválidos.");
-        }
+        // 1. Validar datos del pago
+        validarPago(pago);
+ 
+        // 2. Convertir entidad → DTO usando pagoMapper antes de enviar al servicio
+        PagoDTO pagoDTO = pagoMapper.toDTO(pago);
+ 
         try {
-            boolean resultado = servicioPago.enviar(pago);
+            // 3. Enviar al servicio externo de pagos (usa DTO)
+            boolean resultado = servicioPago.enviar(pagoDTO);
+ 
             if (resultado) {
+                // 4. Actualizar estado en la entidad y persistir con DAO
+                pago.setEstado("PROCESADO");
                 pagoDAO.create(pago);
             }
             return resultado;
+ 
         } catch (DAOException ex) {
             throw new BOException("Error al registrar el pago: " + ex.getMessage(), ex);
         }
@@ -60,7 +74,7 @@ public class PagoBO implements IPagoBO {
      *
      * @param pago Entidad a validar.
      * @return true si los datos son válidos.
-     * @throws BOException si el pago es nulo.
+     * @throws BOException si el pago es nulo o sus datos son incorrectos.
      */
     @Override
     public boolean validarPago(Pago pago) throws BOException {
@@ -77,10 +91,11 @@ public class PagoBO implements IPagoBO {
     }
  
     /**
-     * Confirma la recepción del pago en el sistema externo.
+     * Confirma la recepción del pago en el sistema externo y actualiza su estado.
+     * Convierte la entidad a DTO con pagoMapper antes de persistir.
      *
      * @param pago Entidad del pago a confirmar.
-     * @throws BOException si el pago no puede ser confirmado.
+     * @throws BOException si el pago no tiene ID o falla la actualización.
      */
     @Override
     public void confirmarPago(Pago pago) throws BOException {
@@ -88,17 +103,24 @@ public class PagoBO implements IPagoBO {
             throw new BOException("No se puede confirmar un pago sin ID.");
         }
         try {
+            // Actualizar estado en la entidad
             pago.setEstado("CONFIRMADO");
+ 
+            // Convertir a DTO con pagoMapper para persistencia
+            PagoDTO pagoDTO = pagoMapper.toDTO(pago);
+ 
+            // Persistir via DAO (usando la entidad actualizada)
             pagoDAO.update(pago);
+ 
         } catch (DAOException ex) {
             throw new BOException("Error al confirmar el pago: " + ex.getMessage(), ex);
         }
     }
  
     /**
-     * Obtiene el estado actual del pago desde el servicio externo.
+     * Obtiene el estado actual del pago desde el servicio externo de pagos.
      *
-     * @return Estado del pago como String.
+     * @return Estado del pago como String (ej. "PROCESADO", "RECHAZADO").
      * @throws BOException si no se puede consultar el estado.
      */
     @Override
