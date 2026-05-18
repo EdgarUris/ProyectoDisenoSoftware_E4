@@ -12,7 +12,8 @@ public class dentistaDTO {
     private Long id;
     private String nombre;
     private String especialidad;
-
+    private boolean disponibilidad;
+    
     public dentistaDTO() {
     }
 
