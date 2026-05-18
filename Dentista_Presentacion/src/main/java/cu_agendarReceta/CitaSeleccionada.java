@@ -4,11 +4,29 @@
  */
 package cu_agendarReceta;
 
+import DAOs.CitaDAO;
+import DAOs.DentistaDAO;
+import DAOs.PacienteDAO;
+import config.MongoClientProvider;
+import entidades.Cita;
+import entidades.Dentista;
+import entidades.Paciente;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.List;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import objetosnegocio.Excepciones.BOException;
+import objetosnegocio.dentista_objetosnegocio.CitaService;
+import objetosnegocio.dentista_objetosnegocio.DentistaService;
+import objetosnegocio.dentista_objetosnegocio.ICitaService;
+import objetosnegocio.dentista_objetosnegocio.IDentistaService;
+import objetosnegocio.dentista_objetosnegocio.IPacienteService;
+import objetosnegocio.dentista_objetosnegocio.PacienteService;
 
 /**
  *
@@ -19,8 +37,19 @@ public class CitaSeleccionada extends JFrame {
     private Point initialClick;
     private JPanel cardsContainer;
     private CardLayout cardLayout;
+    private final ICitaService citaService;
+    private final IDentistaService dServ;
+    private final IPacienteService pServ;
+
+    private List<Cita> citas; 
     
-    public CitaSeleccionada() {
+    
+    public CitaSeleccionada() throws BOException {
+        citaService = new CitaService(new CitaDAO());
+        dServ = new DentistaService(new DentistaDAO());
+        pServ = new PacienteService(new PacienteDAO());
+        java.util.List<Dentista> dentistas = dServ.listar(100);
+        this.citas = citaService.obtenerPorDentistaYFecha(dentistas.get(0).getFolio(), LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()));
         setUndecorated(true);
         setSize(900, 640); 
         setLocationRelativeTo(null);
@@ -82,7 +111,7 @@ public class CitaSeleccionada extends JFrame {
     //BARRA DE TÍTULO
     private JPanel createTitleBar() {
         JPanel titleBar = new JPanel(new BorderLayout());
-        titleBar.setBackground(new Color(92, 225, 230)); // Color verde/teal de la imagen
+        titleBar.setBackground(new Color(92, 225, 230)); 
         titleBar.setPreferredSize(new Dimension(900, 35));
         titleBar.setBorder(new EmptyBorder(0, 15, 0, 5));
 
@@ -158,88 +187,105 @@ public class CitaSeleccionada extends JFrame {
         titlePanel.add(mainTitle);
         titlePanel.add(Box.createVerticalStrut(5));
         titlePanel.add(subTitle);
-
-        // Botón Historial
-        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        rightPanel.setOpaque(false);
-        
-        JButton btnHistorial = new JButton("⏱ Historial de Recetas");
-        btnHistorial.setFont(new Font("SansSerif", Font.BOLD, 12));
-        btnHistorial.setBackground(Color.WHITE);
-        btnHistorial.setFocusPainted(false);
-        btnHistorial.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnHistorial.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
-                new EmptyBorder(8, 15, 8, 15)
-            ));
-        
-        // ACCIÓN: Abrir el diálogo lateral del historial
-        btnHistorial.addActionListener(e -> {
-            HistorialDialog dialog = new HistorialDialog(this);
-            dialog.setVisible(true);
-        });
-        
-        rightPanel.add(btnHistorial);
-
-        headerPanel.add(titlePanel, BorderLayout.WEST);
-        headerPanel.add(rightPanel, BorderLayout.EAST);
-
         return headerPanel;
     }
 
-    //TARJETA PRINCIPAL (Citas)
-    private JPanel createAppointmentCard() {
-        RoundedPanel cardPanel = new RoundedPanel(20, new Color(245, 250, 255));
-        cardPanel.setLayout(new BorderLayout());
-        cardPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(180, 210, 255), 2),
-                new EmptyBorder(20, 25, 20, 25)
-        ));
+    // TARJETA PRINCIPAL (Citas)
+private JPanel createAppointmentCard() {
+    RoundedPanel cardPanel = new RoundedPanel(20, new Color(245, 250, 255));
+    cardPanel.setLayout(new BorderLayout());
+    cardPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(180, 210, 255), 2),
+            new EmptyBorder(20, 25, 20, 25)
+    ));
 
-        JLabel cardTitle = new JLabel("📅 Seleccionar Cita");
-        cardTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
-        cardTitle.setBorder(new EmptyBorder(0, 0, 15, 0));
-        cardPanel.add(cardTitle, BorderLayout.NORTH);
+    JLabel cardTitle = new JLabel("📅 Seleccionar Cita");
+    cardTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
+    cardTitle.setBorder(new EmptyBorder(0, 0, 15, 0));
+    cardPanel.add(cardTitle, BorderLayout.NORTH);
 
-        JPanel innerContent = new JPanel();
-        innerContent.setLayout(new BoxLayout(innerContent, BoxLayout.Y_AXIS));
-        innerContent.setOpaque(false);
+    JPanel innerContent = new JPanel();
+    innerContent.setLayout(new BoxLayout(innerContent, BoxLayout.Y_AXIS));
+    innerContent.setOpaque(false);
 
-        JLabel comboLabel = new JLabel("Cita Programada");
-        comboLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
-        comboLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
-        String[] citas = {"Israel Urias - 17 may 2026 09:00"};
-        JComboBox<String> citaCombo = new JComboBox<>(citas);
-        citaCombo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        citaCombo.setAlignmentX(Component.LEFT_ALIGNMENT);
-        citaCombo.setBackground(new Color(245, 245, 245));
+    JLabel comboLabel = new JLabel("Cita Programada");
+    comboLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+    comboLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        innerContent.add(comboLabel);
-        innerContent.add(Box.createVerticalStrut(5));
-        innerContent.add(citaCombo);
-        innerContent.add(Box.createVerticalStrut(20));
+    // Crear arreglo de Strings con datos de las citas
+    String[] citasArray = new String[citas.size()];
 
-        RoundedPanel detailsPanel = new RoundedPanel(15, Color.WHITE);
-        detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
-        detailsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        detailsPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(230, 230, 230), 1),
-                new EmptyBorder(15, 15, 15, 15)
-        ));
+    for (int i = 0; i < citas.size(); i++) {
+        Cita cita = citas.get(i);
 
-        detailsPanel.add(createInfoRow("👤 Paciente", "Manuel Rios", "Edad: 20"));
-        detailsPanel.add(Box.createVerticalStrut(15));
-        detailsPanel.add(createInfoRow("📅 Fecha y Hora", "17 may 2026 09:00", null));
-        detailsPanel.add(Box.createVerticalStrut(15));
-        detailsPanel.add(createInfoRow("⏱ Motivo de consulta", "Extracción de muela", null));
-
-        innerContent.add(detailsPanel);
-        innerContent.add(Box.createVerticalGlue());
-
-        cardPanel.add(innerContent, BorderLayout.CENTER);
-        return cardPanel;
+        // Aquí concatenamos paciente, dentista, fecha, tratamiento y motivo
+        citasArray[i] = "👤 Paciente: " + cita.getPaciente_id() +
+                        " | 🦷 Dentista: " + cita.getDentista_id() +
+                        " | 📅 Fecha: " + cita.getFecha() +
+                        " | 💊 Tratamiento: " + cita.getTratamiento() +
+                        " | ⏱ Motivo: " + cita.getMotivo();
     }
+
+    // Crear el combo con el arreglo
+    JComboBox<String> citaCombo = new JComboBox<>(citasArray);
+    citaCombo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+    citaCombo.setAlignmentX(Component.LEFT_ALIGNMENT);
+    citaCombo.setBackground(new Color(245, 245, 245));
+
+
+    innerContent.add(comboLabel);
+    innerContent.add(Box.createVerticalStrut(5));
+    innerContent.add(citaCombo);
+    innerContent.add(Box.createVerticalStrut(20));
+
+    // Panel de detalles dinámico
+    RoundedPanel detailsPanel = new RoundedPanel(15, Color.WHITE);
+    detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
+    detailsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    detailsPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(230, 230, 230), 1),
+            new EmptyBorder(15, 15, 15, 15)
+    ));
+
+    JLabel lblPaciente = new JLabel();
+    JLabel lblFecha = new JLabel();
+    JLabel lblMotivo = new JLabel();
+
+    // Método para actualizar detalles
+    Runnable actualizarDetalles = () -> {
+        int index = citaCombo.getSelectedIndex();
+        if (index >= 0) {
+            Cita citaSeleccionada = citas.get(index);
+            lblPaciente.setText("👤 Paciente: " + citaSeleccionada.getPaciente_id() +
+                                " (Edad: " + citaSeleccionada.getPaciente_id() + ")");
+            lblFecha.setText("📅 Fecha y Hora: " + citaSeleccionada.getFecha().toString());
+            lblMotivo.setText("⏱ Motivo de consulta: " + citaSeleccionada.getMotivo());
+        }
+    };
+
+    // Inicializar con la primera cita
+    if (!citas.isEmpty()) {
+        citaCombo.setSelectedIndex(0);
+        actualizarDetalles.run();
+    }
+
+    // Listener para cambios en el combo
+    citaCombo.addActionListener(e -> actualizarDetalles.run());
+
+    // Agregar labels al panel
+    detailsPanel.add(lblPaciente);
+    detailsPanel.add(Box.createVerticalStrut(15));
+    detailsPanel.add(lblFecha);
+    detailsPanel.add(Box.createVerticalStrut(15));
+    detailsPanel.add(lblMotivo);
+
+    innerContent.add(detailsPanel);
+    innerContent.add(Box.createVerticalGlue());
+
+    cardPanel.add(innerContent, BorderLayout.CENTER);
+    return cardPanel;
+}
+
 
     private JPanel createInfoRow(String title, String mainText, String subText) {
         JPanel row = new JPanel();
@@ -325,159 +371,8 @@ public class CitaSeleccionada extends JFrame {
             graphics.fillRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height);
         }
     }
-
-    //CLASE SUB-VENTANA HISTORIAL DE RECETAS
-    class HistorialDialog extends JDialog {
-        public HistorialDialog(JFrame parent) {
-            super(parent, true);
-            setUndecorated(true);
-            setSize(parent.getSize());
-            setLocation(parent.getLocation());
-            setBackground(new Color(0, 0, 0, 0));
-
-            JPanel mainDialogPanel = new JPanel(new BorderLayout());
-            mainDialogPanel.setOpaque(false);
-
-            JPanel dimPanel = new JPanel();
-            dimPanel.setBackground(new Color(0, 0, 0, 100));
-            dimPanel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) { dispose(); }
-            });
-
-            JPanel sidebarPanel = new JPanel();
-            sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-            sidebarPanel.setBackground(Color.WHITE);
-            sidebarPanel.setPreferredSize(new Dimension(500, parent.getHeight()));
-            sidebarPanel.setBorder(new EmptyBorder(30, 35, 30, 35));
-
-            JPanel headerPanel = new JPanel(new BorderLayout());
-            headerPanel.setOpaque(false);
-
-            JPanel titleGroup = new JPanel();
-            titleGroup.setLayout(new BoxLayout(titleGroup, BoxLayout.Y_AXIS));
-            titleGroup.setOpaque(false);
-
-            JLabel titleLabel = new JLabel("⏱ Historial de Recetas");
-            titleLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
-
-            JLabel subtitleLabel = new JLabel("Visualiza y gestiona todas las recetas médicas generadas");
-            subtitleLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
-            subtitleLabel.setForeground(Color.GRAY);
-
-            titleGroup.add(titleLabel);
-            titleGroup.add(Box.createVerticalStrut(5));
-            titleGroup.add(subtitleLabel);
-
-            JButton btnCloseSide = new JButton("✕");
-            btnCloseSide.setFont(new Font("SansSerif", Font.PLAIN, 18));
-            btnCloseSide.setBorderPainted(false);
-            btnCloseSide.setContentAreaFilled(false);
-            btnCloseSide.setFocusPainted(false);
-            btnCloseSide.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            btnCloseSide.addActionListener(e -> dispose());
-
-            headerPanel.add(titleGroup, BorderLayout.WEST);
-            headerPanel.add(btnCloseSide, BorderLayout.EAST);
-
-            sidebarPanel.add(headerPanel);
-            sidebarPanel.add(Box.createVerticalStrut(30));
-            sidebarPanel.add(createHistoryCard());
-            sidebarPanel.add(Box.createVerticalGlue());
-
-            mainDialogPanel.add(dimPanel, BorderLayout.CENTER);
-            mainDialogPanel.add(sidebarPanel, BorderLayout.EAST);
-            add(mainDialogPanel);
-        }
-
-        private JPanel createHistoryCard() {
-            RoundedPanel card = new RoundedPanel(15, Color.WHITE);
-            card.setLayout(new BorderLayout());
-            card.setMaximumSize(new Dimension(430, 230));
-            card.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(235, 235, 235), 1),
-                    new EmptyBorder(18, 18, 18, 18)
-            ));
-
-            JPanel topRow = new JPanel(new BorderLayout());
-            topRow.setOpaque(false);
-
-            JLabel nameLabel = new JLabel("👤 Carlos Rodríguez");
-            nameLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
-            nameLabel.setForeground(new Color(24, 119, 242));
-
-            JButton btnDelete = new JButton("🗑");
-            btnDelete.setFont(new Font("SansSerif", Font.PLAIN, 16));
-            btnDelete.setForeground(new Color(220, 53, 69));
-            btnDelete.setBorderPainted(false);
-            btnDelete.setContentAreaFilled(false);
-            btnDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-            topRow.add(nameLabel, BorderLayout.WEST);
-            topRow.add(btnDelete, BorderLayout.EAST);
-
-            JPanel bodyRow = new JPanel();
-            bodyRow.setLayout(new BoxLayout(bodyRow, BoxLayout.Y_AXIS));
-            bodyRow.setOpaque(false);
-            bodyRow.setBorder(new EmptyBorder(8, 0, 15, 0));
-
-            JLabel dateLabel = new JLabel("📅 17 mar 2026, 22:36");
-            dateLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
-            dateLabel.setForeground(Color.GRAY);
-
-            JPanel dentistPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-            dentistPanel.setOpaque(false);
-            dentistPanel.add(new JLabel("Dentista: "));
-            JLabel dName = new JLabel("Dra. Ana María Torres");
-            dName.setFont(new Font("SansSerif", Font.BOLD, 13));
-            dentistPanel.add(dName);
-
-            JPanel treatmentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 4));
-            treatmentPanel.setOpaque(false);
-            treatmentPanel.add(new JLabel("Tratamientos:  "));
-            RoundedPanel badge = new RoundedPanel(10, Color.WHITE);
-            badge.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(210, 210, 210), 1),
-                    new EmptyBorder(2, 8, 2, 8)
-            ));
-            badge.add(new JLabel("Extracción dental"));
-            treatmentPanel.add(badge);
-
-            JPanel medsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 4));
-            medsPanel.setOpaque(false);
-            medsPanel.add(new JLabel("Medicamentos: "));
-            JLabel mCount = new JLabel("1");
-            mCount.setFont(new Font("SansSerif", Font.BOLD, 13));
-            medsPanel.add(mCount);
-
-            bodyRow.add(dateLabel);
-            bodyRow.add(Box.createVerticalStrut(8));
-            bodyRow.add(dentistPanel);
-            bodyRow.add(Box.createVerticalStrut(4));
-            bodyRow.add(treatmentPanel);
-            bodyRow.add(Box.createVerticalStrut(4));
-            bodyRow.add(medsPanel);
-
-            RoundedPanel btnContainer = new RoundedPanel(12, Color.WHITE);
-            btnContainer.setLayout(new BorderLayout());
-            btnContainer.setBorder(BorderFactory.createLineBorder(new Color(225, 225, 225), 1));
-            
-            JButton btnVerReceta = new JButton("📄  Ver Receta");
-            btnVerReceta.setFont(new Font("SansSerif", Font.BOLD, 13));
-            btnVerReceta.setContentAreaFilled(false);
-            btnVerReceta.setBorderPainted(false);
-            btnVerReceta.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            btnContainer.add(btnVerReceta, BorderLayout.CENTER);
-
-            card.add(topRow, BorderLayout.NORTH);
-            card.add(bodyRow, BorderLayout.CENTER);
-            card.add(btnContainer, BorderLayout.SOUTH);
-
-            return card;
-        }
-    }
-
     public static void main(String[] args) {
+        MongoClientProvider.INSTANCE.init();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -485,7 +380,11 @@ public class CitaSeleccionada extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new CitaSeleccionada().setVisible(true);
+            try {
+                new CitaSeleccionada().setVisible(true);
+            } catch (BOException ex) {
+                System.getLogger(CitaSeleccionada.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
         });
     }
 
