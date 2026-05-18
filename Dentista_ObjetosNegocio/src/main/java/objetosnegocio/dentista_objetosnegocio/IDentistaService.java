@@ -7,6 +7,7 @@ package objetosnegocio.dentista_objetosnegocio;
 import entidades.Dentista;
 import java.util.List;
 import objetosnegocio.Excepciones.BOException;
+import org.bson.types.ObjectId;
 
 /**
  *

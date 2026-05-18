@@ -4,6 +4,7 @@
  */
 package cu_gestionarAgenda;
 
+import entidades.Cita;
 import static java.awt.AWTEventMulticaster.add;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -39,10 +40,9 @@ public class pnlGestionCitaActual extends JPanel{
     private JTextField txtEstado;
 
     // Botones de acción
-    private JButton btnGuardarSalir;
-    private JButton btnEliminar;
+    private JButton btnRegresar;
 
-    public pnlGestionCitaActual(LocalDateTime fecha){
+    public pnlGestionCitaActual(Cita c, LocalDateTime fecha){
         //configuración del panel principal
         setLayout(new BorderLayout(20, 30));
         setBorder(BorderFactory.createEmptyBorder(40, 50, 40, 50));
@@ -132,27 +132,8 @@ public class pnlGestionCitaActual extends JPanel{
         // ==========================================
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 80, 10));
         panelBotones.setOpaque(false);
-
-        Font fontBotones = new Font("Arial", Font.PLAIN, 18);
-
-        // Botón Guardar y Salir
-        btnGuardarSalir = new JButton("Guardar y Salir");
-        btnGuardarSalir.setBackground(colorCampos);
-        btnGuardarSalir.setFont(fontBotones);
-        btnGuardarSalir.setFocusable(false);
-        btnGuardarSalir.setPreferredSize(new Dimension(180, 40));
-        btnGuardarSalir.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)); // Borde sutil como el mockup
-
-        // Botón Eliminar
-        btnEliminar = new JButton("Eliminar");
-        btnEliminar.setBackground(colorCampos);
-        btnEliminar.setFont(fontBotones);
-        btnEliminar.setFocusable(false);
-        btnEliminar.setPreferredSize(new Dimension(180, 40));
-        btnEliminar.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-
-        panelBotones.add(btnGuardarSalir);
-        panelBotones.add(btnEliminar);
+        
+        panelBotones.add(btnRegresar);
 
         add(panelBotones, BorderLayout.SOUTH);
     }
@@ -176,20 +157,5 @@ public class pnlGestionCitaActual extends JPanel{
                 BorderFactory.createEmptyBorder(0, 8, 0, 8) 
         ));
         return campo;
-    }
-
-    // Método Main de prueba para ejecutar de forma independiente
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame ventana = new JFrame("Detalle de Cita");
-            ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            ventana.setSize(850, 500);
-            ventana.setLocationRelativeTo(null);
-            
-            pnlGestionCitaActual panelDetalle = new pnlGestionCitaActual(LocalDateTime.of(LocalDate.now(), LocalTime.now()));
-            ventana.add(panelDetalle);
-            
-            ventana.setVisible(true);
-        });
     }
 }
