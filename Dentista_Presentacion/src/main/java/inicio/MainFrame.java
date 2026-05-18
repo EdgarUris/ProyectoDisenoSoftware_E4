@@ -9,6 +9,9 @@ import cu_gestionarAgenda.pnlCalendarioMes;
 import java.awt.CardLayout;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,7 +37,7 @@ public class MainFrame extends JFrame{
 
         //las cartas
         JPanel pnlCalendarioMes = new pnlCalendarioMes(this);
-        JPanel pnlAgendaDia = new pnlAgendaDia(this, LocalDate.from(Instant.now()));
+        JPanel pnlAgendaDia = new pnlAgendaDia(this, null);
         JPanel menuPanel = new pnlMenu(this);
         JPanel agendaPanel = new JPanel();
         agendaPanel.add(new JLabel("Panel de Agenda Semanal"));

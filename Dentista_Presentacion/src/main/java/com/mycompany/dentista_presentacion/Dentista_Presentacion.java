@@ -4,6 +4,7 @@
  */
 package com.mycompany.dentista_presentacion;
 
+import config.MongoClientProvider;
 import inicio.MainFrame;
 import objetosnegocio.Excepciones.BOException;
 
@@ -14,6 +15,7 @@ import objetosnegocio.Excepciones.BOException;
 public class Dentista_Presentacion {
 
     public static void main(String[] args) throws BOException {
+        MongoClientProvider.INSTANCE.init();
         MainFrame iniciar = new MainFrame();
         iniciar.setVisible(true);
     }

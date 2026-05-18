@@ -19,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +60,9 @@ public class pnlAgendaDia extends JPanel {
     private final IPacienteService pServ = new PacienteService(new PacienteDAO());
     private List<Dentista> dentistas;
     private Dentista dentistaActual;
-    private LocalDate fechaSeleccionada;
+    private LocalDateTime fechaSeleccionada;
 
-    public pnlAgendaDia(MainFrame frame, LocalDate fechaSeleccionada) throws BOException {
+    public pnlAgendaDia(MainFrame frame, LocalDateTime fechaSeleccionada) throws BOException {
         this.fechaSeleccionada = fechaSeleccionada;
         this.dentistas = dServ.listar(100);
         dentistaActual = dentistas.get(0);
@@ -205,7 +207,9 @@ public class pnlAgendaDia extends JPanel {
     private DefaultTableModel cargarCitasDeDentista(int indice){
         DefaultTableModel modelo;
         try {
-            List<Cita> citasDeDentista = cServ.obtenerPorDentistaYFecha(dentistas.get(indice).getFolio(), fechaSeleccionada);
+            List<Cita> citasDeDentista = cServ.obtenerPorDentistaYFecha(dentistas.get(indice).getFolio(), 
+                    LocalDate.of(fechaSeleccionada.getYear(), 
+                            fechaSeleccionada.getMonth(), fechaSeleccionada.getDayOfMonth()));
             String[] columnas = {"Hora", "Paciente", "Tratamiento", "Notas"};
             modelo = new DefaultTableModel(columnas, 0);
 
@@ -217,7 +221,8 @@ public class pnlAgendaDia extends JPanel {
             };
             
             for (int i = 0; i < horas.length; i++) {
-                if(cServ.existeCitaConMedicoEnHora(dentistaActual, fechaSeleccionada, horas[i])){
+                if(cServ.existeCitaConMedicoEnHora(dentistaActual, LocalDate.of(fechaSeleccionada.getYear(), 
+                            fechaSeleccionada.getMonth(), fechaSeleccionada.getDayOfMonth()), horas[i])){
                     modelo.addRow(new Object[]{
                         horas[i],
                         pServ.obtenerPorId(citasDeDentista.get(i).getPaciente_id()).getNombre(),
