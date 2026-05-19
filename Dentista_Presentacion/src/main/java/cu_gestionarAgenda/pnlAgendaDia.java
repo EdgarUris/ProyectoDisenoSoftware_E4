@@ -61,9 +61,9 @@ public class pnlAgendaDia extends JPanel {
     private final IPacienteService pServ = new PacienteService(new PacienteDAO());
     private final List<Dentista> dentistas;
     private Dentista dentistaActual;
-    private LocalDateTime fechaSeleccionada;
+    private LocalDate fechaSeleccionada;
 
-    public pnlAgendaDia(MainFrame frame, LocalDateTime fechaSeleccionada) throws BOException {
+    public pnlAgendaDia(MainFrame frame, LocalDate fechaSeleccionada) throws BOException {
         tablaCitas = new JTable();
         comboDentista = new JComboBox<>();
         this.fechaSeleccionada = fechaSeleccionada;
@@ -93,22 +93,17 @@ public class pnlAgendaDia extends JPanel {
         JPanel panelIzquierdoSup = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         panelIzquierdoSup.setOpaque(false);
 
-        // Formateo de fecha recibida
-        String textoFecha = "Dia: -- de -- del --- - -:--:--"; // Respaldo por si viene nulo
 
-        if (fechaSeleccionada != null) {
-        // 1. Creamos el formateador moderno con el mismo patrón y el idioma español
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Dia:' dd 'de' MMMM 'del' yyyy - HH:mm:ss", new Locale("es", "ES"));
-        // 2. Formateamos directamente el LocalDateTime
-        textoFecha = fechaSeleccionada.format(formatter);
-        }
         
-        lblFecha = new JLabel(textoFecha);
+        lblFecha = new JLabel("Cargando");
         lblFecha.setOpaque(true);
         lblFecha.setBackground(new Color(92, 225, 230));
         lblFecha.setForeground(Color.BLACK);
         lblFecha.setFont(new Font("Arial", Font.PLAIN, 16));
         lblFecha.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        if (fechaSeleccionada != null) {
+            agregarDia(0);
+        }
         
         // Botón Día Anterior (<)
         btnDiaAnterior = new JButton("<");
@@ -151,7 +146,7 @@ public class pnlAgendaDia extends JPanel {
         panelDerechoSup.add(lblDentistaTexto);
         panelDerechoSup.add(comboDentista);
 
-        panelSuperior.add(lblFecha, BorderLayout.WEST);
+        panelSuperior.add(panelIzquierdoSup, BorderLayout.WEST);
         panelSuperior.add(panelDerechoSup, BorderLayout.EAST);
 
         // ==========================================
@@ -165,6 +160,8 @@ public class pnlAgendaDia extends JPanel {
         tablaCitas.setRowHeight(30);
         tablaCitas.setFont(new Font("Arial", Font.PLAIN, 13));
         tablaCitas.setGridColor(Color.WHITE); // Líneas de división blancas
+        
+        tablaCitas.setModel(cargarCitasDeDentista(comboDentista.getSelectedIndex()));
 
         // Estilizar los encabezados de la tabla
         JTableHeader header = tablaCitas.getTableHeader();
@@ -186,6 +183,9 @@ public class pnlAgendaDia extends JPanel {
         btnAtras.setFont(new Font("Arial", Font.PLAIN, 16));
         btnAtras.setFocusable(false);
         btnAtras.setPreferredSize(new Dimension(100, 40));
+        btnAtras.addActionListener(e -> {
+            frame.mostrarPanel("calendario");
+        });
 
         // Botón Gestionar Estado (Centrado abajo)
         btnGestionarEstado = new JButton("Gestionar estado de cita actual");
@@ -215,11 +215,9 @@ public class pnlAgendaDia extends JPanel {
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         try {
-        LocalDate fechaLocal = fechaSeleccionada.toLocalDate();
-        
         List<Cita> citasDeDentista = cServ.obtenerPorDentistaYFecha(
             dentistas.get(indice).getFolio(), 
-            fechaLocal
+            fechaSeleccionada
         );
 
         String[] horas = {
@@ -285,8 +283,9 @@ public class pnlAgendaDia extends JPanel {
     private void agregarDia(int dias){
         this.fechaSeleccionada = this.fechaSeleccionada.plusDays(dias);
         
-        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("'Dia:' d 'de' MMMM 'del' yyyy", new Locale("es", "ES"));
-        String nuevoTexto = this.fechaSeleccionada.format(formateador);
+        DateTimeFormatter formato = DateTimeFormatter
+                .ofPattern("EEEE, d 'de' MMMM 'de' yyyy", new Locale("es"));
+        String nuevoTexto = this.fechaSeleccionada.format(formato);
         
         lblFecha.setText(nuevoTexto);
         cargarCitasDeDentista(comboDentista.getSelectedIndex());

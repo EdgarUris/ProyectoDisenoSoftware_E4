@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import objetosnegocio.Excepciones.BOException;
 import cu_gestionarAgenda.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -37,7 +38,7 @@ public class MainFrame extends JFrame{
 
         //las cartas
         JPanel pnlCalendarioMes = new pnlCalendarioMes(this);
-        JPanel pnlAgendaDia = new pnlAgendaDia(this, LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
+        JPanel pnlAgendaDia = new pnlAgendaDia(this, LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()));
         JPanel menuPanel = new pnlMenu(this);
         JPanel agendaPanel = new JPanel();
         JPanel recetasInicio = new CitaSeleccionada();

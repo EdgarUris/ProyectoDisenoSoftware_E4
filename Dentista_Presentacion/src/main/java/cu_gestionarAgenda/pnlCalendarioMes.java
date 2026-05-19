@@ -141,7 +141,7 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
         PanelFondo fondo = new PanelFondo();
         fondo.setLayout(new BorderLayout());
         try {
-            fondo.add(new pnlAgendaDia(padre, LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())), BorderLayout.CENTER);
+            fondo.add(new pnlAgendaDia(padre, dia));
         } catch (BOException ex) {
             System.getLogger(pnlCalendarioMes.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
