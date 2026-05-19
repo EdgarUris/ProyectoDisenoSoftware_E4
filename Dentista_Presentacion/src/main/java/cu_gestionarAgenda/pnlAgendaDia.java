@@ -77,7 +77,6 @@ public class pnlAgendaDia extends JPanel {
         
         for (String nombre : cbx) {
             comboDentista.addItem(nombre);
-            System.out.println(nombre);
         }
         
         tablaCitas.setModel(cargarCitasDeDentista(0));
@@ -212,7 +211,7 @@ public class pnlAgendaDia extends JPanel {
     }
     
         private DefaultTableModel cargarCitasDeDentista(int indice) {
-        String[] columnas = {"Hora", "Paciente", "Tratamiento", "Motivo"};
+        String[] columnas = {"Hora", "Paciente", "Tratamiento", "Costo"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         try {
@@ -265,8 +264,8 @@ public class pnlAgendaDia extends JPanel {
                 modelo.addRow(new Object[]{
                     hora,
                     nombrePaciente,
-                    citaEnEstaHora.getTratamiento(),
-                    "hola"
+                    citaEnEstaHora.getTratamiento().getNombre(),
+                    String.valueOf(citaEnEstaHora.getTratamiento().getCosto())
                 });
             } else {
                 // Si no hay cita, agregamos la fila vacía con la hora correspondiente

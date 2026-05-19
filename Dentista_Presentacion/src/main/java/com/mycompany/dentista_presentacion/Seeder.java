@@ -49,7 +49,7 @@ public class Seeder {
 //        }
 
         Tratamiento t1 = new Tratamiento("Cambio de ligas",500.0);
-        cs.agendar("EIUB8009", "JEMAALFL", LocalDateTime.of(2026, Month.MAY, 18, 17, 0), "cambio de ligas", "pendiente", t1);
+        cs.agendar("EIUB8009", "JEMAALFL", LocalDateTime.of(2026, Month.MAY, 19, 18, 0), "cambio de ligas", "pendiente", t1);
         
         Tratamiento t2 = new Tratamiento("Limpieza",1200.0);
         cs.agendar("CIQH7605", "NARUCA", LocalDateTime.of(2026, Month.MAY, 18, 17, 30), "limpieza", "pendiente", t2);

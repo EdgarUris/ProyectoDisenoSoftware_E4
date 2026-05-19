@@ -39,7 +39,7 @@ public class pnlMenu extends JPanel {
         botonesPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
         botonesPanel.add(crearBoton("Agenda Semanal", "agendarCita.png", frame, "calendario"));
-        botonesPanel.add(crearBoton("Generar Receta", "generarReceta.png", frame, "CitaSeleccionada"));
+        botonesPanel.add(crearBoton("Generar Receta", "generarReceta.png", frame, "recetas"));
         botonesPanel.add(crearBoton("Inventario", "inventario.png", frame, "inventario"));
         botonesPanel.add(crearBoton("Generar Factura", "generarFactura.png", frame, "factura"));
 

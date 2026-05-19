@@ -4,6 +4,7 @@
  */
 package inicio;
 
+import cu_agendarReceta.CitaSeleccionada;
 import cu_gestionarAgenda.pnlAgendaDia;
 import cu_gestionarAgenda.pnlCalendarioMes;
 import java.awt.CardLayout;
@@ -39,12 +40,14 @@ public class MainFrame extends JFrame{
         JPanel pnlAgendaDia = new pnlAgendaDia(this, LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
         JPanel menuPanel = new pnlMenu(this);
         JPanel agendaPanel = new JPanel();
+        JPanel recetasInicio = new CitaSeleccionada();
         agendaPanel.add(new JLabel("Panel de Agenda Semanal"));
-
+        
         contentPanel.add(menuPanel, "menu");
         contentPanel.add(agendaPanel, "agenda");
         contentPanel.add(pnlCalendarioMes, "calendario");
         contentPanel.add(pnlAgendaDia, "agendaDia");
+        contentPanel.add(recetasInicio, "recetas");
 
         add(contentPanel);
         cardLayout.show(contentPanel, "menu");

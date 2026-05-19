@@ -67,6 +67,7 @@ public class CitaService implements ICitaService {
             c.setPaciente_id(p.get().getId());
             c.setMotivo(motivo);
             c.setFecha(fechaHora);
+            c.setTratamiento(tratamiento);
             
             //mandar correo tambien
             
