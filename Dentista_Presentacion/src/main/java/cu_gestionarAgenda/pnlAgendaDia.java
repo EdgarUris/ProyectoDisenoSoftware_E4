@@ -9,6 +9,7 @@ import DAOs.DentistaDAO;
 import DAOs.PacienteDAO;
 import entidades.Cita;
 import entidades.Dentista;
+import entidades.Paciente;
 import inicio.MainFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -58,11 +59,13 @@ public class pnlAgendaDia extends JPanel {
     private final ICitaService cServ = new CitaService(new CitaDAO());
     private final IDentistaService dServ = new DentistaService(new DentistaDAO());
     private final IPacienteService pServ = new PacienteService(new PacienteDAO());
-    private List<Dentista> dentistas;
+    private final List<Dentista> dentistas;
     private Dentista dentistaActual;
     private LocalDateTime fechaSeleccionada;
 
     public pnlAgendaDia(MainFrame frame, LocalDateTime fechaSeleccionada) throws BOException {
+        tablaCitas = new JTable();
+        comboDentista = new JComboBox<>();
         this.fechaSeleccionada = fechaSeleccionada;
         this.dentistas = dServ.listar(100);
         dentistaActual = dentistas.get(0);
@@ -74,6 +77,7 @@ public class pnlAgendaDia extends JPanel {
         
         for (String nombre : cbx) {
             comboDentista.addItem(nombre);
+            System.out.println(nombre);
         }
         
         tablaCitas.setModel(cargarCitasDeDentista(0));
@@ -90,13 +94,16 @@ public class pnlAgendaDia extends JPanel {
         JPanel panelIzquierdoSup = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         panelIzquierdoSup.setOpaque(false);
 
-        //formateo de fecha recibida
-        String textoFecha = "Dia: -- de -- del --- - -:--:--"; // Respaldar por si viene nulo
-        if (fechaSeleccionada != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("'Dia:' d 'de' MMMM 'del' yyyy - HH:mm:ss", new Locale("es", "ES"));
-            textoFecha = sdf.format(fechaSeleccionada);
-        }
+        // Formateo de fecha recibida
+        String textoFecha = "Dia: -- de -- del --- - -:--:--"; // Respaldo por si viene nulo
 
+        if (fechaSeleccionada != null) {
+        // 1. Creamos el formateador moderno con el mismo patrón y el idioma español
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Dia:' dd 'de' MMMM 'del' yyyy - HH:mm:ss", new Locale("es", "ES"));
+        // 2. Formateamos directamente el LocalDateTime
+        textoFecha = fechaSeleccionada.format(formatter);
+        }
+        
         lblFecha = new JLabel(textoFecha);
         lblFecha.setOpaque(true);
         lblFecha.setBackground(new Color(92, 225, 230));
@@ -204,43 +211,76 @@ public class pnlAgendaDia extends JPanel {
         add(panelInferior, BorderLayout.SOUTH);
     }
     
-    private DefaultTableModel cargarCitasDeDentista(int indice){
-        DefaultTableModel modelo;
-        try {
-            List<Cita> citasDeDentista = cServ.obtenerPorDentistaYFecha(dentistas.get(indice).getFolio(), 
-                    LocalDate.of(fechaSeleccionada.getYear(), 
-                            fechaSeleccionada.getMonth(), fechaSeleccionada.getDayOfMonth()));
-            String[] columnas = {"Hora", "Paciente", "Tratamiento", "Notas"};
-            modelo = new DefaultTableModel(columnas, 0);
+        private DefaultTableModel cargarCitasDeDentista(int indice) {
+        String[] columnas = {"Hora", "Paciente", "Tratamiento", "Motivo"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-            // Agregamos las filas solo con las horas configuradas en la primera columna
-            String[] horas = {
-                "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
-                "12:00", "12:30", "13:00", "14:00", "14:30",
-                "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"
-            };
+        try {
+        LocalDate fechaLocal = fechaSeleccionada.toLocalDate();
+        
+        List<Cita> citasDeDentista = cServ.obtenerPorDentistaYFecha(
+            dentistas.get(indice).getFolio(), 
+            fechaLocal
+        );
+
+        String[] horas = {
+            "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
+            "12:00", "12:30", "13:00", "14:00", "14:30",
+            "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"
+        };
+
+        // 2. Recorremos las horas fijas de la agenda
+        for (String hora : horas) {
             
-            for (int i = 0; i < horas.length; i++) {
-                if(cServ.existeCitaConMedicoEnHora(dentistaActual, LocalDate.of(fechaSeleccionada.getYear(), 
-                            fechaSeleccionada.getMonth(), fechaSeleccionada.getDayOfMonth()), horas[i])){
-                    modelo.addRow(new Object[]{
-                        horas[i],
-                        pServ.obtenerPorId(citasDeDentista.get(i).getPaciente_id()).getNombre(),
-                        citasDeDentista.get(i).getTratamiento(),
-                        ""
-                    });
+            // Buscamos en la lista local si hay alguna cita que coincida con esta hora
+            Cita citaEnEstaHora = null;
+            if (citasDeDentista != null) {
+                for (Cita c : citasDeDentista) {
+                    String horacita = "";
+                    int horaci = c.getFecha().getHour();
+                    int minci = c.getFecha().getMinute();
+                    if(minci == 0){
+                        horacita = String.valueOf(horaci + ":00");
+                    }else{
+                        horacita = String.valueOf(horaci + ":" + minci);
+                    }
+                    // NOTA: Ajusta "getHora()" al método real donde guardas la hora en tu objeto Cita
+                    if (horacita.equals(hora)) { 
+                        citaEnEstaHora = c;
+                        break; // Ya la encontramos, salimos del buscador interno
+                    }
                 }
             }
 
-            tablaCitas = new JTable(modelo);
-            tablaCitas.setRowHeight(30);
-            tablaCitas.setFont(new Font("Arial", Font.PLAIN, 13));
-            tablaCitas.setGridColor(Color.WHITE);
-            
-        } catch (BOException ex) {
-            System.getLogger(pnlAgendaDia.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            // 3. Evaluamos si encontramos una cita para esta hora
+            if (citaEnEstaHora != null) {
+                // Buscamos el nombre del paciente usando su ID
+                String nombrePaciente = "Desconocido";
+                Paciente paciente = pServ.obtenerPorId(citaEnEstaHora.getPaciente_id());
+                if (paciente != null) {
+                    nombrePaciente = paciente.getNombre();
+                }
+
+                // Agregamos la fila con los datos de la cita
+                modelo.addRow(new Object[]{
+                    hora,
+                    nombrePaciente,
+                    citaEnEstaHora.getTratamiento(),
+                    "hola"
+                });
+            } else {
+                // Si no hay cita, agregamos la fila vacía con la hora correspondiente
+                modelo.addRow(new Object[]{hora, "", "", ""});
+            }
         }
-        return null;
+
+        return modelo;
+
+    } catch (Exception ex) {
+        System.getLogger(pnlAgendaDia.class.getName()).log(System.Logger.Level.ERROR, "Error cargando tabla", ex);
+    }
+    
+    return modelo;
     }
     
     private void agregarDia(int dias){

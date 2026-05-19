@@ -42,7 +42,7 @@ public class pnlGestionCitaActual extends JPanel{
     // Botones de acción
     private JButton btnRegresar;
 
-    public pnlGestionCitaActual(Cita c, LocalDateTime fecha){
+    public pnlGestionCitaActual(LocalDateTime fecha){
         //configuración del panel principal
         setLayout(new BorderLayout(20, 30));
         setBorder(BorderFactory.createEmptyBorder(40, 50, 40, 50));

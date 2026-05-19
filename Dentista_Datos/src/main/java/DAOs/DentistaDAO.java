@@ -67,8 +67,8 @@ public class DentistaDAO implements IDentistaDAO {
     @Override
     public List<Dentista> findAll(int limit) throws DAOException{
         try {
-            return col.find().limit(limit).into(new ArrayList<>());
-        } catch (MongoException e) {
+            return col.find().into(new ArrayList<>());
+        } catch (Exception e) {
             throw new DAOException("Error consultando todos los dentistas", e);
         }
     }

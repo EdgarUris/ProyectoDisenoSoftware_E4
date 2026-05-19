@@ -7,15 +7,14 @@ package inicio;
 import cu_gestionarAgenda.pnlAgendaDia;
 import cu_gestionarAgenda.pnlCalendarioMes;
 import java.awt.CardLayout;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneId;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import objetosnegocio.Excepciones.BOException;
+import cu_gestionarAgenda.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  *
@@ -37,7 +36,7 @@ public class MainFrame extends JFrame{
 
         //las cartas
         JPanel pnlCalendarioMes = new pnlCalendarioMes(this);
-        JPanel pnlAgendaDia = new pnlAgendaDia(this, null);
+        JPanel pnlAgendaDia = new pnlAgendaDia(this, LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
         JPanel menuPanel = new pnlMenu(this);
         JPanel agendaPanel = new JPanel();
         agendaPanel.add(new JLabel("Panel de Agenda Semanal"));

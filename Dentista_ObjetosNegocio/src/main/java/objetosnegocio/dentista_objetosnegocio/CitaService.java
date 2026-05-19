@@ -41,10 +41,10 @@ public class CitaService implements ICitaService {
         try {
             Optional<Paciente> p = pDAO.findByFolio(folioPaciente);
             Optional<Dentista> d = dDAO.findByFolio(folioDentista);
-            if(p.get() != null){
+            if(!p.isPresent()){
                 throw new BOException("Paciente no encontrado");
             }
-            if(d.get() != null){
+            if(!d.isPresent()){
                 throw new BOException("Dentista no encontrado");
             }
             if(tratamiento == null){

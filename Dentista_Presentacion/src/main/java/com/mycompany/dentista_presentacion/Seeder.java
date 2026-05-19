@@ -8,8 +8,12 @@ import DAOs.CitaDAO;
 import DAOs.DentistaDAO;
 import DAOs.PacienteDAO;
 import config.MongoClientProvider;
-import java.time.LocalDate;
+import entidades.Dentista;
+import entidades.Tratamiento;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
+import java.util.List;
 import objetosnegocio.Excepciones.BOException;
 import objetosnegocio.dentista_objetosnegocio.CitaService;
 import objetosnegocio.dentista_objetosnegocio.DentistaService;
@@ -31,15 +35,24 @@ public class Seeder {
         CitaService cs = new CitaService(new CitaDAO());
         
         
-        ds.registrar("Natanael Ruben Cano","odontologia");
-        ds.registrar("Jenifer Maribel Alamea Flores", "odontologia");
-        ds.registrar("Ayleen Guadalupe Urias", "odontologia");
+//        ds.registrar("Natanael Ruben Cano","odontologia");
+//        ds.registrar("Jenifer Maribel Alamea Flores", "odontologia");
+//        ds.registrar("Ayleen Guadalupe Urias", "odontologia");
+
+//        ps.registrar("Edgar Israel Urias Berrelleza", "israel.edgar.ub@gmail.com", "6442064743", LocalDate.of(2005, Month.NOVEMBER, 30));
+//        ps.registrar("Carlos Ignacio Quiroz Hernandez", "hodman@gmail.com", "6442434445", LocalDate.of(2005, Month.MARCH, 14));
+//        ps.registrar("Diego Alejandro Velderrain Rabago", "velde@gmail.com", "6442064349", LocalDate.of(2005, Month.DECEMBER, 27));
         
-        ps.registrar("Edgar Israel Urias Berrelleza", "israel.edgar.ub@gmail.com", "6442064743", LocalDate.of(2005, Month.NOVEMBER, 30));
-        ps.registrar("Carlos Ignacio Quiroz Hernandez", "hodman@gmail.com", "6442434445", LocalDate.of(2005, Month.MARCH, 14));
-        ps.registrar("Diego Alejandro Velderrain Rabago", "velde@gmail.com", "6442064349", LocalDate.of(2005, Month.DECEMBER, 27));
+//        List<Dentista> dentistas = ds.listar(100);
+//        for (Dentista dentista : dentistas) {
+//            System.out.println(dentista.getNombre() + dentista.getFolio());
+//        }
+
+        Tratamiento t1 = new Tratamiento("Cambio de ligas",500.0);
+        cs.agendar("EIUB8009", "JEMAALFL", LocalDateTime.of(2026, Month.MAY, 18, 17, 0), "cambio de ligas", "pendiente", t1);
         
-        
+        Tratamiento t2 = new Tratamiento("Limpieza",1200.0);
+        cs.agendar("CIQH7605", "NARUCA", LocalDateTime.of(2026, Month.MAY, 18, 17, 30), "limpieza", "pendiente", t2);
     }
     
 }
