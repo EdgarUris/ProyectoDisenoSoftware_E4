@@ -51,7 +51,6 @@ public class Seeder {
         ps.registrar("Carlos Ignacio Quiroz Hernandez", "hodman@gmail.com", "6442434445", LocalDate.of(2005, Month.MARCH, 14));
         ps.registrar("Diego Alejandro Velderrain Rabago", "velde@gmail.com", "6442064349", LocalDate.of(2005, Month.DECEMBER, 27));
         
-//        cs.agendar("EIUB8009", "JEMAALFL", LocalDateTime.of(2026, Month.MAY, 19, 18, 0), "cambio de ligas", "pendiente", t1);
         List<Dentista> dentistas = ds.listar(100);
         for (Dentista dentista : dentistas) {
             System.out.println(dentista.getNombre() + dentista.getFolio());
@@ -63,7 +62,7 @@ public class Seeder {
         Tratamiento t2 = new Tratamiento("Limpieza",1200.0);
         cs.agendar("CIQH7605", "NARUCA", LocalDateTime.of(2026, Month.MAY, 18, 17, 30), "limpieza", "pendiente", t2);
 
-        Medicamento m1 = new Medicamento("Paratetamol","50mg","2 al dia cada 8 horas","6 dias");
+        Medicamento m1 = new Medicamento("Paracetamol","50mg","2 al dia cada 8 horas","6 dias");
         Medicamento m2 = new Medicamento("Ibuprofeno","50mg","2 al dia cada 10 horas","5 dias");
         
         List<Medicamento> medicamentos = new ArrayList<>();
@@ -71,8 +70,6 @@ public class Seeder {
         medicamentos.add(m2);
         
         List<Cita> citas = cs.obtenerPorFechaHora(LocalDateTime.of(2026, Month.MAY, 19, 18, 0));
-        
-        
         rs.guardar(citas.getFirst().getId(), medicamentos);
     }
     

@@ -8,6 +8,7 @@ import java.awt.CardLayout;
 import java.time.LocalDate;
 import cu_agendarCita.pnlAgendarCita;
 import entidades.Cita;
+import entidades.Dentista;
 import javax.swing.JPanel;
 
 /**
@@ -45,7 +46,6 @@ public class Controlador {
     }
 
     public void irAAgenda(LocalDate dia) {
-        panelAgenda.setFechaSeleccionada(dia);
         cardLayout.show(contenedorPrincipal, "AGENDA");
     }
     
@@ -54,11 +54,10 @@ public class Controlador {
     }
     
     public void irAGestionarCita(Cita c){
-        panelGestion.cambiarCita(c);
-        cardLayout.show(contenedorPrincipal, "GESTION_CITA");
+        cardLayout.show(contenedorPrincipal, "GESTIONAR_CITA");
     }
     
-    public void irAAgendarCita(){
+    public void irAAgendarCita(Dentista d, LocalDate fechaSelecc, String hora){
         cardLayout.show(contenedorPrincipal, "AGENDAR_CITA");
     }
 }

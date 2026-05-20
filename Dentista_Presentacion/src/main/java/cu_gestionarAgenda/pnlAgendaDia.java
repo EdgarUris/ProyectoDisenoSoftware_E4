@@ -74,7 +74,13 @@ public class pnlAgendaDia extends JPanel {
         
         this.fechaSeleccionada = fechaSeleccionada;
         this.dentistas = dServ.listar(100);
-        dentistaActual = dentistas.get(0);
+        
+        if(!dentistas.isEmpty()){
+            dentistaActual = dentistas.get(0);
+        }else{
+            JOptionPane.showMessageDialog(this, "No hay dentistas registrados");
+        }
+        
         List<String> cbx = new ArrayList<>();
         
         for (Dentista den : dentistas) {
@@ -158,7 +164,7 @@ public class pnlAgendaDia extends JPanel {
         // 2. PANEL CENTRAL (Tabla limpia sin datos)
         // ==========================================
         // La primera columna vacía simula el espacio de las horas de tu mockup
-        String[] columnas = {"Hora", "Paciente", "Tratamiento", "Notas"};
+        String[] columnas = {"Hora", "Paciente", "Tratamiento", "Costo"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         tablaCitas = new JTable(modelo);
@@ -202,7 +208,7 @@ public class pnlAgendaDia extends JPanel {
         btnGestionarEstado.addActionListener(e -> {
             decidirQueAbrir();
         });
-
+        
         // Panel intermedio para obligar al botón de gestionar a quedarse al centro
         JPanel panelCentroBoton = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelCentroBoton.setOpaque(false);
@@ -210,6 +216,39 @@ public class pnlAgendaDia extends JPanel {
 
         panelInferior.add(btnAtras, BorderLayout.WEST);
         panelInferior.add(panelCentroBoton, BorderLayout.CENTER);
+        
+        // Botón Agendar Cita (Esquina inferior derecha)
+        JButton btnAgendar = new JButton("Agendar Cita");
+        btnAgendar.setBackground(new Color(92, 225, 230));
+        btnAgendar.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnAgendar.setFocusable(false);
+        btnAgendar.setPreferredSize(new Dimension(150, 40));
+
+        btnAgendar.addActionListener(e -> {
+            int filaSeleccionada = tablaCitas.getSelectedRow();
+            if (filaSeleccionada < 0) {
+                JOptionPane.showMessageDialog(this,
+                    "Por favor, selecciona una hora de la agenda.",
+                    "Ninguna fila seleccionada",
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Obtener la hora seleccionada
+            String horaStr = String.valueOf(tablaCitas.getValueAt(filaSeleccionada, 0));
+            String[] horaSplt = horaStr.split(":");
+            LocalTime hora = LocalTime.of(
+                Integer.parseInt(horaSplt[0]),
+                Integer.parseInt(horaSplt[1])
+            );
+            LocalDateTime fechaHora = LocalDateTime.of(fechaSeleccionada, hora);
+
+            // Abrir directamente la pantalla de agendar cita con datos prellenados
+            controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr);
+            });
+
+        // se agrega en el panel inferior en la esquina derecha
+        panelInferior.add(btnAgendar, BorderLayout.EAST);
 
         // ==========================================
         // INTEGRACIÓN AL PANEL PRINCIPAL
@@ -305,34 +344,53 @@ public class pnlAgendaDia extends JPanel {
         cargarCitasDeDentista(0);
     }
     
-    private void decidirQueAbrir(){
-        try {
-            int filaSeleccionada = tablaCitas.getSelectedRow();
-            if(filaSeleccionada < 0){
-                JOptionPane.showMessageDialog(this, "Selecciona una cita de la tabla","Hay que seleccionar una cita",JOptionPane.ERROR_MESSAGE);
+    private void decidirQueAbrir() {
+        int filaSeleccionada = tablaCitas.getSelectedRow();
+    
+        // 1. Validar selección y SALIR inmediatamente si no hay nada seleccionado
+        if(filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(this, 
+            "Por favor, selecciona una hora de la agenda.",
+            "Ninguna fila seleccionada", 
+            JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+
+        try{
+            // 2. Extraer la hora de la fila seleccionada (Columna 0)
+            String horaStr = String.valueOf(tablaCitas.getValueAt(filaSeleccionada, 0));
+        
+            // Separamos "09:30" en horas y minutos
+            String[] horaSplt = horaStr.split(":");
+            LocalTime hora = LocalTime.of(
+                Integer.parseInt(horaSplt[0]),
+                Integer.parseInt(horaSplt[1])
+        );
+        
+            // Combinamos la fecha del panel con la hora de la fila
+            LocalDateTime fechaHora = LocalDateTime.of(fechaSeleccionada, hora);
+        
+            // 3. Consultar directamente a la Base de Datos por esa cita específica
+            Cita citaEnEseHorario = cServ.obtenerPorDentistaYFechaHora(dentistaActual.getFolio(), fechaHora);
+        
+            // 4. Tomar la decisión según el resultado
+            if (citaEnEseHorario == null) {
+                // El espacio está libre -> Ir a Agendar Cita
+                System.out.println("Espacio libre a las " + horaStr + ". Abriendo Agendar Cita...");
+                controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr); 
+            
+                // TIP: Si tu controlador lo permite, sería genial pasarle los datos para pre-llenar:
+                // controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr);
             }
-            if(cServ.existeCitaConMedicoEnHora(dentistaActual, 
-                    fechaSeleccionada, 
-                    String.valueOf(tablaCitas.getValueAt(filaSeleccionada, 0))))
-            {
-                Dentista d = dServ.obtenerPorId(dentistas.get(comboDentista.getSelectedIndex()).getId());
-                String horaStr = String.valueOf(tablaCitas.getValueAt(filaSeleccionada, 0));
-                String[] horaSplt = horaStr.split(":");
-                LocalTime hora = LocalTime.of(
-                        Integer.parseInt(horaSplt[0]),
-                        Integer.parseInt(horaSplt[1])
-                );
-                LocalDateTime fecha = LocalDateTime.of(fechaSeleccionada, hora);
-                Cita c = cServ.obtenerPorDentistaYFechaHora(d.getFolio(), fecha);
-                if(c == null){
-                    controlador.irAAgendarCita();
-                }
-                else{
-                    controlador.irAGestionarCita(c);
-                }
-            }
-        } catch (BOException ex) {
-            System.getLogger(pnlAgendaDia.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            else{
+            // El espacio está ocupado -> Ir a Gestionar Cita pasándole la cita encontrada
+            System.out.println("Cita encontrada con ID: " + citaEnEseHorario.getId());
+            controlador.irAGestionarCita(citaEnEseHorario);
+        }
+        
+        }catch (BOException ex) {
+            System.getLogger(pnlAgendaDia.class.getName()).log(System.Logger.Level.ERROR, "Error al decidir acción de la agenda", ex);
+            JOptionPane.showMessageDialog(this, "Error al consultar el estado de la cita.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

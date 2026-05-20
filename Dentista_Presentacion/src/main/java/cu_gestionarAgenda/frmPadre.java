@@ -6,6 +6,7 @@ package cu_gestionarAgenda;
 
 import cu_agendarCita.pnlAgendarCita;
 import entidades.Cita;
+import entidades.Dentista;
 import java.awt.CardLayout;
 import java.time.LocalDate;
 import javax.swing.JFrame;
@@ -39,7 +40,7 @@ public class frmPadre extends JFrame{
             pnlAgendaDia panelAgenda = new pnlAgendaDia(this, LocalDate.now(), controlador);
             pnlCalendarioMes panelCalendario = new pnlCalendarioMes(controlador);
             pnlGestionCitaActual panelGestion = new pnlGestionCitaActual(new Cita(), controlador, this);
-            pnlAgendarCita panelAgendarC = new pnlAgendarCita(null, controlador, this);
+            pnlAgendarCita panelAgendarC = new pnlAgendarCita(new Dentista(), LocalDate.now(), controlador, this);
             
             controlador.setPanelAgenda(panelAgenda);
             controlador.setPanelCalendario(panelCalendario);

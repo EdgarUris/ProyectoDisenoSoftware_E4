@@ -126,7 +126,11 @@ public class CitaDAO implements ICitaDAO {
 
     @Override
     public Optional<Cita> findByID(ObjectId id) throws DAOException {
-        throw new UnsupportedOperationException("Metodo no soportado");
+        try {
+            return Optional.ofNullable(col.find(Filters.eq("_id", id)).first());
+        } catch (MongoException e) {
+            throw new DAOException("Error consultando cita por ID", e);
+        }
     }
 
     @Override
