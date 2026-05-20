@@ -5,6 +5,7 @@
 package inicio;
 
 import cu_agendarReceta.CitaSeleccionada;
+import cu_gestionarAgenda.frmPadre;
 import cu_registrar.pnlOpcionesRegistro;
 import cu_registrar.pnlRegistrarDentista;
 import cu_registrar.pnlRegistrarPaciente;
@@ -77,8 +78,9 @@ public class MainFrame extends JFrame {
     }
 
     public void abrirAgenda() {
-        // Mostrar la tarjeta de agenda dentro del mismo frame
-        cardLayout.show(contentPanel, "agenda");
+        frmPadre agendas = new frmPadre();
+        agendas.setVisible(true);
+        this.setVisible(false);
     }
 
     public void abrirRecetas() {
