@@ -4,6 +4,7 @@
  */
 package cu_gestionarAgenda;
 
+import DAOs.PacienteDAO;
 import entidades.Cita;
 import entidades.Dentista;
 import static java.awt.AWTEventMulticaster.add;
@@ -28,6 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import objetosnegocio.dentista_objetosnegocio.IPacienteService;
+import objetosnegocio.dentista_objetosnegocio.PacienteService;
 
 /**
  *
@@ -42,12 +45,14 @@ public class pnlGestionCitaActual extends JPanel{
     private JTextField txtHora;
     private JTextField txtEstado;
     private Cita citaActual;
+    private IPacienteService pServ;
     
     // Botones de acción
     private JButton btnRegresar;
 
-    public pnlGestionCitaActual(Cita c, Controlador control, frmPadre frame){
+    public pnlGestionCitaActual(Controlador control, frmPadre frame){
         
+        pServ = new PacienteService(new PacienteDAO());
         btnRegresar = new JButton();
         //configuración del panel principal
         setLayout(new BorderLayout(20, 30));
