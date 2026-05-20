@@ -37,8 +37,15 @@ public class pnlMenu extends JPanel {
         JPanel botonesPanel = new JPanel(new GridLayout(2, 3, 25, 25));
         botonesPanel.setBackground(Color.WHITE);
         botonesPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        
+        JButton btnAgenda = crearBoton("Agenda Semanal", "agendarCita.png", frame, "calendario");
+        btnAgenda.addActionListener(e -> {
+            frame.abrirAgenda();
+        });
+        
+        
 
-        botonesPanel.add(crearBoton("Agenda Semanal", "agendarCita.png", frame, "calendario"));
+        botonesPanel.add(btnAgenda);
         botonesPanel.add(crearBoton("Generar Receta", "generarReceta.png", frame, "recetas"));
         botonesPanel.add(crearBoton("Inventario", "inventario.png", frame, "inventario"));
         botonesPanel.add(crearBoton("Generar Factura", "generarFactura.png", frame, "factura"));
@@ -73,9 +80,6 @@ public class pnlMenu extends JPanel {
         BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
         boton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-
-        //Acción al hacer clic
-        boton.addActionListener(e -> frame.mostrarPanel(panelDestino));
 
         return boton;
     }

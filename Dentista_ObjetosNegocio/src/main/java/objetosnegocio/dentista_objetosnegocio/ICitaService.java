@@ -23,4 +23,5 @@ public interface ICitaService {
     List<Cita> obtenerPorDentistaYFecha(String folioDentista, LocalDate dia) throws BOException;
     List<Cita> obtenerPorFechaHora(LocalDateTime fechaHora) throws BOException;
     public boolean existeCitaConMedicoEnHora(Dentista d, LocalDate dia, String hora) throws BOException;
+    public Cita obtenerPorDentistaYFechaHora(String folioDentista, LocalDateTime fecha) throws BOException;
 }

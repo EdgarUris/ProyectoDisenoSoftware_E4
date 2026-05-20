@@ -5,18 +5,12 @@
 package inicio;
 
 import cu_agendarReceta.CitaSeleccionada;
-import cu_gestionarAgenda.pnlAgendaDia;
-import cu_gestionarAgenda.pnlCalendarioMes;
 import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import objetosnegocio.Excepciones.BOException;
 import cu_gestionarAgenda.*;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 /**
  *
@@ -37,17 +31,12 @@ public class MainFrame extends JFrame{
         contentPanel = new JPanel(cardLayout);
 
         //las cartas
-        JPanel pnlCalendarioMes = new pnlCalendarioMes(this);
-        JPanel pnlAgendaDia = new pnlAgendaDia(this, LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()));
         JPanel menuPanel = new pnlMenu(this);
         JPanel agendaPanel = new JPanel();
         JPanel recetasInicio = new CitaSeleccionada();
         agendaPanel.add(new JLabel("Panel de Agenda Semanal"));
         
         contentPanel.add(menuPanel, "menu");
-        contentPanel.add(agendaPanel, "agenda");
-        contentPanel.add(pnlCalendarioMes, "calendario");
-        contentPanel.add(pnlAgendaDia, "agendaDia");
         contentPanel.add(recetasInicio, "recetas");
 
         add(contentPanel);
@@ -60,6 +49,12 @@ public class MainFrame extends JFrame{
     
     public void setContentPanel(JPanel panel){
         this.contentPanel = panel;
+    }
+    
+    public void abrirAgenda(){
+        frmPadre frame = new frmPadre();
+        frame.setVisible(true);
+        this.dispose();
     }
 
 }

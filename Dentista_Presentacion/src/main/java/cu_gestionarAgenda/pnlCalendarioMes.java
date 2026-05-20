@@ -30,24 +30,21 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
      * Creates new form PanelMenu
      */
     
-    private MainFrame padre;
+    private Controlador control;
     
-    public pnlCalendarioMes(MainFrame frame) {
-        this.padre = frame;
+    public pnlCalendarioMes(Controlador control) {
+        this.control = control;
         setOpaque(false);
         initComponents();
         SpinnerDateModel modeloHora = new SpinnerDateModel();
         spHora.setModel(modeloHora);
 
-        JSpinner.DateEditor editor =
-        new JSpinner.DateEditor(spHora, "HH:mm");
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(spHora, "HH:mm");
 
         spHora.setEditor(editor);
         Siguiente.setBackground(new Color(0, 150, 136, 80));
         Regresar.setBackground(new Color(0, 150, 136, 80));
         Btn1.setBackground(new Color(0, 150, 136, 80));
-        
-        Btn1.addActionListener(e -> frame.mostrarPanel("agendaDia"));
 
     }
 
@@ -137,19 +134,7 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
         // TODO add your handling code here:
         Date diaSelec = dcFecha.getDate();
         LocalDate dia = LocalDate.ofInstant(diaSelec.toInstant(), ZoneId.systemDefault());
-
-        PanelFondo fondo = new PanelFondo();
-        fondo.setLayout(new BorderLayout());
-        try {
-            fondo.add(new pnlAgendaDia(padre, dia));
-        } catch (BOException ex) {
-            System.getLogger(pnlCalendarioMes.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-
-        padre.setContentPane(fondo);
-        padre.revalidate();
-        padre.repaint();
-        
+        control.irAAgenda(dia);
     }//GEN-LAST:event_SiguienteActionPerformed
 
     private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed

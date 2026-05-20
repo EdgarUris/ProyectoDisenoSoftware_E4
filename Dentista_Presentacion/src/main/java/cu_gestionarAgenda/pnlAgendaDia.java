@@ -11,6 +11,7 @@ import entidades.Cita;
 import entidades.Dentista;
 import entidades.Paciente;
 import inicio.MainFrame;
+import inicio.PanelFondo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -62,10 +65,13 @@ public class pnlAgendaDia extends JPanel {
     private final List<Dentista> dentistas;
     private Dentista dentistaActual;
     private LocalDate fechaSeleccionada;
+    private Controlador controlador;
 
-    public pnlAgendaDia(MainFrame frame, LocalDate fechaSeleccionada) throws BOException {
+    public pnlAgendaDia(frmPadre frame, LocalDate fechaSeleccionada, Controlador controlador) throws BOException {
         tablaCitas = new JTable();
         comboDentista = new JComboBox<>();
+        this.controlador = controlador;
+        
         this.fechaSeleccionada = fechaSeleccionada;
         this.dentistas = dServ.listar(100);
         dentistaActual = dentistas.get(0);
@@ -92,8 +98,7 @@ public class pnlAgendaDia extends JPanel {
         
         JPanel panelIzquierdoSup = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         panelIzquierdoSup.setOpaque(false);
-
-
+        
         
         lblFecha = new JLabel("Cargando");
         lblFecha.setOpaque(true);
@@ -184,15 +189,19 @@ public class pnlAgendaDia extends JPanel {
         btnAtras.setFocusable(false);
         btnAtras.setPreferredSize(new Dimension(100, 40));
         btnAtras.addActionListener(e -> {
-            frame.mostrarPanel("calendario");
+            controlador.irACalendario();
         });
 
         // Botón Gestionar Estado (Centrado abajo)
-        btnGestionarEstado = new JButton("Gestionar estado de cita actual");
+        btnGestionarEstado = new JButton("Gestionar estado de cita");
         btnGestionarEstado.setBackground(new Color(92, 225, 230));
         btnGestionarEstado.setFont(new Font("Arial", Font.PLAIN, 18));
         btnGestionarEstado.setFocusable(false);
         btnGestionarEstado.setPreferredSize(new Dimension(300, 45));
+        
+        btnGestionarEstado.addActionListener(e -> {
+            decidirQueAbrir();
+        });
 
         // Panel intermedio para obligar al botón de gestionar a quedarse al centro
         JPanel panelCentroBoton = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -241,10 +250,9 @@ public class pnlAgendaDia extends JPanel {
                     }else{
                         horacita = String.valueOf(horaci + ":" + minci);
                     }
-                    // NOTA: Ajusta "getHora()" al método real donde guardas la hora en tu objeto Cita
                     if (horacita.equals(hora)) { 
                         citaEnEstaHora = c;
-                        break; // Ya la encontramos, salimos del buscador interno
+                        break;
                     }
                 }
             }
@@ -289,5 +297,40 @@ public class pnlAgendaDia extends JPanel {
         
         lblFecha.setText(nuevoTexto);
         cargarCitasDeDentista(comboDentista.getSelectedIndex());
+    }
+    
+    public void setFechaSeleccionada(LocalDate fecha){
+        this.fechaSeleccionada = fecha;
+        agregarDia(0);
+        cargarCitasDeDentista(0);
+    }
+    
+    private void decidirQueAbrir(){
+        try {
+            int filaSeleccionada = tablaCitas.getSelectedRow();
+            if(filaSeleccionada < 0){
+                JOptionPane.showMessageDialog(this, "Selecciona una cita de la tabla","Hay que seleccionar una cita",JOptionPane.ERROR_MESSAGE);
+            }
+            if(cServ.existeCitaConMedicoEnHora(dentistaActual, 
+                    fechaSeleccionada, 
+                    String.valueOf(tablaCitas.getValueAt(filaSeleccionada, 0))))
+            {
+                Dentista d = dServ.obtenerPorId(dentistas.get(comboDentista.getSelectedIndex()).getId());
+                String horaStr = String.valueOf(tablaCitas.getValueAt(filaSeleccionada, 0));
+                String[] horaSplt = horaStr.split(":");
+                LocalTime hora = LocalTime.of(
+                        Integer.parseInt(horaSplt[0]),
+                        Integer.parseInt(horaSplt[1])
+                );
+                LocalDateTime fecha = LocalDateTime.of(fechaSeleccionada, hora);
+                Cita c = cServ.obtenerPorDentistaYFechaHora(d.getFolio(), fecha);
+                if(c == null){
+                    controlador.irAAgendarCita();
+                }
+                else{controlador.irAGestionarCita(c);}
+            }
+        } catch (BOException ex) {
+            System.getLogger(pnlAgendaDia.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
 }

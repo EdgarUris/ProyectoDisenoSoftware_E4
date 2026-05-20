@@ -133,5 +133,21 @@ public class CitaDAO implements ICitaDAO {
     public boolean update(Cita entity) throws DAOException {
         throw new UnsupportedOperationException("Metodo no soportado, necesitas el id"); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+@Override
+public Optional<Cita> findCitaWithDentistaAndDateTime(Dentista d, LocalDateTime fecha) throws DAOException {
+    try {
+        List<Document> pipeline = List.of(
+            new Document("$match", new Document("dentista_id", d.getId()).append("fecha", fecha))
+        );
+        
+        Cita cita = col.aggregate(pipeline, Cita.class).first();
+        
+        return Optional.ofNullable(cita);
+        
+    } catch (Exception e) {
+        throw new DAOException("Error al buscar la cita por dentista y fecha", e);
+    }
+}
     
 }
