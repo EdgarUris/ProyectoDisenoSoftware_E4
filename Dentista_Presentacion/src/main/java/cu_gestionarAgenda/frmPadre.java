@@ -40,7 +40,7 @@ public class frmPadre extends JFrame{
             pnlAgendaDia panelAgenda = new pnlAgendaDia(this, LocalDate.now(), controlador);
             pnlCalendarioMes panelCalendario = new pnlCalendarioMes(controlador);
             pnlGestionCitaActual panelGestion = new pnlGestionCitaActual(new Cita(), controlador, this);
-            pnlAgendarCita panelAgendarC = new pnlAgendarCita(new Dentista(), null, controlador, this);
+            pnlAgendarCita panelAgendarC = new pnlAgendarCita(new Dentista(), LocalDate.now(), controlador, this);
             
             controlador.setPanelAgenda(panelAgenda);
             controlador.setPanelCalendario(panelCalendario);

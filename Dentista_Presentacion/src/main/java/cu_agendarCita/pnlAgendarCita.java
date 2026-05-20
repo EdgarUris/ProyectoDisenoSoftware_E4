@@ -19,6 +19,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -42,13 +43,15 @@ public class pnlAgendarCita extends JPanel {
     private JComboBox<String> cbxEstado;
     private Cita citaActual;
     private Controlador controlador;
+    private LocalDate fechaSeleccionada;
     
     // Botones de acción
     private JButton btnRegresar;
     private JButton btnAgendar;
 
-    public pnlAgendarCita(Dentista d, LocalDateTime fecha, Controlador control, frmPadre frame){
+    public pnlAgendarCita(Dentista d, LocalDate fecha, Controlador control, frmPadre frame){
         
+        this.fechaSeleccionada = fecha;
         this.controlador = control;
         
         btnRegresar = new JButton("Regresar");
@@ -179,6 +182,10 @@ public class pnlAgendarCita extends JPanel {
         btnRegresar.setFont(fontCampos);
         btnRegresar.setPreferredSize(new Dimension(140, 38));
         
+        btnRegresar.addActionListener(e -> {
+            volverAAgendaDia();
+        });
+        
         // Estilo del nuevo botón agendar
         btnAgendar.setBackground(new Color(92, 225, 230)); // Cyan característico de tu app
         btnAgendar.setFont(fontCampos);
@@ -220,7 +227,10 @@ public class pnlAgendarCita extends JPanel {
         txtDentista.setText("");
         txtFechaHora.setText(String.valueOf(c.getFecha().toLocalDate()));
         txtHora.setText(String.valueOf(c.getFecha().toLocalTime()));
-        
+    }
+    
+    protected void volverAAgendaDia(){
+        controlador.irAAgenda(fechaSeleccionada);
     }
     
     // Getters públicos útiles para recuperar la información desde tu Controlador o Frame Padre
