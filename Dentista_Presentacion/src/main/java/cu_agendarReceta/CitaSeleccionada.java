@@ -11,6 +11,7 @@ import config.MongoClientProvider;
 import entidades.Cita;
 import entidades.Dentista;
 import entidades.Paciente;
+import inicio.MainFrame;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -49,7 +50,9 @@ public class CitaSeleccionada extends JFrame {
         dServ = new DentistaService(new DentistaDAO());
         pServ = new PacienteService(new PacienteDAO());
         java.util.List<Dentista> dentistas = dServ.listar(100);
-        this.citas = citaService.obtenerPorDentistaYFecha(dentistas.get(0).getFolio(), LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()));
+        this.citas = citaService.obtenerPorDentistaYFecha(dentistas.get(0).getFolio(), 
+                LocalDate.ofInstant(Instant.now(), 
+                        ZoneId.systemDefault()));
         setUndecorated(true);
         setSize(900, 640); 
         setLocationRelativeTo(null);
@@ -386,6 +389,16 @@ private JPanel createAppointmentCard() {
                 System.getLogger(CitaSeleccionada.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
         });
+    }
+    
+    protected void volverAInicio(){
+        try {
+            MainFrame mainFrame = new MainFrame();
+            mainFrame.setVisible(true);
+            this.dispose();
+        } catch (BOException ex) {
+            System.getLogger(CitaSeleccionada.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
 
 }

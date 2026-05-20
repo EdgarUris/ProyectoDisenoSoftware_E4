@@ -36,11 +36,9 @@ public class MainFrame extends JFrame{
         //las cartas
         JPanel menuPanel = new pnlMenu(this);
         JPanel agendaPanel = new JPanel();
-        CitaSeleccionada recetasInicio = new CitaSeleccionada();
         agendaPanel.add(new JLabel("Panel de Agenda Semanal"));
         
         contentPanel.add(menuPanel, "menu");
-        contentPanel.add(recetasInicio, "recetas");
 
         add(contentPanel);
         cardLayout.show(contentPanel, "menu");
@@ -59,5 +57,14 @@ public class MainFrame extends JFrame{
         frame.setVisible(true);
         this.dispose();
     }
-
+    
+    public void abrirRecetas(){
+        try {
+            CitaSeleccionada frmRecetas = new CitaSeleccionada();
+            frmRecetas.setVisible(true);
+            this.dispose();
+        } catch (BOException ex) {
+            System.getLogger(MainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
 }
