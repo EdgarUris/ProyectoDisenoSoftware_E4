@@ -36,7 +36,7 @@ public class MainFrame extends JFrame{
         //las cartas
         JPanel menuPanel = new pnlMenu(this);
         JPanel agendaPanel = new JPanel();
-        JPanel recetasInicio = new CitaSeleccionada();
+        CitaSeleccionada recetasInicio = new CitaSeleccionada();
         agendaPanel.add(new JLabel("Panel de Agenda Semanal"));
         
         contentPanel.add(menuPanel, "menu");

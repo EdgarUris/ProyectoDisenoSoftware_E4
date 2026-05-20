@@ -45,6 +45,7 @@ public class Controlador {
     }
 
     public void irAAgenda(LocalDate dia) {
+        panelAgenda.setFechaSeleccionada(dia);
         cardLayout.show(contenedorPrincipal, "AGENDA");
     }
     
@@ -53,6 +54,7 @@ public class Controlador {
     }
     
     public void irAGestionarCita(Cita c){
+        panelGestion.cambiarCita(c);
         cardLayout.show(contenedorPrincipal, "GESTION_CITA");
     }
     

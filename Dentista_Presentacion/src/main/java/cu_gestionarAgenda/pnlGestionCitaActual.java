@@ -157,6 +157,7 @@ public class pnlGestionCitaActual extends JPanel{
         btnRegresar.setBackground(new Color(179, 179, 179));
         
         panelBotones.add(btnRegresar);
+        
 
         add(panelBotones, BorderLayout.SOUTH);
     }
