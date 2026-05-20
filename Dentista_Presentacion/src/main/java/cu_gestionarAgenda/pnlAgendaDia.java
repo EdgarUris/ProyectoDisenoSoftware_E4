@@ -154,6 +154,8 @@ public class pnlAgendaDia extends JPanel {
                 tablaCitas.setModel(cargarCitasDeDentista(indice));
             }});
         
+        comboDentista.setSelectedIndex(0);
+        
         panelDerechoSup.add(lblDentistaTexto);
         panelDerechoSup.add(comboDentista);
 
@@ -334,15 +336,29 @@ public class pnlAgendaDia extends JPanel {
                 .ofPattern("EEEE, d 'de' MMMM 'de' yyyy", new Locale("es"));
         String nuevoTexto = this.fechaSeleccionada.format(formato);
         
+        
         lblFecha.setText(nuevoTexto);
-        cargarCitasDeDentista(comboDentista.getSelectedIndex());
+        try{
+            tablaCitas.setModel(cargarCitasDeDentista(comboDentista.getSelectedIndex()));
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
-    
-    public void setFechaSeleccionada(LocalDate fecha){
-        this.fechaSeleccionada = fecha;
-        agregarDia(0);
-        cargarCitasDeDentista(0);
-    }
+    public void setFechaSeleccionada(LocalDate nuevaFecha) {
+            // 1. Actualizamos la variable global de este panel
+            this.fechaSeleccionada = nuevaFecha;
+
+            // 2. Actualizamos el Label de la pantalla (ejemplo: "Día: 21 de abril del 2026")
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd 'de' MMMM 'del' yyyy", new Locale("es", "ES"));
+            lblFecha.setText("Día: " + this.fechaSeleccionada.format(formato));
+
+            // 3. Volvemos a cargar las citas en la tabla para que muestre las del nuevo día elegido
+            try {
+                tablaCitas.setModel(cargarCitasDeDentista(comboDentista.getSelectedIndex()));
+            } catch (Exception e) {
+                System.err.println("Error al refrescar la tabla de la agenda: " + e.getMessage());
+            }
+        }
     
     private void decidirQueAbrir() {
         int filaSeleccionada = tablaCitas.getSelectedRow();
@@ -365,7 +381,7 @@ public class pnlAgendaDia extends JPanel {
             LocalTime hora = LocalTime.of(
                 Integer.parseInt(horaSplt[0]),
                 Integer.parseInt(horaSplt[1])
-        );
+            );
         
             // Combinamos la fecha del panel con la hora de la fila
             LocalDateTime fechaHora = LocalDateTime.of(fechaSeleccionada, hora);
@@ -377,10 +393,7 @@ public class pnlAgendaDia extends JPanel {
             if (citaEnEseHorario == null) {
                 // El espacio está libre -> Ir a Agendar Cita
                 System.out.println("Espacio libre a las " + horaStr + ". Abriendo Agendar Cita...");
-                controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr); 
-            
-                // TIP: Si tu controlador lo permite, sería genial pasarle los datos para pre-llenar:
-                // controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr);
+                controlador.irAAgendarCita(dentistaActual, this.fechaSeleccionada, horaStr);
             }
             else{
             // El espacio está ocupado -> Ir a Gestionar Cita pasándole la cita encontrada

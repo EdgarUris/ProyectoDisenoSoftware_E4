@@ -5,6 +5,9 @@
 package cu_gestionarAgenda;
 
 import cu_agendarCita.pnlAgendarCita;
+import cu_registrar.pnlOpcionesRegistro;
+import cu_registrar.pnlRegistrarDentista;
+import cu_registrar.pnlRegistrarPaciente;
 import entidades.Cita;
 import entidades.Dentista;
 import java.awt.CardLayout;
@@ -40,11 +43,19 @@ public class frmPadre extends JFrame{
             pnlAgendaDia panelAgenda = new pnlAgendaDia(this, LocalDate.now(), controlador);
             pnlCalendarioMes panelCalendario = new pnlCalendarioMes(controlador);
             pnlGestionCitaActual panelGestion = new pnlGestionCitaActual(new Cita(), controlador, this);
-            pnlAgendarCita panelAgendarC = new pnlAgendarCita(new Dentista(), LocalDate.now(), controlador, this);
+            pnlAgendarCita panelAgendarC = new pnlAgendarCita(new Dentista(), LocalDateTime.now(), controlador, this);
+            pnlOpcionesRegistro panelOpReg = new pnlOpcionesRegistro(contenedorPrincipal, cardLayout);
+            pnlRegistrarPaciente panelRegPac = new pnlRegistrarPaciente(contenedorPrincipal, cardLayout);
+            pnlRegistrarDentista panelRegDent = new pnlRegistrarDentista(contenedorPrincipal, cardLayout);
             
             controlador.setPanelAgenda(panelAgenda);
             controlador.setPanelCalendario(panelCalendario);
+            controlador.setPanelAgendar(panelAgendarC);
+            controlador.setPanelGestion(panelGestion);
 
+            contenedorPrincipal.add(panelOpReg, "OPCIONES_REGISTRO");
+            contenedorPrincipal.add(panelRegPac, "REGISTRAR_PACIENTE");
+            contenedorPrincipal.add(panelRegDent, "REGISTRAR_DENTISTA");
             contenedorPrincipal.add(panelAgenda, "AGENDA");
             contenedorPrincipal.add(panelCalendario, "CALENDARIO");
             contenedorPrincipal.add(panelGestion, "GESTION_CITA");
@@ -54,7 +65,6 @@ public class frmPadre extends JFrame{
             e.printStackTrace();
         }
 
-        // 6. Agregar el contenedor al Frame y mostrar la pantalla inicial
         add(contenedorPrincipal);
         controlador.irACalendario(); // Pantalla por defecto
     }

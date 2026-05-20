@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import cu_agendarCita.pnlAgendarCita;
 import entidades.Cita;
 import entidades.Dentista;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javax.swing.JPanel;
 
 /**
@@ -46,7 +48,24 @@ public class Controlador {
     }
 
     public void irAAgenda(LocalDate dia) {
+        if (panelAgenda != null && dia != null) {
+            // Le avisamos al panel de la agenda que cambie su fecha interna y visual
+            panelAgenda.setFechaSeleccionada(dia); 
+        }
+        // Ahora sí, mostramos la pantalla
         cardLayout.show(contenedorPrincipal, "AGENDA");
+    }
+    
+    public void irARegistrar(){
+        cardLayout.show(contenedorPrincipal, "OPCIONES_REGISTRO");
+    }
+    
+    public void irARegistrarPaciente(){
+        cardLayout.show(contenedorPrincipal, "REGISTRAR_PACIENTE");
+    }
+    
+    public void irARegistrarDentista(){
+        cardLayout.show(contenedorPrincipal, "REGISTRAR_DENTISTA");
     }
     
     public void irACalendario() {
@@ -58,6 +77,16 @@ public class Controlador {
     }
     
     public void irAAgendarCita(Dentista d, LocalDate fechaSelecc, String hora){
+        String[] horaSplt = hora.split(":");
+        LocalTime tiempo = LocalTime.of(
+            Integer.parseInt(horaSplt[0].trim()),
+            Integer.parseInt(horaSplt[1].trim())
+        );
+        LocalDateTime fechaHoraCompleta = LocalDateTime.of(fechaSelecc, tiempo);
+        
+        panelAgendarCita.setDentista(d);
+        panelAgendarCita.setFechaSeleccionada(fechaHoraCompleta);
+        
         cardLayout.show(contenedorPrincipal, "AGENDAR_CITA");
     }
 }
