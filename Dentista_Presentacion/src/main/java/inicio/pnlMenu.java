@@ -108,7 +108,7 @@ public class pnlMenu extends JPanel {
         
         boton.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(colorBordeNormal, 1, true),
-            BorderFactory.createEmptyBorder(20, 15, 20, 15) // Padding interno
+            BorderFactory.createEmptyBorder(20, 15, 20, 15) 
         ));
 
         boton.addMouseListener(new java.awt.event.MouseAdapter() {

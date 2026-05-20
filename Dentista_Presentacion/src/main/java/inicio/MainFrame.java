@@ -31,14 +31,11 @@ public class MainFrame extends JFrame {
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
-        // Panel del menú (tu panel existente)
         JPanel menuPanel = new pnlMenu(this);
 
-        // Panel de agenda (placeholder o tu panel real)
         JPanel agendaPanel = new JPanel();
         agendaPanel.add(new JLabel("Panel de Agenda Semanal"));
 
-        // Instanciamos los paneles reales usando el contentPanel y cardLayout
         pnlRegistrarPaciente pnlPaciente = new pnlRegistrarPaciente(contentPanel, cardLayout);
         pnlOpcionesRegistro opcionesRegistro = new pnlOpcionesRegistro(contentPanel, cardLayout);
 
