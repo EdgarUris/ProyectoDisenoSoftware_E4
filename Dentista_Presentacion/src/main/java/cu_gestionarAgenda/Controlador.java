@@ -77,6 +77,8 @@ public class Controlador {
     }
     
     public void irAAgendarCita(Dentista d, LocalDate fechaSelecc, String hora){
+        panelAgendarCita.setFechaSeleccionada(fechaSelecc, hora);
+        panelAgendarCita.setDentista(d);
         String[] horaSplt = hora.split(":");
         LocalTime tiempo = LocalTime.of(
             Integer.parseInt(horaSplt[0].trim()),
@@ -85,9 +87,7 @@ public class Controlador {
         LocalDateTime fechaHoraCompleta = LocalDateTime.of(fechaSelecc, tiempo);
         
         cardLayout.show(contenedorPrincipal, "AGENDAR_CITA");
-        
-        panelAgendarCita.setDentista(d);
-        panelAgendarCita.setFechaSeleccionada(fechaHoraCompleta);
+
     }
 }
 
