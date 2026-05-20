@@ -4,6 +4,7 @@
  */
 package cu_registrar;
 
+import DAOs.PacienteDAO;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -14,6 +15,9 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,16 +25,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import objetosnegocio.dentista_objetosnegocio.IPacienteService;
+import objetosnegocio.dentista_objetosnegocio.PacienteService;
 
 /**
- *
- * @author HP
+ *@author Israel Urías
+ * @author Jenifer Flores
  */
 public class pnlRegistrarPaciente extends JPanel{
     private JTextField txtNombre, txtFechaNacimiento, txtTelefono, txtCorreo;
     private JButton btnRegistrar, btnCancelar;
     private Container contenedorPrincipal;
     private CardLayout cardLayout;
+    private IPacienteService pServ = new PacienteService(new PacienteDAO());
 
     public pnlRegistrarPaciente(Container contenedorPrincipal, CardLayout cardLayout) {
         this.contenedorPrincipal = contenedorPrincipal;
@@ -119,7 +126,29 @@ public class pnlRegistrarPaciente extends JPanel{
             JOptionPane.showMessageDialog(this, "Por favor, llene todos los campos", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        // Parsear la fecha a LocalDate (formato esperado: dd/MM/yyyy)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate fechaNacimiento;
+        try {
+            fechaNacimiento = LocalDate.parse(fecha, formatter);
+        } catch (DateTimeParseException ex) {
+            JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use DD/MM/AAAA", "Fecha inválida", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
+        try {
+        // Ejemplo de firma asumida: pServ.registrar(String nombre, String correo, String telefono, LocalDate fechaNacimiento)
+        pServ.registrar(nombre, correo, tel, fechaNacimiento);
+
+        JOptionPane.showMessageDialog(this, "Paciente registrado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        limpiarYRegresar();
+    } catch (Exception ex) {
+        // Manejo genérico de errores del servicio (ajusta según tus excepciones)
+        JOptionPane.showMessageDialog(this, "Error al registrar paciente: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+    }
+        
         JOptionPane.showMessageDialog(this, "Paciente registrado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         limpiarYRegresar();
     }

@@ -40,7 +40,6 @@ public class pnlMenu extends JPanel {
         botonesPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 40, 40));
         
         
-        
         // Botón 1: Agenda
         JButton btnAgenda = crearBoton("Agenda Semanal", "agendarCita.png", frame, "calendario");
         btnAgenda.addActionListener(e -> {
@@ -57,7 +56,7 @@ public class pnlMenu extends JPanel {
         
         // Botón 3: Registrar Paciente / Dentista
         JButton btnRegistro = crearBoton("Registro Clínico", "registro.png", frame, "registro");
-        // btnRegistro.addActionListener(e -> frame.abrirRegistro()); 
+        btnRegistro.addActionListener(e -> frame.abrirRegistro()); 
         botonesPanel.add(btnRegistro);
         
         // Botón 4: Factura

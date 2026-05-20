@@ -27,6 +27,7 @@ public class pnlOpcionesRegistro extends JPanel{
     
     private JButton btnPacientes;
     private JButton btnDentistas;
+    private JButton btnRegresar;
     private Container contenedorPrincipal; // Para tu CardLayout
     private CardLayout cardLayout;
 
@@ -80,5 +81,21 @@ public class pnlOpcionesRegistro extends JPanel{
         
         gbc.gridx = 1;
         add(btnDentistas, gbc);
+        
+        btnRegresar = new JButton("Regresar al menú");
+        btnRegresar.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnRegresar.setBackground(new Color(200, 200, 200));
+        btnRegresar.setPreferredSize(new Dimension(260, 40));
+        btnRegresar.addActionListener(e -> {
+            if (contenedorPrincipal != null && cardLayout != null) {
+                cardLayout.show(contenedorPrincipal, "menu");
+            }
+        });
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.NONE;
+        add(btnRegresar, gbc);
     }
 }
