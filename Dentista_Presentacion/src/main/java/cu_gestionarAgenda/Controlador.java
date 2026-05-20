@@ -84,10 +84,10 @@ public class Controlador {
         );
         LocalDateTime fechaHoraCompleta = LocalDateTime.of(fechaSelecc, tiempo);
         
+        cardLayout.show(contenedorPrincipal, "AGENDAR_CITA");
+        
         panelAgendarCita.setDentista(d);
         panelAgendarCita.setFechaSeleccionada(fechaHoraCompleta);
-        
-        cardLayout.show(contenedorPrincipal, "AGENDAR_CITA");
     }
 }
 

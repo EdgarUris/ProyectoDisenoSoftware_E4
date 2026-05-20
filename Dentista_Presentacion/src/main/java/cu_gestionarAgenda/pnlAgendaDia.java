@@ -344,6 +344,8 @@ public class pnlAgendaDia extends JPanel {
             e.printStackTrace();
         }
     }
+    
+    
     public void setFechaSeleccionada(LocalDate nuevaFecha) {
             // 1. Actualizamos la variable global de este panel
             this.fechaSeleccionada = nuevaFecha;

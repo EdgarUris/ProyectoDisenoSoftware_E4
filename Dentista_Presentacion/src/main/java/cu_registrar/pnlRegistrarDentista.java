@@ -4,6 +4,7 @@
  */
 package cu_registrar;
 
+import DAOs.DentistaDAO;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -21,6 +22,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import objetosnegocio.Excepciones.BOException;
+import objetosnegocio.dentista_objetosnegocio.DentistaService;
+import objetosnegocio.dentista_objetosnegocio.IDentistaService;
 
 /**
  *
@@ -31,10 +35,12 @@ public class pnlRegistrarDentista extends JPanel{
     private JButton btnRegistrar, btnCancelar;
     private Container contenedorPrincipal;
     private CardLayout cardLayout;
+    private IDentistaService dServ;
 
     public pnlRegistrarDentista(Container contenedorPrincipal, CardLayout cardLayout) {
         this.contenedorPrincipal = contenedorPrincipal;
         this.cardLayout = cardLayout;
+        dServ = new DentistaService(new DentistaDAO());
 
         setLayout(new BorderLayout(20, 30));
         setBorder(BorderFactory.createEmptyBorder(40, 50, 40, 50));
@@ -103,7 +109,16 @@ public class pnlRegistrarDentista extends JPanel{
             return;
         }
 
-        JOptionPane.showMessageDialog(this, "Dentista registrado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            if(dServ.registrar(nombre, especialidad)){
+                JOptionPane.showMessageDialog(this, "Dentista registrado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "No se pudo registrar el dentista", "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (BOException ex) {
+            System.getLogger(pnlRegistrarDentista.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
         limpiarYRegresar();
     }
 

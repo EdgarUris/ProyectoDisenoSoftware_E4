@@ -43,7 +43,7 @@ public class frmPadre extends JFrame{
             pnlAgendaDia panelAgenda = new pnlAgendaDia(this, LocalDate.now(), controlador);
             pnlCalendarioMes panelCalendario = new pnlCalendarioMes(controlador);
             pnlGestionCitaActual panelGestion = new pnlGestionCitaActual(new Cita(), controlador, this);
-            pnlAgendarCita panelAgendarC = new pnlAgendarCita(new Dentista(), LocalDateTime.now(), controlador, this);
+            pnlAgendarCita panelAgendarC = new pnlAgendarCita(controlador, this);
             pnlOpcionesRegistro panelOpReg = new pnlOpcionesRegistro(contenedorPrincipal, cardLayout);
             pnlRegistrarPaciente panelRegPac = new pnlRegistrarPaciente(contenedorPrincipal, cardLayout);
             pnlRegistrarDentista panelRegDent = new pnlRegistrarDentista(contenedorPrincipal, cardLayout);
