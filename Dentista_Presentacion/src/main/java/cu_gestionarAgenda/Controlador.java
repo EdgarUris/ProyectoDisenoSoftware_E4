@@ -48,9 +48,14 @@ public class Controlador {
     }
 
     public void irAAgenda(LocalDate dia) {
-        panelAgenda.setFechaSeleccionada(dia);
+        if (panelAgenda != null && dia != null) {
+            // Le avisamos al panel de la agenda que cambie su fecha interna y visual
+            panelAgenda.setFechaSeleccionada(dia); 
+        }
+        // Ahora sí, mostramos la pantalla
         cardLayout.show(contenedorPrincipal, "AGENDA");
     }
+    
     
     public void irACalendario() {
         cardLayout.show(contenedorPrincipal, "CALENDARIO");

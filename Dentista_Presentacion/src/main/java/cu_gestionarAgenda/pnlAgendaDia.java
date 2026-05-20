@@ -344,12 +344,21 @@ public class pnlAgendaDia extends JPanel {
             e.printStackTrace();
         }
     }
-    
-    public void setFechaSeleccionada(LocalDate fecha){
-        this.fechaSeleccionada = fecha;
-        agregarDia(0);
-        cargarCitasDeDentista(0);
-    }
+    public void setFechaSeleccionada(LocalDate nuevaFecha) {
+            // 1. Actualizamos la variable global de este panel
+            this.fechaSeleccionada = nuevaFecha;
+
+            // 2. Actualizamos el Label de la pantalla (ejemplo: "Día: 21 de abril del 2026")
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd 'de' MMMM 'del' yyyy", new Locale("es", "ES"));
+            lblFecha.setText("Día: " + this.fechaSeleccionada.format(formato));
+
+            // 3. Volvemos a cargar las citas en la tabla para que muestre las del nuevo día elegido
+            try {
+                tablaCitas.setModel(cargarCitasDeDentista(comboDentista.getSelectedIndex()));
+            } catch (Exception e) {
+                System.err.println("Error al refrescar la tabla de la agenda: " + e.getMessage());
+            }
+        }
     
     private void decidirQueAbrir() {
         int filaSeleccionada = tablaCitas.getSelectedRow();
