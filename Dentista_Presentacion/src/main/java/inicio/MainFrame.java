@@ -15,11 +15,14 @@ import java.time.ZoneId;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import cu_gestionarAgenda.pnlCalendarioMes;
+
 import objetosnegocio.Excepciones.BOException;
 
 /**
  *
  * @author EdgarUris
+ * @author Jenifer Flores
  */
 public class MainFrame extends JFrame{
     
