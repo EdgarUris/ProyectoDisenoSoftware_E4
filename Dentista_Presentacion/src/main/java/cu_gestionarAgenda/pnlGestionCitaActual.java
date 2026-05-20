@@ -74,7 +74,7 @@ public class pnlGestionCitaActual extends JPanel{
         gbc.insets = new Insets(5, 15, 5, 15); // Margen entre elementos
         gbc.weightx = 0.5;
 
-        Color colorCampos = new Color(158, 198, 198); // Color verde azulado del mockup
+        Color colorCampos = new Color(158, 198, 198);
         Font fontEtiquetas = new Font("Arial", Font.PLAIN, 18);
         Font fontCampos = new Font("Arial", Font.PLAIN, 16);
         Dimension dimensionCampos = new Dimension(280, 35);
@@ -83,7 +83,7 @@ public class pnlGestionCitaActual extends JPanel{
         
         // Fila 0: Folio Paciente
         gbc.gridx = 0; gbc.gridy = 0;
-        panelFormulario.add(crearEtiqueta("Folio paciente:", fontEtiquetas), gbc);
+        panelFormulario.add(crearEtiqueta("Folio paciente: ", fontEtiquetas), gbc);
         
         gbc.gridx = 0; gbc.gridy = 1;
         txtFolio = crearCampoTexto("-", fontCampos, colorCampos, dimensionCampos);
