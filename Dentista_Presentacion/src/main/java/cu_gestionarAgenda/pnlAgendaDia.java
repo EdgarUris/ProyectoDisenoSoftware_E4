@@ -327,7 +327,9 @@ public class pnlAgendaDia extends JPanel {
                 if(c == null){
                     controlador.irAAgendarCita();
                 }
-                else{controlador.irAGestionarCita(c);}
+                else{
+                    controlador.irAGestionarCita(c);
+                }
             }
         } catch (BOException ex) {
             System.getLogger(pnlAgendaDia.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);

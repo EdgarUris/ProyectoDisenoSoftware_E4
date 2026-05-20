@@ -12,14 +12,13 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author HP
+ * @author EdgarUris
  */
 public class Controlador {
 
     private final JPanel contenedorPrincipal;
     private final CardLayout cardLayout;
     
-    // Aquí puedes pasarle referencias de los paneles si necesitas actualizarlos dinámicamente
     private pnlAgendaDia panelAgenda;
     private pnlCalendarioMes panelCalendario;
     private pnlAgendarCita panelAgendarCita;
@@ -46,7 +45,6 @@ public class Controlador {
     }
 
     public void irAAgenda(LocalDate dia) {
-        panelAgenda.setFechaSeleccionada(dia);
         cardLayout.show(contenedorPrincipal, "AGENDA");
     }
     
@@ -55,12 +53,11 @@ public class Controlador {
     }
     
     public void irAGestionarCita(Cita c){
-        panelGestion.cambiarCita(c);
         cardLayout.show(contenedorPrincipal, "GESTION_CITA");
     }
     
     public void irAAgendarCita(){
-        
+        cardLayout.show(contenedorPrincipal, "AGENDAR_CITA");
     }
 }
 

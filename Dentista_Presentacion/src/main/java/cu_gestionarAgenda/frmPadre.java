@@ -25,33 +25,29 @@ public class frmPadre extends JFrame{
     private Controlador controlador;
 
     public frmPadre() {
-        setTitle("Sistema de Gestión Dental");
+        setTitle("");
         setSize(1000, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // 1. Inicializar el Layout y el Contenedor de cartas
         cardLayout = new CardLayout();
         contenedorPrincipal = new JPanel(cardLayout);
 
-        // 2. Inicializar el Controlador de Navegación
         controlador = new Controlador(contenedorPrincipal, cardLayout);
 
         try {
-            // 3. Instanciar los paneles inyectándoles el controlador
             pnlAgendaDia panelAgenda = new pnlAgendaDia(this, LocalDate.now(), controlador);
             pnlCalendarioMes panelCalendario = new pnlCalendarioMes(controlador);
             pnlGestionCitaActual panelGestion = new pnlGestionCitaActual(new Cita(), controlador, this);
             pnlAgendarCita panelAgendarC = new pnlAgendarCita(null, controlador, this);
-
-            // 4. Conectar los paneles con el controlador
+            
             controlador.setPanelAgenda(panelAgenda);
             controlador.setPanelCalendario(panelCalendario);
 
-            // 5. Agregar los paneles al CardLayout con sus nombres clave
             contenedorPrincipal.add(panelAgenda, "AGENDA");
             contenedorPrincipal.add(panelCalendario, "CALENDARIO");
             contenedorPrincipal.add(panelGestion, "GESTIONAR_CITA");
+            contenedorPrincipal.add(panelAgendarC, "AGENDAR_CITA");
 
         } catch (Exception e) {
             e.printStackTrace();
