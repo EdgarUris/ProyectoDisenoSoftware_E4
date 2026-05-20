@@ -164,7 +164,7 @@ public class pnlAgendaDia extends JPanel {
         // 2. PANEL CENTRAL (Tabla limpia sin datos)
         // ==========================================
         // La primera columna vacía simula el espacio de las horas de tu mockup
-        String[] columnas = {"Hora", "Paciente", "Tratamiento", "Notas"};
+        String[] columnas = {"Hora", "Paciente", "Tratamiento", "Costo"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         tablaCitas = new JTable(modelo);
@@ -208,7 +208,7 @@ public class pnlAgendaDia extends JPanel {
         btnGestionarEstado.addActionListener(e -> {
             decidirQueAbrir();
         });
-
+        
         // Panel intermedio para obligar al botón de gestionar a quedarse al centro
         JPanel panelCentroBoton = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelCentroBoton.setOpaque(false);
@@ -216,6 +216,39 @@ public class pnlAgendaDia extends JPanel {
 
         panelInferior.add(btnAtras, BorderLayout.WEST);
         panelInferior.add(panelCentroBoton, BorderLayout.CENTER);
+        
+        // Botón Agendar Cita (Esquina inferior derecha)
+        JButton btnAgendar = new JButton("Agendar Cita");
+        btnAgendar.setBackground(new Color(92, 225, 230));
+        btnAgendar.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnAgendar.setFocusable(false);
+        btnAgendar.setPreferredSize(new Dimension(150, 40));
+
+        btnAgendar.addActionListener(e -> {
+            int filaSeleccionada = tablaCitas.getSelectedRow();
+            if (filaSeleccionada < 0) {
+                JOptionPane.showMessageDialog(this,
+                    "Por favor, selecciona una hora de la agenda.",
+                    "Ninguna fila seleccionada",
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Obtener la hora seleccionada
+            String horaStr = String.valueOf(tablaCitas.getValueAt(filaSeleccionada, 0));
+            String[] horaSplt = horaStr.split(":");
+            LocalTime hora = LocalTime.of(
+                Integer.parseInt(horaSplt[0]),
+                Integer.parseInt(horaSplt[1])
+            );
+            LocalDateTime fechaHora = LocalDateTime.of(fechaSeleccionada, hora);
+
+            // Abrir directamente la pantalla de agendar cita con datos prellenados
+            controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr);
+            });
+
+        // se agrega en el panel inferior en la esquina derecha
+        panelInferior.add(btnAgendar, BorderLayout.EAST);
 
         // ==========================================
         // INTEGRACIÓN AL PANEL PRINCIPAL
@@ -344,7 +377,7 @@ public class pnlAgendaDia extends JPanel {
             if (citaEnEseHorario == null) {
                 // El espacio está libre -> Ir a Agendar Cita
                 System.out.println("Espacio libre a las " + horaStr + ". Abriendo Agendar Cita...");
-                controlador.irAAgendarCita(); 
+                controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr); 
             
                 // TIP: Si tu controlador lo permite, sería genial pasarle los datos para pre-llenar:
                 // controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr);

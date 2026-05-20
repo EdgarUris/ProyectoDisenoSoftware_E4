@@ -15,7 +15,6 @@ import java.awt.geom.RoundRectangle2D;
  */
 public class pnlDetallesCita extends JPanel{
 
-
     private final CitaSeleccionada controlador;
 
     public pnlDetallesCita(CitaSeleccionada controlador) {
