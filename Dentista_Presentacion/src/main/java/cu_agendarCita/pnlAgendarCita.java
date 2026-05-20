@@ -57,7 +57,7 @@ public class pnlAgendarCita extends JPanel {
     private JComboBox<String> cbxEstado;
     private Cita citaActual;
     private Controlador controlador;
-    private LocalDateTime fechaSeleccionada;
+    private LocalDate fechaSeleccionada;
     private ICitaService cServ = new CitaService(new CitaDAO());
     private ITratamientoBO tServ = new TratamientoBO();
     private IPacienteService pServ = new PacienteService(new PacienteDAO());
@@ -219,10 +219,19 @@ public class pnlAgendarCita extends JPanel {
                     , "Paciente no encontrado",JOptionPane.WARNING_MESSAGE);
                 }
                 
+                String horacompleta = txtHora.getText();
+                String[] split1 = horacompleta.split(" ");
+                String[] split2 = split1[0].split(":");
+                
+                int hora = Integer.parseInt(split2[0]);
+                int min = Integer.parseInt(split2[1]);
+                
+                LocalDateTime fechacita = LocalDateTime.of(fechaSeleccionada, LocalTime.of(hora, min));
+                
                 t = tServ.buscarPorNombre(String.valueOf(cbxTratamientos.getSelectedItem()));
                 if(cServ.agendar(txtFolio.getText(), 
                         dentista.getFolio(), 
-                        this.fechaSeleccionada, 
+                        fechacita, 
                         t.getNombre(), 
                         "Cita pendiente", 
                         t)){
@@ -248,7 +257,7 @@ public class pnlAgendarCita extends JPanel {
 
         add(panelBotones, BorderLayout.SOUTH);
         
-        System.out.println("Fecha actual: "+fechaSeleccionada.toString());
+        //System.out.println("Fecha actual: "+fechaSeleccionada.toString());
     }
 
     // Métodos auxiliares
@@ -273,19 +282,19 @@ public class pnlAgendarCita extends JPanel {
     }
     
     protected void volverAAgendaDia(){
-        controlador.irAAgenda(this.fechaSeleccionada.toLocalDate());
+        controlador.irAAgenda(this.fechaSeleccionada);
     }
 
-    public void setFechaSeleccionada(LocalDateTime fechaSeleccionada) {
+    public void setFechaSeleccionada(LocalDate fechaSeleccionada, String hora) {
         if (fechaSeleccionada != null) {
             this.fechaSeleccionada = fechaSeleccionada;
-            DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd 'de' MMMM 'del' yyyy", new Locale("es", "ES"));
 
-            DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("hh:mm a", new Locale("es", "ES"));
-
-            txtFechaHora.setText(fechaSeleccionada.format(formatoFecha));
-
-            String hora = fechaSeleccionada.format(formatoHora).toLowerCase().replace(".", "");
+            Locale espanol = Locale.forLanguageTag("es-ES");
+            
+            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", espanol);
+            String formatoFecha = fechaSeleccionada.format(formateador);
+            txtFechaHora.setText(formatoFecha);
+            
             txtHora.setText(hora);
         }
     }

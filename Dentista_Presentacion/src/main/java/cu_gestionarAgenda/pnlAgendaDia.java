@@ -243,10 +243,9 @@ public class pnlAgendaDia extends JPanel {
                 Integer.parseInt(horaSplt[0]),
                 Integer.parseInt(horaSplt[1])
             );
-            LocalDateTime fechaHora = LocalDateTime.of(fechaSeleccionada, hora);
 
             // Abrir directamente la pantalla de agendar cita con datos prellenados
-            controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr);
+            controlador.irAAgendarCita(dentistaActual, this.fechaSeleccionada, horaStr);
             });
 
         // se agrega en el panel inferior en la esquina derecha
