@@ -11,9 +11,7 @@ import objetosnegocio.Excepciones.BOException;
  *
  * @author Roberto
  */
-
-//PONER IMPLEMENTS IPAGOBO
-public class PagoBO {
+//public class PagoBO implements IPagoBO {
 //    // ─── Singleton ────────────────────────────────────────────────────────────
 //    private static PagoBO instancia;
 // 
@@ -111,4 +109,4 @@ public class PagoBO {
 //            throw new BOException("Error al obtener el estado del pago: " + ex.getMessage(), ex);
 //        }
 //    }
-}
+//}

@@ -11,6 +11,7 @@ import config.MongoClientProvider;
 import entidades.Cita;
 import entidades.Dentista;
 import entidades.Paciente;
+import inicio.MainFrame;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -32,7 +33,7 @@ import objetosnegocio.dentista_objetosnegocio.PacienteService;
  *
  * @author Jenifer Flores
  */
-public class CitaSeleccionada extends JPanel {
+public class CitaSeleccionada extends JFrame {
    
     private Point initialClick;
     private JPanel cardsContainer;
@@ -49,10 +50,13 @@ public class CitaSeleccionada extends JPanel {
         dServ = new DentistaService(new DentistaDAO());
         pServ = new PacienteService(new PacienteDAO());
         java.util.List<Dentista> dentistas = dServ.listar(100);
-        this.citas = citaService.obtenerPorDentistaYFecha(dentistas.get(0).getFolio(), LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()));
-        JPanel miPanel = new JPanel();
-
-
+        this.citas = citaService.obtenerPorDentistaYFecha(dentistas.get(0).getFolio(), 
+                LocalDate.ofInstant(Instant.now(), 
+                        ZoneId.systemDefault()));
+        setUndecorated(true);
+        setSize(900, 640); 
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Panel Principal
         JPanel mainPanel = new JPanel();
@@ -68,9 +72,6 @@ public class CitaSeleccionada extends JPanel {
         contentPanel.setOpaque(false);
         contentPanel.setBorder(new EmptyBorder(30, 40, 30, 40));
 
-        //Título y Botón Historial
-        contentPanel.add(createHeaderPanel(), BorderLayout.NORTH);
-
         // Tarjeta de Citas
         contentPanel.add(createAppointmentCard(), BorderLayout.CENTER);
 
@@ -78,6 +79,7 @@ public class CitaSeleccionada extends JPanel {
 
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         add(mainPanel);
+        
        
         // Contenedor de tarjetas con CardLayout
         cardLayout = new CardLayout();
@@ -215,20 +217,14 @@ private JPanel createAppointmentCard() {
     String[] citasArray = new String[citas.size()];
 
     for (int i = 0; i < citas.size(); i++) {
-        try {
-            Cita cita = citas.get(i);
-            Paciente pa = pServ.obtenerPorId(cita.getPaciente_id());
-            Dentista de = dServ.obtenerPorId(cita.getDentista_id());
-            
-            // Aquí concatenamos paciente, dentista, fecha, tratamiento y motivo
-            citasArray[i] = "👤 Paciente: " + pa.getNombre() +
-                    " | 🦷 Dentista: " + de.getNombre() +
-                    " | 📅 Fecha: " + cita.getFecha() +
-                    " | 💊 Tratamiento: " + cita.getTratamiento().getNombre() +
-                    " | $ Costo: " + String.valueOf(cita.getTratamiento().getCosto());
-        } catch (BOException ex) {
-            System.getLogger(CitaSeleccionada.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+        Cita cita = citas.get(i);
+
+        // Aquí concatenamos paciente, dentista, fecha, tratamiento y motivo
+        citasArray[i] = "👤 Paciente: " + cita.getPaciente_id() +
+                        " | 🦷 Dentista: " + cita.getDentista_id() +
+                        " | 📅 Fecha: " + cita.getFecha() +
+                        " | 💊 Tratamiento: " + cita.getTratamiento() +
+                        " | ⏱ Motivo: " + cita.getMotivo();
     }
 
     // Crear el combo con el arreglo
@@ -264,7 +260,7 @@ private JPanel createAppointmentCard() {
             lblPaciente.setText("👤 Paciente: " + citaSeleccionada.getPaciente_id() +
                                 " (Edad: " + citaSeleccionada.getPaciente_id() + ")");
             lblFecha.setText("📅 Fecha y Hora: " + citaSeleccionada.getFecha().toString());
-            lblMotivo.setText("⏱️ Motivo de consulta: " + citaSeleccionada.getMotivo());
+            lblMotivo.setText("⏱ Motivo de consulta: " + citaSeleccionada.getMotivo());
         }
     };
 
@@ -322,30 +318,41 @@ private JPanel createAppointmentCard() {
     }
 
     private JPanel createFooterPanel() {
-        JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        footerPanel.setOpaque(false);
-        footerPanel.setBorder(new EmptyBorder(15, 0, 0, 0)); 
+       JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+    footerPanel.setOpaque(false);
+    footerPanel.setBorder(new EmptyBorder(15, 0, 0, 0)); 
 
-        JButton btnContinuar = new JButton("Continuar  ➔");
-        btnContinuar.setFont(new Font("SansSerif", Font.BOLD, 14));
-        btnContinuar.setBackground(new Color(23, 57, 227));
-        btnContinuar.setForeground(Color.BLUE);
-        btnContinuar.setFocusPainted(false);
-        btnContinuar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        // Efecto visual plano con padding interno
-        btnContinuar.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(24, 119, 242), 1),
-                new EmptyBorder(10, 25, 10, 25)
-        ));
+    // Botón Regresar
+    JButton btnRegresar = new JButton("✕  Regresar");
+    btnRegresar.setFont(new Font("SansSerif", Font.BOLD, 13));
+    btnRegresar.setBackground(Color.WHITE);
+    btnRegresar.setForeground(new Color(23, 57, 227));
+    btnRegresar.setFocusPainted(false);
+    btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    btnRegresar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(215, 220, 228), 1, true),
+            new EmptyBorder(10, 22, 10, 22)
+    ));
+    btnRegresar.addActionListener(e -> volverAInicio());
 
-        // Evento de clic
-        btnContinuar.addActionListener(e -> {
-            showCard("details");
-        });
+    // Botón Continuar
+    JButton btnContinuar = new JButton("Continuar  ➔");
+    btnContinuar.setFont(new Font("SansSerif", Font.BOLD, 14));
+    btnContinuar.setBackground(new Color(23, 57, 227));
+    btnContinuar.setForeground(Color.WHITE);
+    btnContinuar.setFocusPainted(false);
+    btnContinuar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    btnContinuar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(24, 119, 242), 1),
+            new EmptyBorder(10, 25, 10, 25)
+    ));
+    btnContinuar.addActionListener(e -> showCard("details"));
 
-        footerPanel.add(btnContinuar);
-        return footerPanel;
+    // Agregar ambos botones al mismo panel
+    footerPanel.add(btnRegresar);
+    footerPanel.add(btnContinuar);
+
+    return footerPanel;
     }
 
     class RoundedPanel extends JPanel {
@@ -376,20 +383,31 @@ private JPanel createAppointmentCard() {
             graphics.fillRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height);
         }
     }
-//    public static void main(String[] args) {
-//        MongoClientProvider.INSTANCE.init();
-//        try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        SwingUtilities.invokeLater(() -> {
-//            try {
-//                new CitaSeleccionada().setVisible(true);
-//            } catch (BOException ex) {
-//                System.getLogger(CitaSeleccionada.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-//            }
-//        });
-//    }
+    public static void main(String[] args) {
+        MongoClientProvider.INSTANCE.init();
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new CitaSeleccionada().setVisible(true);
+            } catch (BOException ex) {
+                System.getLogger(CitaSeleccionada.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        });
+    }
+    
+    protected void volverAInicio(){
+        try {
+            MainFrame mainFrame = new MainFrame();
+            mainFrame.setVisible(true);
+            this.dispose();
+        } catch (BOException ex) {
+            System.getLogger(CitaSeleccionada.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
+
 }

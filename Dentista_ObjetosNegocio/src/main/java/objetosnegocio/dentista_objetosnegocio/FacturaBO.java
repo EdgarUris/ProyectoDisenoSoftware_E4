@@ -11,9 +11,7 @@ import objetosnegocio.Excepciones.BOException;
  *
  * @author Roberto
  */
-
-//PONER IMPLEMENTS IFACTURABO
-public class FacturaBO {
+//public class FacturaBO implements IFacturaBO {
 //    private static FacturaBO instancia;
 // 
 //    private final IAccesosDatos accesoDatos;
@@ -165,4 +163,4 @@ public class FacturaBO {
 //            throw new BOException("Error al guardar la factura: " + ex.getMessage(), ex);
 //        }
 //    }
-}
+//}

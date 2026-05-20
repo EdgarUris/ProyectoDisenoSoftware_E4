@@ -49,7 +49,7 @@ public class frmPadre extends JFrame{
 
             contenedorPrincipal.add(panelAgenda, "AGENDA");
             contenedorPrincipal.add(panelCalendario, "CALENDARIO");
-            contenedorPrincipal.add(panelGestion, "GESTIONAR_CITA");
+            contenedorPrincipal.add(panelGestion, "GESTION_CITA");
             contenedorPrincipal.add(panelAgendarC, "AGENDAR_CITA");
 
         } catch (Exception e) {

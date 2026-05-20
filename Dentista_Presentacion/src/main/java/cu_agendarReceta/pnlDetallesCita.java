@@ -95,7 +95,7 @@ public class pnlDetallesCita extends JPanel{
         // Botón Regresar
         JButton btnRegresar = new JButton("✕  Regresar");
         btnRegresar.setFont(new Font("SansSerif", Font.BOLD, 13));
-        btnRegresar.setBackground(Color.BLUE);
+        btnRegresar.setBackground(Color.WHITE);
         btnRegresar.setForeground(new Color(23, 57, 227));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -110,7 +110,7 @@ public class pnlDetallesCita extends JPanel{
         JButton btnContinuar = new JButton("Continuar  ➔");
         btnContinuar.setFont(new Font("SansSerif", Font.BOLD, 13));
         btnContinuar.setBackground(new Color(23, 57, 227));
-        btnContinuar.setForeground(Color.BLUE);
+        btnContinuar.setForeground(Color.WHITE);
         btnContinuar.setFocusPainted(false);
         btnContinuar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnContinuar.setBorder(BorderFactory.createCompoundBorder(

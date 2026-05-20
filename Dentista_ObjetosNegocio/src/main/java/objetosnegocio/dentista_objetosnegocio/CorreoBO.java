@@ -10,13 +10,13 @@ import objetosnegocio.Excepciones.BOException;
  *
  * @author Roberto
  */
-public class CorreoBO {
+//public class CorreoBO {
 //     private String destinatario;
 //    private String asunto;
 //    private String cuerpoMensaje;
 //    private byte[] archivoPDF;
 //    private String nombreArchivoAdjunto;
-// 
+ 
 //    private final IServicioCorreo servicioCorreo;
 // 
 //    
@@ -25,7 +25,7 @@ public class CorreoBO {
 //        this.servicioCorreo = servicioCorreo;
 //    }
 // 
-//    // ─── Implementación de ICorreoBO ──────────────────────────────────────────
+//     ─── Implementación de ICorreoBO ──────────────────────────────────────────
 // 
 //    /**
 //     * Envía la factura generada al correo del paciente como adjunto PDF.
@@ -124,4 +124,4 @@ public class CorreoBO {
 //        }
 //        return true;
 //    }
-}
+//}

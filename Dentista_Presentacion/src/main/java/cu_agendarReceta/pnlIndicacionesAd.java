@@ -5,6 +5,7 @@
 package cu_agendarReceta;
 
 
+import inicio.NotificacionFlotante;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,11 +14,12 @@ import java.awt.*;
  *
  * @author Jenifer Flores
  */
-public class pnlIndicacionesAd extends JPanel {
+
 
 /**
  * Panel final para ingresar indicaciones adicionales y generar la receta médica.
  */
+public class pnlIndicacionesAd extends JPanel {
 
     private final CitaSeleccionada controlador;
     private JTextArea txtIndicaciones;
@@ -96,52 +98,17 @@ public class pnlIndicacionesAd extends JPanel {
         wrapperTextArea.add(txtIndicaciones, BorderLayout.CENTER);
         cardIndicaciones.add(wrapperTextArea);
         cardIndicaciones.add(Box.createVerticalStrut(25));
-
-        // BOTÓN GENERAR RECETA 
-        JButton btnGenerarReceta = new JButton("Generar Receta") {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(11, 11, 26)); // Color oscuro/negro elegante de la imagen
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 12, 12);
-                g2.dispose();
-                super.paintComponent(g);
-            }
-        };
-        btnGenerarReceta.setFont(new Font("SansSerif", Font.BOLD, 14));
-        btnGenerarReceta.setForeground(Color.WHITE);
-        btnGenerarReceta.setOpaque(false);
-        btnGenerarReceta.setContentAreaFilled(false);
-        btnGenerarReceta.setBorderPainted(false);
-        btnGenerarReceta.setFocusPainted(false);
-        btnGenerarReceta.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnGenerarReceta.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btnGenerarReceta.setMaximumSize(new Dimension(Integer.MAX_VALUE, 46));
-        btnGenerarReceta.setPreferredSize(new Dimension(100, 46));
-        
-        btnGenerarReceta.addActionListener(e -> {
-            String textoFinal = txtIndicaciones.getText().equals(placeholder) ? "" : txtIndicaciones.getText();
-            JOptionPane.showMessageDialog(this, 
-                    "¡Receta Médica Generada Exitosamente!",
-                    "✅",
-                    JOptionPane.INFORMATION_MESSAGE
-                    );
-        });
-
-        cardIndicaciones.add(btnGenerarReceta);
-        
         contentPanel.add(cardIndicaciones);
         add(contentPanel, BorderLayout.CENTER);
 
-        //BOTÓN REGRESAR 
-        JPanel footerActionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 15));
+        JPanel footerActionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
         footerActionPanel.setOpaque(false);
 
+        // 1. BOTÓN REGRESAR 
         JButton btnRegresar = new JButton("✕  Regresar");
         btnRegresar.setFont(new Font("SansSerif", Font.BOLD, 13));
-        btnRegresar.setBackground(Color.BLUE);
-        btnRegresar.setForeground(new Color(23, 57, 227));
+        btnRegresar.setBackground(Color.WHITE);
+        btnRegresar.setForeground(new Color(23, 57, 227)); // Azul
         btnRegresar.setFocusPainted(false);
         btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnRegresar.setBorder(BorderFactory.createCompoundBorder(
@@ -150,7 +117,41 @@ public class pnlIndicacionesAd extends JPanel {
         ));
         btnRegresar.addActionListener(e -> controlador.showCard("medicamentos"));
 
+        // 2. BOTÓN GENERAR RECETA 
+        JButton btnGenerarReceta = new JButton("Generar Receta");
+        btnGenerarReceta.setFont(new Font("SansSerif", Font.BOLD, 13));
+        btnGenerarReceta.setBackground(new Color(23, 57, 227)); // Mismo azul que el texto de regresar
+        btnGenerarReceta.setForeground(Color.WHITE);
+        btnGenerarReceta.setFocusPainted(false);
+        btnGenerarReceta.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        // Sin bordes redondeados complejos, solo un padding igual al de regresar para que tengan el mismo tamaño
+        btnGenerarReceta.setBorder(new EmptyBorder(11, 23, 11, 23)); 
+        
+        btnGenerarReceta.addActionListener(e -> {
+            // 1. Obtener el texto limpio (añadimos .trim() para ignorar si solo pusieron espacios en blanco)
+            String textoFinal = txtIndicaciones.getText().equals(placeholder) ? "" : txtIndicaciones.getText().trim();
+            
+            // Obtener la ventana principal para centrar la alerta
+            JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
+            
+            // 2. FILTRO DE VALIDACIÓN
+            if (textoFinal.isEmpty()) {
+                // SI NO HAY DATOS: Frenamos el proceso y mostramos la alerta de ERROR
+                NotificacionFlotante.mostrarError(ventanaPrincipal, "Por favor, ingrese las indicaciones médicas.");
+            } else {
+                // SI SÍ HAY DATOS: Se realiza la acción y mostramos ÉXITO
+                // (Aquí puedes colocar tu lógica para guardar en la base de datos si la tienes)
+                
+                NotificacionFlotante.mostrarExito(ventanaPrincipal, "¡Receta Generada Exitosamente!");
+                
+                // Opcional: Dejar el campo limpio con su placeholder para la siguiente receta
+                txtIndicaciones.setText(placeholder);
+                txtIndicaciones.setForeground(Color.GRAY);
+            }
+        });
         footerActionPanel.add(btnRegresar);
+        footerActionPanel.add(btnGenerarReceta);
+        
         add(footerActionPanel, BorderLayout.SOUTH);
     }
     

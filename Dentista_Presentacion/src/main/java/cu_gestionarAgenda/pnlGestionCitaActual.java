@@ -158,6 +158,7 @@ public class pnlGestionCitaActual extends JPanel{
         btnRegresar.addActionListener(e -> control.irAAgenda(LocalDate.now()));
         
         panelBotones.add(btnRegresar);
+        
 
         add(panelBotones, BorderLayout.SOUTH);
     }
