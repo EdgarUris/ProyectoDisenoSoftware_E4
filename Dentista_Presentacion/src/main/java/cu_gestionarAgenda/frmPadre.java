@@ -72,7 +72,7 @@ public class frmPadre extends JFrame{
     protected void volverAInicio() throws BOException{
         MainFrame inicio = new MainFrame();
         inicio.setVisible(true);
-        this.dispose();
+        this.setVisible(false);
     }
 }
 
