@@ -72,9 +72,6 @@ public class CitaSeleccionada extends JFrame {
         contentPanel.setOpaque(false);
         contentPanel.setBorder(new EmptyBorder(30, 40, 30, 40));
 
-        //Título y Botón Historial
-        contentPanel.add(createHeaderPanel(), BorderLayout.NORTH);
-
         // Tarjeta de Citas
         contentPanel.add(createAppointmentCard(), BorderLayout.CENTER);
 
@@ -82,6 +79,7 @@ public class CitaSeleccionada extends JFrame {
 
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         add(mainPanel);
+        
        
         // Contenedor de tarjetas con CardLayout
         cardLayout = new CardLayout();
@@ -320,30 +318,41 @@ private JPanel createAppointmentCard() {
     }
 
     private JPanel createFooterPanel() {
-        JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        footerPanel.setOpaque(false);
-        footerPanel.setBorder(new EmptyBorder(15, 0, 0, 0)); 
+       JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+    footerPanel.setOpaque(false);
+    footerPanel.setBorder(new EmptyBorder(15, 0, 0, 0)); 
 
-        JButton btnContinuar = new JButton("Continuar  ➔");
-        btnContinuar.setFont(new Font("SansSerif", Font.BOLD, 14));
-        btnContinuar.setBackground(new Color(23, 57, 227));
-        btnContinuar.setForeground(Color.BLUE);
-        btnContinuar.setFocusPainted(false);
-        btnContinuar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        // Efecto visual plano con padding interno
-        btnContinuar.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(24, 119, 242), 1),
-                new EmptyBorder(10, 25, 10, 25)
-        ));
+    // Botón Regresar
+    JButton btnRegresar = new JButton("✕  Regresar");
+    btnRegresar.setFont(new Font("SansSerif", Font.BOLD, 13));
+    btnRegresar.setBackground(Color.WHITE);
+    btnRegresar.setForeground(new Color(23, 57, 227));
+    btnRegresar.setFocusPainted(false);
+    btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    btnRegresar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(215, 220, 228), 1, true),
+            new EmptyBorder(10, 22, 10, 22)
+    ));
+    btnRegresar.addActionListener(e -> volverAInicio());
 
-        // Evento de clic
-        btnContinuar.addActionListener(e -> {
-            showCard("details");
-        });
+    // Botón Continuar
+    JButton btnContinuar = new JButton("Continuar  ➔");
+    btnContinuar.setFont(new Font("SansSerif", Font.BOLD, 14));
+    btnContinuar.setBackground(new Color(23, 57, 227));
+    btnContinuar.setForeground(Color.WHITE);
+    btnContinuar.setFocusPainted(false);
+    btnContinuar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    btnContinuar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(24, 119, 242), 1),
+            new EmptyBorder(10, 25, 10, 25)
+    ));
+    btnContinuar.addActionListener(e -> showCard("details"));
 
-        footerPanel.add(btnContinuar);
-        return footerPanel;
+    // Agregar ambos botones al mismo panel
+    footerPanel.add(btnRegresar);
+    footerPanel.add(btnContinuar);
+
+    return footerPanel;
     }
 
     class RoundedPanel extends JPanel {

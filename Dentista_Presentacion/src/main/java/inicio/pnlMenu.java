@@ -48,12 +48,10 @@ public class pnlMenu extends JPanel {
             frame.abrirRecetas();
         });
         
-        
-        
-
         botonesPanel.add(btnAgenda);
         botonesPanel.add(btnRecetas);
         botonesPanel.add(crearBoton("Inventario", "inventario.png", frame, "inventario"));
+        
         botonesPanel.add(crearBoton("Generar Factura", "generarFactura.png", frame, "factura"));
 
         add(botonesPanel, BorderLayout.CENTER);

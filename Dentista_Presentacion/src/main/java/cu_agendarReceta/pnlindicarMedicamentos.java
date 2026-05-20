@@ -4,6 +4,7 @@
  */
 package cu_agendarReceta;
 
+import inicio.NotificacionFlotante;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -89,7 +90,7 @@ public class pnlindicarMedicamentos extends JPanel {
 
         JButton btnRegresar = new JButton("✕  Regresar");
         btnRegresar.setFont(new Font("SansSerif", Font.BOLD, 13));
-        btnRegresar.setBackground(Color.BLUE);
+        btnRegresar.setBackground(Color.WHITE);
         btnRegresar.setForeground(new Color(23, 57, 227));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -99,19 +100,31 @@ public class pnlindicarMedicamentos extends JPanel {
         ));
         btnRegresar.addActionListener(e -> controlador.showCard("details"));
 
-        JButton btnContinuar = new JButton("Continuar");
-        btnContinuar.setFont(new Font("SansSerif", Font.BOLD, 13));
-        btnContinuar.setBackground(new Color(23, 57, 227));
-        btnContinuar.setForeground(Color.BLUE);
-        btnContinuar.setFocusPainted(false);
-        btnContinuar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnContinuar.setBorder(BorderFactory.createCompoundBorder(
+        JButton btnContinuarG = new JButton("Continuar y Guardar");
+        btnContinuarG.setFont(new Font("SansSerif", Font.BOLD, 13));
+        btnContinuarG.setBackground(new Color(23, 57, 227));
+        btnContinuarG.setForeground(Color.WHITE);
+        btnContinuarG.setFocusPainted(false);
+        btnContinuarG.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnContinuarG.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(40, 167, 69), 1),
                 new EmptyBorder(10, 25, 10, 25)
         ));
-        btnContinuar.addActionListener(e -> controlador.showCard("indicaciones"));
+        btnContinuarG.addActionListener(e -> {
+            // Obtener el JFrame principal para centrar la alerta flotante
+            JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
+            
+            // Evaluamos si el formulario de medicamentos es válido
+            if (!validarMedicamentos()) {
+                // Si falta algún campo o no hay medicamentos, muestra el error flotante
+                NotificacionFlotante.mostrarError(ventanaPrincipal, "Por favor, agregue al menos un medicamento y llene todos sus campos.");
+            } else {
+                // Si todo está lleno, avanzamos con éxito al siguiente panel
+                controlador.showCard("indicaciones");
+            }
+        });
         footerActionPanel.add(btnRegresar);
-        footerActionPanel.add(btnContinuar);
+        footerActionPanel.add(btnContinuarG);
         add(footerActionPanel, BorderLayout.SOUTH);
 
         // Agregamos el primer medicamento por defecto al iniciar
@@ -160,16 +173,16 @@ public class pnlindicarMedicamentos extends JPanel {
         btnEliminar.setBorderPainted(false);
         btnEliminar.setFocusPainted(false);
         btnEliminar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        // --- ACCIÓN DE ELIMINACIÓN: Se elimina a sí mismo del contenedor principal ---
+
         btnEliminar.addActionListener(e -> {
-            contenedorListaMedicamentos.remove(subCard);
-            // Si no es el primero, también debemos eliminar el strut espaciador superior
             int index = getComponentIndex(contenedorListaMedicamentos, subCard);
+            contenedorListaMedicamentos.remove(subCard);
             if (index > 0) {
                  contenedorListaMedicamentos.remove(index - 1);
             }
-            // Forzamos actualización visual
+            
+            actualizarNumeracionDinamica(); 
+            
             contenedorListaMedicamentos.revalidate();
             contenedorListaMedicamentos.repaint();
         });
@@ -204,6 +217,9 @@ public class pnlindicarMedicamentos extends JPanel {
 
         // Añadimos la tarjeta completa al contenedor principal de la lista
         contenedorListaMedicamentos.add(subCard);
+        
+        // 🔥 LLAMAMOS AL REORDENAMIENTO AQUÍ TAMBIÉN
+        actualizarNumeracionDinamica(); 
         
         // Forzamos actualización visual del scroll pane
         contenedorListaMedicamentos.revalidate();
@@ -285,5 +301,79 @@ public class pnlindicarMedicamentos extends JPanel {
             }
         }
         return -1;
+    }
+    
+    /**
+     * Valida que existan medicamentos en la lista y que ningún campo obligatorio esté vacío.
+     */
+    private boolean validarMedicamentos() {
+        java.util.List<JTextField> camposDeTexto = new java.util.ArrayList<>();
+        buscarTextFieldsOcultos(contenedorListaMedicamentos, camposDeTexto);
+        
+        // Caso 1: El usuario eliminó todos los bloques con el botón de la papelera
+        if (camposDeTexto.isEmpty()) {
+            return false; 
+        }
+        
+        // Caso 2: Verificar que ninguno esté vacío o se haya quedado con su placeholder
+        for (JTextField field : camposDeTexto) {
+            String placeholder = (String) field.getClientProperty("placeholder");
+            String textoUsuario = field.getText().trim();
+            
+            if (textoUsuario.isEmpty() || textoUsuario.equals(placeholder)) {
+                return false; // Validación fallida: hay un campo sin llenar
+            }
+        }
+        return true; // Todo está perfecto
+    }
+
+    /**
+     * Método de apoyo que recorre los paneles buscando de forma inteligente 
+     * todos los JTextFields sin importar cuántos medicamentos agregue el usuario.
+     */
+    private void buscarTextFieldsOcultos(Container container, java.util.List<JTextField> lista) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JTextField) {
+                lista.add((JTextField) comp);
+            } else if (comp instanceof Container) {
+                buscarTextFieldsOcultos((Container) comp, lista);
+            }
+        }
+    }
+    
+    /**
+     * Recorre todos los bloques de medicamentos activos y vuelve a numerarlos 
+     * secuencialmente desde el 1. También sincroniza el contador global.
+     */
+    private void actualizarNumeracionDinamica() {
+        int numeroReal = 1;
+        for (Component comp : contenedorListaMedicamentos.getComponents()) {
+            // Filtramos únicamente los paneles de medicamentos (ignorando los separadores invisibles)
+            if (comp instanceof JPanel) { 
+                JLabel lblTitulo = buscarLabelTitulo((Container) comp);
+                if (lblTitulo != null) {
+                    lblTitulo.setText("Medicamento " + numeroReal + " *");
+                    numeroReal++;
+                }
+            }
+        }
+        // Sincronizamos el contador general con la cantidad real actual
+        contadorMedicamentos = numeroReal - 1;
+    }
+
+    /**
+     * Busca de forma recursiva la etiqueta que contiene el título del medicamento.
+     */
+    private JLabel buscarLabelTitulo(Container container) {
+        for (Component c : container.getComponents()) {
+            if (c instanceof JLabel && "tituloMedicamento".equals(c.getName())) {
+                return (JLabel) c;
+            }
+            if (c instanceof Container) {
+                JLabel hallado = buscarLabelTitulo((Container) c);
+                if (hallado != null) return hallado;
+            }
+        }
+        return null;
     }
 }
