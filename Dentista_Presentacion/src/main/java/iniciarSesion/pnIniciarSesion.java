@@ -140,7 +140,7 @@ public class pnIniciarSesion extends JFrame{
 
         JPanel registro =
                 crearTarjeta(
-                        //"C:\\Users\\manue\\OneDrive\\Documentos\\NetBeansProjects\\ProyectoDisenoSoftware_E4-main\\Dentista_Presentacion\\src\\main\\resources\\recursos\\registro.png",
+                        "C:\\Users\\manue\\OneDrive\\Documentos\\NetBeansProjects\\ProyectoDisenoSoftware_E4-main\\Dentista_Presentacion\\src\\main\\resources\\recursos\\registro.png",
                      
                         "Registrarse\n",
                         "Crear una nueva cuenta fácilmente");

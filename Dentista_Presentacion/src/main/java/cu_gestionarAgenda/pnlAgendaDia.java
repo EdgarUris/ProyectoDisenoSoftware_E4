@@ -154,6 +154,8 @@ public class pnlAgendaDia extends JPanel {
                 tablaCitas.setModel(cargarCitasDeDentista(indice));
             }});
         
+        comboDentista.setSelectedIndex(0);
+        
         panelDerechoSup.add(lblDentistaTexto);
         panelDerechoSup.add(comboDentista);
 
@@ -334,8 +336,13 @@ public class pnlAgendaDia extends JPanel {
                 .ofPattern("EEEE, d 'de' MMMM 'de' yyyy", new Locale("es"));
         String nuevoTexto = this.fechaSeleccionada.format(formato);
         
+        
         lblFecha.setText(nuevoTexto);
-        cargarCitasDeDentista(comboDentista.getSelectedIndex());
+        try{
+            tablaCitas.setModel(cargarCitasDeDentista(comboDentista.getSelectedIndex()));
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
     
     public void setFechaSeleccionada(LocalDate fecha){
@@ -365,7 +372,7 @@ public class pnlAgendaDia extends JPanel {
             LocalTime hora = LocalTime.of(
                 Integer.parseInt(horaSplt[0]),
                 Integer.parseInt(horaSplt[1])
-        );
+            );
         
             // Combinamos la fecha del panel con la hora de la fila
             LocalDateTime fechaHora = LocalDateTime.of(fechaSeleccionada, hora);
@@ -377,10 +384,7 @@ public class pnlAgendaDia extends JPanel {
             if (citaEnEseHorario == null) {
                 // El espacio está libre -> Ir a Agendar Cita
                 System.out.println("Espacio libre a las " + horaStr + ". Abriendo Agendar Cita...");
-                controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr); 
-            
-                // TIP: Si tu controlador lo permite, sería genial pasarle los datos para pre-llenar:
-                // controlador.irAAgendarCita(dentistaActual, fechaSeleccionada, horaStr);
+                controlador.irAAgendarCita(dentistaActual, this.fechaSeleccionada, horaStr);
             }
             else{
             // El espacio está ocupado -> Ir a Gestionar Cita pasándole la cita encontrada

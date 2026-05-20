@@ -4,10 +4,13 @@
  */
 package cu_agendarCita;
 
+import DAOs.CitaDAO;
+import DAOs.PacienteDAO;
 import cu_gestionarAgenda.Controlador;
 import cu_gestionarAgenda.frmPadre;
 import entidades.Cita;
 import entidades.Dentista;
+import entidades.Tratamiento;
 import static java.awt.AWTEventMulticaster.add;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,14 +22,25 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import objetosnegocio.Excepciones.BOException;
+import objetosnegocio.dentista_objetosnegocio.CitaService;
+import objetosnegocio.dentista_objetosnegocio.ICitaService;
+import objetosnegocio.dentista_objetosnegocio.IPacienteService;
+import objetosnegocio.dentista_objetosnegocio.ITratamientoBO;
+import objetosnegocio.dentista_objetosnegocio.PacienteService;
+import objetosnegocio.dentista_objetosnegocio.TratamientoBO;
 
 /**
  *
@@ -43,14 +57,19 @@ public class pnlAgendarCita extends JPanel {
     private JComboBox<String> cbxEstado;
     private Cita citaActual;
     private Controlador controlador;
-    private LocalDate fechaSeleccionada;
+    private LocalDateTime fechaSeleccionada;
+    private ICitaService cServ = new CitaService(new CitaDAO());
+    private ITratamientoBO tServ = new TratamientoBO();
+    private IPacienteService pServ = new PacienteService(new PacienteDAO());
+    private Dentista dentista;
     
     // Botones de acción
     private JButton btnRegresar;
     private JButton btnAgendar;
 
-    public pnlAgendarCita(Dentista d, LocalDate fecha, Controlador control, frmPadre frame){
+    public pnlAgendarCita(Dentista dentista, LocalDateTime fecha, Controlador control, frmPadre frame){
         
+        this.dentista = dentista;
         this.fechaSeleccionada = fecha;
         this.controlador = control;
         
@@ -101,7 +120,7 @@ public class pnlAgendarCita extends JPanel {
         panelFormulario.add(crearEtiqueta("Fecha:", fontEtiquetas), gbc);
         
         gbc.gridx = 0; gbc.gridy = 3;
-        txtFechaHora = crearCampoTexto("21 de abril del 2026", fontCampos, colorCampos, dimensionCampos);
+        txtFechaHora = crearCampoTexto("-", fontCampos, colorCampos, dimensionCampos);
         panelFormulario.add(txtFechaHora, gbc);
 
         // Fila 2: Hora
@@ -116,10 +135,10 @@ public class pnlAgendarCita extends JPanel {
         
         // Fila 0: Nombre Dentista
         gbc.gridx = 1; gbc.gridy = 0;
-        panelFormulario.add(crearEtiqueta("Nombre dentista:", fontEtiquetas), gbc);
+        panelFormulario.add(crearEtiqueta("Dentista:", fontEtiquetas), gbc);
         
         gbc.gridx = 1; gbc.gridy = 1;
-        txtDentista = crearCampoTexto("José Torres", fontCampos, colorCampos, dimensionCampos);
+        txtDentista = crearCampoTexto(dentista.getNombre(), fontCampos, colorCampos, dimensionCampos);
         panelFormulario.add(txtDentista, gbc);
 
         // Fila 1: Tratamiento JComboBox
@@ -166,6 +185,8 @@ public class pnlAgendarCita extends JPanel {
                 BorderFactory.createEmptyBorder(0, 8, 0, 8) 
         ));
         
+        cbxEstado.setSelectedIndex(2);
+        
         gbc.gridx = 1; gbc.gridy = 5;
         panelFormulario.add(cbxEstado, gbc);
 
@@ -191,14 +212,44 @@ public class pnlAgendarCita extends JPanel {
         btnAgendar.setFont(fontCampos);
         btnAgendar.setPreferredSize(new Dimension(140, 38));
         
+        btnAgendar.addActionListener(e -> {
+            Tratamiento t;
+            try {
+                if(pServ.obtenerPorFolio(txtFolio.getText()) == null){
+                    JOptionPane.showMessageDialog(this, "Paciente con folio "+txtFolio.getText() + " no encontrado"
+                    , "Paciente no encontrado",JOptionPane.WARNING_MESSAGE);
+                }
+                
+                t = tServ.buscarPorNombre(String.valueOf(cbxTratamientos.getSelectedItem()));
+                if(cServ.agendar(txtFolio.getText(), 
+                        dentista.getFolio(), 
+                        this.fechaSeleccionada, 
+                        t.getNombre(), 
+                        "Cita pendiente", 
+                        t)){
+                    JOptionPane.showMessageDialog(this, "Cita agendada con exito, en breve se mandará el correo al paciente"
+                    , "Cita agendada",JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Cita no agendada, intente de nuevo más tarde"
+                    , "Cita no agendada",JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (BOException ex) {
+                System.getLogger(pnlAgendarCita.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        });
+        
+        
         txtFechaHora.setEditable(false);
         txtDentista.setEditable(false);
         txtHora.setEditable(false);
         
         panelBotones.add(btnRegresar);
-        panelBotones.add(btnAgendar); // Ambos botones añadidos al flujo inferior
+        panelBotones.add(btnAgendar);
 
         add(panelBotones, BorderLayout.SOUTH);
+        
+        System.out.println("Fecha actual: "+fechaSeleccionada.toString());
     }
 
     // Métodos auxiliares
@@ -230,8 +281,31 @@ public class pnlAgendarCita extends JPanel {
     }
     
     protected void volverAAgendaDia(){
-        controlador.irAAgenda(fechaSeleccionada);
+        controlador.irAAgenda(this.fechaSeleccionada.toLocalDate());
     }
+
+    public void setFechaSeleccionada(LocalDateTime fechaSeleccionada) {
+        if (fechaSeleccionada != null) {
+            this.fechaSeleccionada = fechaSeleccionada;
+            DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd 'de' MMMM 'del' yyyy", new Locale("es", "ES"));
+
+            DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("hh:mm a", new Locale("es", "ES"));
+
+            txtFechaHora.setText(fechaSeleccionada.format(formatoFecha));
+
+            String hora = fechaSeleccionada.format(formatoHora).toLowerCase().replace(".", "");
+            txtHora.setText(hora);
+        }
+    }
+
+    public void setDentista(Dentista dentista) {
+        if(dentista != null){
+            this.dentista = dentista;
+            txtDentista.setText(dentista.getNombre());
+        }
+    }
+    
+    
     
     // Getters públicos útiles para recuperar la información desde tu Controlador o Frame Padre
     public String getFolio() { return txtFolio.getText().trim(); }

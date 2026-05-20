@@ -36,12 +36,7 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
         this.control = control;
         setOpaque(false);
         initComponents();
-        SpinnerDateModel modeloHora = new SpinnerDateModel();
-        spHora.setModel(modeloHora);
-
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(spHora, "HH:mm");
-
-        spHora.setEditor(editor);
+        
         Siguiente.setBackground(new Color(0, 150, 136, 80));
         Regresar.setBackground(new Color(0, 150, 136, 80));
         Btn1.setBackground(new Color(0, 150, 136, 80));
@@ -58,7 +53,6 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
     private void initComponents() {
 
         Btn1 = new javax.swing.JTextField();
-        spHora = new javax.swing.JSpinner();
         dcFecha = new com.toedter.calendar.JCalendar();
         Siguiente = new javax.swing.JButton();
         Regresar = new javax.swing.JButton();
@@ -74,7 +68,7 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
 
         dcFecha.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 153, 153)));
 
-        Siguiente.setText("Siguiente");
+        Siguiente.setText("Seleccionar dia");
         Siguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SiguienteActionPerformed(evt);
@@ -94,16 +88,12 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(dcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spHora, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Siguiente, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
-                            .addComponent(Regresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addComponent(dcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Siguiente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Regresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(33, 33, 33))
             .addComponent(Btn1, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -112,17 +102,13 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
                 .addComponent(Btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(dcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(spHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
-                        .addComponent(Siguiente)
-                        .addGap(34, 34, 34)
-                        .addComponent(Regresar)
-                        .addGap(117, 117, 117))))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(Siguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(128, 128, 128)
+                        .addComponent(Regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -161,6 +147,5 @@ public class pnlCalendarioMes extends javax.swing.JPanel {
     private javax.swing.JButton Regresar;
     private javax.swing.JButton Siguiente;
     private com.toedter.calendar.JCalendar dcFecha;
-    private javax.swing.JSpinner spHora;
     // End of variables declaration//GEN-END:variables
 }

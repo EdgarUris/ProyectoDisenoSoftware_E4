@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
  * @author EdgarUris
  */
 public class Tratamiento {
+    private ObjectId _id;
     private String nombre;
     private Double costo;
 
@@ -18,6 +19,12 @@ public class Tratamiento {
     }
 
     public Tratamiento(String nombre, Double costo) {
+        this.nombre = nombre;
+        this.costo = costo;
+    }
+
+    public Tratamiento(ObjectId _id, String nombre, Double costo) {
+        this._id = _id;
         this.nombre = nombre;
         this.costo = costo;
     }
@@ -37,4 +44,14 @@ public class Tratamiento {
     public void setCosto(Double costo) {
         this.costo = costo;
     }
+
+    public ObjectId getId() {
+        return _id;
+    }
+
+    public void setId(ObjectId _id) {
+        this._id = _id;
+    }
+    
+    
 }

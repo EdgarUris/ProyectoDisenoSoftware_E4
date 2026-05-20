@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import cu_agendarCita.pnlAgendarCita;
 import entidades.Cita;
 import entidades.Dentista;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javax.swing.JPanel;
 
 /**
@@ -46,6 +48,7 @@ public class Controlador {
     }
 
     public void irAAgenda(LocalDate dia) {
+        panelAgenda.setFechaSeleccionada(dia);
         cardLayout.show(contenedorPrincipal, "AGENDA");
     }
     
@@ -58,6 +61,16 @@ public class Controlador {
     }
     
     public void irAAgendarCita(Dentista d, LocalDate fechaSelecc, String hora){
+        String[] horaSplt = hora.split(":");
+        LocalTime tiempo = LocalTime.of(
+            Integer.parseInt(horaSplt[0].trim()),
+            Integer.parseInt(horaSplt[1].trim())
+        );
+        LocalDateTime fechaHoraCompleta = LocalDateTime.of(fechaSelecc, tiempo);
+        
+        panelAgendarCita.setDentista(d);
+        panelAgendarCita.setFechaSeleccionada(fechaHoraCompleta);
+        
         cardLayout.show(contenedorPrincipal, "AGENDAR_CITA");
     }
 }
