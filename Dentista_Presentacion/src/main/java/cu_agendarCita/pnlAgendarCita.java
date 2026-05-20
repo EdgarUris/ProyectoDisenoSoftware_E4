@@ -67,10 +67,9 @@ public class pnlAgendarCita extends JPanel {
     private JButton btnRegresar;
     private JButton btnAgendar;
 
-    public pnlAgendarCita(Dentista dentista, LocalDateTime fecha, Controlador control, frmPadre frame){
+    public pnlAgendarCita(Controlador control, frmPadre frame){
         
-        this.dentista = dentista;
-        this.fechaSeleccionada = fecha;
+        this.dentista = new Dentista();
         this.controlador = control;
         
         btnRegresar = new JButton("Regresar");
@@ -120,7 +119,7 @@ public class pnlAgendarCita extends JPanel {
         panelFormulario.add(crearEtiqueta("Fecha:", fontEtiquetas), gbc);
         
         gbc.gridx = 0; gbc.gridy = 3;
-        txtFechaHora = crearCampoTexto("-", fontCampos, colorCampos, dimensionCampos);
+        txtFechaHora = crearCampoTexto("", fontCampos, colorCampos, dimensionCampos);
         panelFormulario.add(txtFechaHora, gbc);
 
         // Fila 2: Hora
@@ -215,7 +214,7 @@ public class pnlAgendarCita extends JPanel {
         btnAgendar.addActionListener(e -> {
             Tratamiento t;
             try {
-                if(pServ.obtenerPorFolio(txtFolio.getText()) == null){
+                if(pServ.obtenerPorFolio(txtFolio.getText().trim()) == null){
                     JOptionPane.showMessageDialog(this, "Paciente con folio "+txtFolio.getText() + " no encontrado"
                     , "Paciente no encontrado",JOptionPane.WARNING_MESSAGE);
                 }
@@ -271,13 +270,6 @@ public class pnlAgendarCita extends JPanel {
                 BorderFactory.createEmptyBorder(0, 8, 0, 8) 
         ));
         return campo;
-    }
-    
-    protected void cambiarFecha(Cita c){
-        this.citaActual = c;
-        txtDentista.setText("");
-        txtFechaHora.setText(String.valueOf(c.getFecha().toLocalDate()));
-        txtHora.setText(String.valueOf(c.getFecha().toLocalTime()));
     }
     
     protected void volverAAgendaDia(){
