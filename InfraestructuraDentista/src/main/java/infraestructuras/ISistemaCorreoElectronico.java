@@ -13,5 +13,4 @@ import java.io.File;
 public interface ISistemaCorreoElectronico {
     void enviarCorreo(String correoPara, String mot, String cont);
     void enviarCorreoConArchivos(String correoPara, String mot, String cont, File[] archivos);
-    
 }

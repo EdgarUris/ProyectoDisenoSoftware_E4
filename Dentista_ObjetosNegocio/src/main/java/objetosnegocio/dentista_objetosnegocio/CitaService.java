@@ -41,10 +41,10 @@ public class CitaService implements ICitaService {
         try {
             Optional<Paciente> p = pDAO.findByFolio(folioPaciente);
             Optional<Dentista> d = dDAO.findByFolio(folioDentista);
-            if(p.get() != null){
+            if(!p.isPresent()){
                 throw new BOException("Paciente no encontrado");
             }
-            if(d.get() != null){
+            if(!d.isPresent()){
                 throw new BOException("Dentista no encontrado");
             }
             if(tratamiento == null){
@@ -67,6 +67,7 @@ public class CitaService implements ICitaService {
             c.setPaciente_id(p.get().getId());
             c.setMotivo(motivo);
             c.setFecha(fechaHora);
+            c.setTratamiento(tratamiento);
             
             //mandar correo tambien
             
@@ -143,6 +144,24 @@ public class CitaService implements ICitaService {
             System.getLogger(CitaService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return false;
+    }
+
+    @Override
+    public Cita obtenerPorDentistaYFechaHora(String folioDentista, LocalDateTime fecha) throws BOException {
+        try {
+            Optional<Dentista> d = dDAO.findByFolio(folioDentista);
+            if(!d.isPresent()){
+                throw new BOException("Dentista no encontrado");
+            }
+            Optional<Cita> cita = cDAO.findCitaWithDentistaAndDateTime(d.get(), fecha);
+            if(!cita.isPresent()){
+                throw new BOException("Cita no encontrada");
+            }
+            return cita.get();
+        } catch (DAOException ex) {
+            System.getLogger(CitaService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return null;
     }
     
 }

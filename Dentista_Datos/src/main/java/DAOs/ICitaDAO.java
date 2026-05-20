@@ -21,4 +21,5 @@ public interface ICitaDAO extends IGenericoDAO<Cita>{
     List<Cita> findCitasWithDentistaAndDate(Dentista d, LocalDate fecha) throws DAOException;
     List<Cita> findCitaWithDateTime(LocalDateTime fechaHora) throws DAOException;
     public boolean update(ObjectId id, Cita citaNew) throws DAOException;
+    Optional<Cita> findCitaWithDentistaAndDateTime(Dentista d, LocalDateTime fecha) throws DAOException;
 }

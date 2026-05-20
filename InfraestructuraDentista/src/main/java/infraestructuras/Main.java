@@ -15,8 +15,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SistemaCorreoElectronico sce = new SistemaCorreoElectronico();
-        sce.enviarCorreo("correo@gmail.com", "hola", "ganigganigganigg");
+        ISistemaCorreoElectronico sce = new SistemaCorreoElectronico();
+        sce.enviarCorreo("edgar.urias261147@potros.itson.edu.mx", "que", "miau");
     }
     
 }

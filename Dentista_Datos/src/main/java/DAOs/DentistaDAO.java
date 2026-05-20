@@ -48,7 +48,7 @@ public class DentistaDAO implements IDentistaDAO {
 
     @Override
     public Optional<Dentista> findByID(ObjectId id) throws DAOException{
-        try {
+        try{
             return Optional.ofNullable(col.find(Filters.eq("_id", id)).first());
         } catch (MongoException e) {
             throw new DAOException("Error consultando dentista por ID", e);
@@ -67,8 +67,8 @@ public class DentistaDAO implements IDentistaDAO {
     @Override
     public List<Dentista> findAll(int limit) throws DAOException{
         try {
-            return col.find().limit(limit).into(new ArrayList<>());
-        } catch (MongoException e) {
+            return col.find().into(new ArrayList<>());
+        } catch (Exception e) {
             throw new DAOException("Error consultando todos los dentistas", e);
         }
     }

@@ -35,13 +35,13 @@ public class PacienteService implements IPacienteService {
             if(!rgx.validarCorreo(correo) || correo.trim().isEmpty()){
                 throw new BOException("Correo de paciente invalido");
             }
-            if(pDAO.findByCorreo(correo) != null){
+            if(pDAO.findByCorreo(correo).isPresent()){
                 throw new BOException("El correo ya está registrado");
             }
             if(!rgx.validarTelefono(telefono.trim()) || telefono.trim().isEmpty()){
                 throw new BOException("El numero de paciente invalido");
             }
-            if(pDAO.findByTelefono(telefono) != null){
+            if(pDAO.findByTelefono(telefono).isPresent()){
                 throw new BOException("El numero de telefono ya esta registrado");
             }
             
