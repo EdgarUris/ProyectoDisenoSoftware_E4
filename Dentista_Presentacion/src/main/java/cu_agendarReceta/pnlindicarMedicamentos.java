@@ -215,13 +215,10 @@ public class pnlindicarMedicamentos extends JPanel {
         rowDuracion.add(Box.createGlue(), gbc);
         subCard.add(rowDuracion);
 
-        // Añadimos la tarjeta completa al contenedor principal de la lista
         contenedorListaMedicamentos.add(subCard);
         
-        // 🔥 LLAMAMOS AL REORDENAMIENTO AQUÍ TAMBIÉN
         actualizarNumeracionDinamica(); 
         
-        // Forzamos actualización visual del scroll pane
         contenedorListaMedicamentos.revalidate();
         contenedorListaMedicamentos.repaint();
     }
