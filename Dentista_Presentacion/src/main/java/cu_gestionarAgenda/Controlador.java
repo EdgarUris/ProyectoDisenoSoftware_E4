@@ -53,7 +53,7 @@ public class Controlador {
     }
     
     public void irAGestionarCita(Cita c){
-        cardLayout.show(contenedorPrincipal, "GESTION_CITA");
+        cardLayout.show(contenedorPrincipal, "GESTIONAR_CITA");
     }
     
     public void irAAgendarCita(){

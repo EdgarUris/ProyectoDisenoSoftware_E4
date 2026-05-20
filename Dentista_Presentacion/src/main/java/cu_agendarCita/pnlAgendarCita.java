@@ -7,6 +7,7 @@ package cu_agendarCita;
 import cu_gestionarAgenda.Controlador;
 import cu_gestionarAgenda.frmPadre;
 import entidades.Cita;
+import entidades.Dentista;
 import static java.awt.AWTEventMulticaster.add;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -46,7 +47,7 @@ public class pnlAgendarCita extends JPanel {
     private JButton btnRegresar;
     private JButton btnAgendar;
 
-    public pnlAgendarCita(LocalDateTime fecha, Controlador control, frmPadre frame){
+    public pnlAgendarCita(Dentista d, LocalDateTime fecha, Controlador control, frmPadre frame){
         
         this.controlador = control;
         
@@ -89,7 +90,7 @@ public class pnlAgendarCita extends JPanel {
         panelFormulario.add(crearEtiqueta("Folio paciente:", fontEtiquetas), gbc);
         
         gbc.gridx = 0; gbc.gridy = 1;
-        txtFolio = crearCampoTexto("", fontCampos, colorCampos, dimensionCampos); // <-- Vacío
+        txtFolio = crearCampoTexto("", fontCampos, colorCampos, dimensionCampos);
         panelFormulario.add(txtFolio, gbc);
 
         // Fila 1: Fecha
