@@ -67,4 +67,8 @@ public class MainFrame extends JFrame{
             System.getLogger(MainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
+    
+    public void abrirRegistro(){
+        
+    }
 }

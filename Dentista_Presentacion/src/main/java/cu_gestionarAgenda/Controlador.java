@@ -56,6 +56,17 @@ public class Controlador {
         cardLayout.show(contenedorPrincipal, "AGENDA");
     }
     
+    public void irARegistrar(){
+        cardLayout.show(contenedorPrincipal, "OPCIONES_REGISTRO");
+    }
+    
+    public void irARegistrarPaciente(){
+        cardLayout.show(contenedorPrincipal, "REGISTRAR_PACIENTE");
+    }
+    
+    public void irARegistrarDentista(){
+        cardLayout.show(contenedorPrincipal, "REGISTRAR_DENTISTA");
+    }
     
     public void irACalendario() {
         cardLayout.show(contenedorPrincipal, "CALENDARIO");

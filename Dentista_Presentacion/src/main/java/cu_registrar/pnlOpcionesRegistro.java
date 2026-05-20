@@ -60,7 +60,6 @@ public class pnlOpcionesRegistro extends JPanel{
         btnPacientes.setBackground(new Color(92, 225, 230));
         btnPacientes.setPreferredSize(dimensionBotones);
         btnPacientes.addActionListener(e -> {
-            // Reemplaza "REGISTRAR_PACIENTE" por el identificador de tu CardLayout
             cardLayout.show(contenedorPrincipal, "REGISTRAR_PACIENTE"); 
         });
 
@@ -69,7 +68,6 @@ public class pnlOpcionesRegistro extends JPanel{
         btnDentistas.setBackground(new Color(158, 198, 198));
         btnDentistas.setPreferredSize(dimensionBotones);
         btnDentistas.addActionListener(e -> {
-            // Reemplaza "REGISTRAR_DENTISTA" por el identificador de tu CardLayout
             cardLayout.show(contenedorPrincipal, "REGISTRAR_DENTISTA");
         });
 
