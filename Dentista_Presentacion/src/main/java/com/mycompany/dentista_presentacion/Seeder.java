@@ -61,7 +61,7 @@ public class Seeder {
 //        Tratamiento t2 = new Tratamiento("Limpieza",1200.0);
 //        cs.agendar("CIQH7605", "NARUCA", LocalDateTime.of(2026, Month.MAY, 18, 17, 30), "limpieza", "pendiente", t2);
 
-        Medicamento m1 = new Medicamento("Paratetamol","50mg","2 al dia cada 8 horas","6 dias");
+        Medicamento m1 = new Medicamento("Paracetamol","50mg","2 al dia cada 8 horas","6 dias");
         Medicamento m2 = new Medicamento("Ibuprofeno","50mg","2 al dia cada 10 horas","5 dias");
         
         List<Medicamento> medicamentos = new ArrayList<>();
@@ -69,8 +69,6 @@ public class Seeder {
         medicamentos.add(m2);
         
         List<Cita> citas = cs.obtenerPorFechaHora(LocalDateTime.of(2026, Month.MAY, 19, 18, 0));
-        
-        
         rs.guardar(citas.getFirst().getId(), medicamentos);
     }
     

@@ -16,7 +16,8 @@ public class Main {
      */
     public static void main(String[] args) {
         ISistemaCorreoElectronico sce = new SistemaCorreoElectronico();
-        sce.enviarCorreo("edgar.urias261147@potros.itson.edu.mx", "que", "miau");
+        sce.enviarCorreo("jenifer.alamea261147@potros.itson.edu.mx", "disque el proyecto nos está matando", 
+                "aqui mandando mensajes por java para probar el sistema externo");
     }
     
 }

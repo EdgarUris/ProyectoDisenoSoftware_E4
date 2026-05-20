@@ -10,6 +10,7 @@ import DAOs.IRecetaDAO;
 import DAOs.RecetaDAO;
 import entidades.Medicamento;
 import entidades.Receta;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import objetosnegocio.Excepciones.BOException;
@@ -35,8 +36,12 @@ public class RecetaBO implements IRecetaBO {
             if(medicamentos.isEmpty()){
                 throw new BOException("La lista de medicamentos esta vacia");
             }
-            return true;
+            Receta r = new Receta();
+            r.setId_cita(id_cita);
+            r.setMedicamentos(medicamentos);
+            return rDAO.create(r);
         }catch(Exception e){
+            System.out.println(Arrays.toString(e.getStackTrace()));
             System.out.println("Error al guardar la receta");
             return false;
         }
