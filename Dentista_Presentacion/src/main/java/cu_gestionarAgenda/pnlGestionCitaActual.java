@@ -155,6 +155,7 @@ public class pnlGestionCitaActual extends JPanel{
         
         btnRegresar.setText("Regresar");
         btnRegresar.setBackground(new Color(179, 179, 179));
+        btnRegresar.addActionListener(e -> control.irAAgenda(LocalDate.now()));
         
         panelBotones.add(btnRegresar);
 

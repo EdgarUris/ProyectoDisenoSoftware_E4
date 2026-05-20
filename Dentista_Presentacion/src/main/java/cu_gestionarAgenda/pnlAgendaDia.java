@@ -74,7 +74,13 @@ public class pnlAgendaDia extends JPanel {
         
         this.fechaSeleccionada = fechaSeleccionada;
         this.dentistas = dServ.listar(100);
-        dentistaActual = dentistas.get(0);
+        
+        if(!dentistas.isEmpty()){
+            dentistaActual = dentistas.get(0);
+        }else{
+            JOptionPane.showMessageDialog(this, "No hay dentistas registrados");
+        }
+        
         List<String> cbx = new ArrayList<>();
         
         for (Dentista den : dentistas) {
