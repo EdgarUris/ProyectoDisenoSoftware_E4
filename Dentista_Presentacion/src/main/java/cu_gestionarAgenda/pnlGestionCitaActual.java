@@ -217,6 +217,8 @@ public class pnlGestionCitaActual extends JPanel{
             txtFechaHora.setText(formatoFecha);
             
             
+            
+            
         } catch (BOException ex) {
             System.getLogger(pnlGestionCitaActual.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }

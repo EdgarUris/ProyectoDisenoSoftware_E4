@@ -45,7 +45,7 @@ public class pnlindicarMedicamentos extends JPanel {
         // Título y Botón Agregar
         JPanel headerCard = new JPanel(new BorderLayout());
         headerCard.setOpaque(false);
-        headerCard.setBorder(new EmptyBorder(0, 0, 15, 0)); // Espacio inferior
+        headerCard.setBorder(new EmptyBorder(0, 0, 15, 0)); 
 
         JLabel titleLabel = new JLabel("Medicamentos");
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -116,10 +116,8 @@ public class pnlindicarMedicamentos extends JPanel {
             
             // Evaluamos si el formulario de medicamentos es válido
             if (!validarMedicamentos()) {
-                // Si falta algún campo o no hay medicamentos, muestra el error flotante
                 NotificacionFlotante.mostrarError(ventanaPrincipal, "Por favor, agregue al menos un medicamento y llene todos sus campos.");
             } else {
-                // Si todo está lleno, avanzamos con éxito al siguiente panel
                 controlador.showCard("indicaciones");
             }
         });
@@ -139,15 +137,14 @@ public class pnlindicarMedicamentos extends JPanel {
         contadorMedicamentos++;
         String nombreBloque = "Medicamento " + contadorMedicamentos + " *";
 
-        // Panel de sub-sección con borde redondeado más sutil (r=12) y fondo gris muy claro
-        // Para simular el "desglose" visual
+        
         CitaSeleccionada.RoundedPanel subCard = controlador.new RoundedPanel(12, new Color(250, 251, 253));
         subCard.setLayout(new BoxLayout(subCard, BoxLayout.Y_AXIS));
         subCard.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(235, 238, 242), 1),
                 new EmptyBorder(15, 20, 20, 20)
         ));
-        subCard.setMaximumSize(new Dimension(Integer.MAX_VALUE, 260)); // Altura fija aproximada por bloque
+        subCard.setMaximumSize(new Dimension(Integer.MAX_VALUE, 260)); 
         
         // Espaciador superior entre bloques
         if (contadorMedicamentos > 1) {
@@ -190,7 +187,6 @@ public class pnlindicarMedicamentos extends JPanel {
         subHeader.add(btnEliminar, BorderLayout.EAST);
         subCard.add(subHeader);
 
-        // Campos de Texto Estilizados
         // Fila 1: Nombre del medicamento full-width
         subCard.add(createInputField("", "Ej: Ibuprofeno 400mg"));
         subCard.add(Box.createVerticalStrut(15));
@@ -223,7 +219,6 @@ public class pnlindicarMedicamentos extends JPanel {
         contenedorListaMedicamentos.repaint();
     }
 
-    // --- HELPERS DE DISEÑO ---
 
     /**
      * Helper para fabricar dinámicamente las cajas de texto customizadas con placeholders modernos.
@@ -307,7 +302,6 @@ public class pnlindicarMedicamentos extends JPanel {
         java.util.List<JTextField> camposDeTexto = new java.util.ArrayList<>();
         buscarTextFieldsOcultos(contenedorListaMedicamentos, camposDeTexto);
         
-        // Caso 1: El usuario eliminó todos los bloques con el botón de la papelera
         if (camposDeTexto.isEmpty()) {
             return false; 
         }
