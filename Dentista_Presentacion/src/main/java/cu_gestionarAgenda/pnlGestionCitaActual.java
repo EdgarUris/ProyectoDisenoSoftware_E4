@@ -4,9 +4,11 @@
  */
 package cu_gestionarAgenda;
 
+import DAOs.DentistaDAO;
 import DAOs.PacienteDAO;
 import entidades.Cita;
 import entidades.Dentista;
+import entidades.Paciente;
 import static java.awt.AWTEventMulticaster.add;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,16 +21,22 @@ import java.awt.Insets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import objetosnegocio.Excepciones.BOException;
+import objetosnegocio.dentista_objetosnegocio.DentistaService;
+import objetosnegocio.dentista_objetosnegocio.IDentistaService;
 import objetosnegocio.dentista_objetosnegocio.IPacienteService;
 import objetosnegocio.dentista_objetosnegocio.PacienteService;
 
@@ -46,6 +54,7 @@ public class pnlGestionCitaActual extends JPanel{
     private JTextField txtEstado;
     private Cita citaActual;
     private IPacienteService pServ;
+    private IDentistaService dServ;
     
     // Botones de acción
     private JButton btnRegresar;
@@ -53,6 +62,7 @@ public class pnlGestionCitaActual extends JPanel{
     public pnlGestionCitaActual(Controlador control, frmPadre frame){
         
         pServ = new PacienteService(new PacienteDAO());
+        dServ = new DentistaService(new DentistaDAO());
         btnRegresar = new JButton();
         //configuración del panel principal
         setLayout(new BorderLayout(20, 30));
@@ -191,6 +201,25 @@ public class pnlGestionCitaActual extends JPanel{
     
     protected void cambiarCita(Cita c){
         this.citaActual = c;
+        cbxTratamientos.setSelectedItem(c.getTratamiento().getNombre());
+        try {
+            Paciente p = pServ.obtenerPorId(c.getPaciente_id());
+            if(p == null) JOptionPane.showMessageDialog(this, "Paciente no encontrado");
+            Dentista d = dServ.obtenerPorId(c.getDentista_id()); 
+            if(d == null)JOptionPane.showMessageDialog(this, "Dentista no encontrado");
+            
+            txtFolio.setText(p.getNombre() + " " + p.getFolio());
+            txtDentista.setText(d.getNombre());
+            Locale espanol = Locale.forLanguageTag("es-ES");
+            
+            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", espanol);
+            String formatoFecha = c.getFecha().toLocalDate().format(formateador);
+            txtFechaHora.setText(formatoFecha);
+            
+            
+        } catch (BOException ex) {
+            System.getLogger(pnlGestionCitaActual.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
     
 }
