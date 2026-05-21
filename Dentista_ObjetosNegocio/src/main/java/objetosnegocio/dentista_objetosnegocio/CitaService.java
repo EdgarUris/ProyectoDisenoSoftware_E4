@@ -85,7 +85,7 @@ public class CitaService implements ICitaService {
             
             correo.enviarCorreo(p.get().getCorreo(), "Cita agendada", 
                     "Cita agendada el dia: " + fechaTexto + " a las " + horaTexto + "\n\n Con el/la dentista"
-                    + d.get().getNombre() + "Con el motivo de tratamiento: " + c.getTratamiento().getNombre()
+                    + d.get().getNombre() + " Con el motivo de tratamiento: " + c.getTratamiento().getNombre()
             );
             
             return cDAO.create(c);
