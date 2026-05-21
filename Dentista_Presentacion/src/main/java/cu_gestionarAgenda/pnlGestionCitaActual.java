@@ -216,6 +216,11 @@ public class pnlGestionCitaActual extends JPanel{
             String formatoFecha = c.getFecha().toLocalDate().format(formateador);
             txtFechaHora.setText(formatoFecha);
             
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm");
+            String horaTexto = c.getFecha().toLocalTime().format(formato);
+            
+            txtHora.setText(horaTexto);
+            
             
         } catch (BOException ex) {
             System.getLogger(pnlGestionCitaActual.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);

@@ -20,25 +20,28 @@ public class Cita {
     private LocalDateTime fecha;
     private String motivo;
     private Tratamiento tratamiento;
+    private String estado;
 
     public Cita() {
     }
-    
-    public Cita(ObjectId paciente_id, ObjectId dentista_id, LocalDateTime fecha, String motivo, Tratamiento tratamiento) {
+
+    public Cita(ObjectId paciente_id, ObjectId dentista_id, LocalDateTime fecha, String motivo, Tratamiento tratamiento, String estado) {
         this.paciente_id = paciente_id;
         this.dentista_id = dentista_id;
         this.fecha = fecha;
         this.motivo = motivo;
         this.tratamiento = tratamiento;
+        this.estado = estado;
     }
 
-    public Cita(ObjectId _id, ObjectId paciente_id, ObjectId dentista_id, LocalDateTime fecha, String motivo, Tratamiento tratamiento) {
+    public Cita(ObjectId _id, ObjectId paciente_id, ObjectId dentista_id, LocalDateTime fecha, String motivo, Tratamiento tratamiento, String estado) {
         this._id = _id;
         this.paciente_id = paciente_id;
         this.dentista_id = dentista_id;
         this.fecha = fecha;
         this.motivo = motivo;
         this.tratamiento = tratamiento;
+        this.estado = estado;
     }
 
     public ObjectId getId() {
@@ -89,6 +92,14 @@ public class Cita {
         this.tratamiento = tratamiento;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
     @Override
     public String toString() {
         return "Cita{" + "_id=" + _id + ", paciente_id=" + paciente_id + ", dentista_id=" + dentista_id + ", fecha=" + fecha + ", motivo=" + motivo + ", tratamiento=" + tratamiento + '}';

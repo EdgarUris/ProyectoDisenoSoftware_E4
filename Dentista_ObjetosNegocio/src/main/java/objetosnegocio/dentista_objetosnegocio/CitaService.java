@@ -14,14 +14,17 @@ import entidades.Cita;
 import entidades.Dentista;
 import entidades.Paciente;
 import entidades.Tratamiento;
+import infraestructuras.ISistemaCorreoElectronico;
+import infraestructuras.SistemaCorreoElectronico;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import objetosnegocio.Excepciones.BOException;
-import org.bson.types.ObjectId;
+
 
 
 public class CitaService implements ICitaService {
@@ -29,15 +32,17 @@ public class CitaService implements ICitaService {
     private final ICitaDAO cDAO;
     private final IPacienteDAO pDAO;
     private final IDentistaDAO dDAO;
+    private final ISistemaCorreoElectronico correo;
     
     public CitaService(ICitaDAO dao){
         this.cDAO = dao;
         this.pDAO = new PacienteDAO();
         this.dDAO = new DentistaDAO();
+        this.correo = new SistemaCorreoElectronico();
     }
     
     @Override
-    public boolean agendar(String folioPaciente, String folioDentista, LocalDateTime fechaHora, String motivo, String estado, Tratamiento tratamiento) throws BOException {
+    public boolean agendar(String folioPaciente, String folioDentista, LocalDateTime fechaHora, String motivo, Tratamiento tratamiento) throws BOException {
         try {
             Optional<Paciente> p = pDAO.findByFolio(folioPaciente);
             Optional<Dentista> d = dDAO.findByFolio(folioDentista);
@@ -60,7 +65,9 @@ public class CitaService implements ICitaService {
                 throw new BOException("El tratamiento no puede estar vacio");
             }
             
-            //la verificacion de una cita de un medico será trabajo de un subsistema
+            if(cDAO.findCitaWithDentistaAndDateTime(d.get(), fechaHora).isPresent()){
+                throw new BOException("El dentista ya tiene una cita agendada en esa hora");
+            }
             
             Cita c = new Cita();
             c.setDentista_id(d.get().getId());
@@ -69,7 +76,17 @@ public class CitaService implements ICitaService {
             c.setFecha(fechaHora);
             c.setTratamiento(tratamiento);
             
-            //mandar correo tambien
+            DateTimeFormatter formato24h = DateTimeFormatter.ofPattern("HH:mm");
+            String horaTexto = c.getFecha().toLocalTime().format(formato24h);
+            
+            Locale es = Locale.forLanguageTag("es-MX");
+            DateTimeFormatter fecha = DateTimeFormatter.ofPattern("dd 'de' MMMM 'del' yyyy", es);
+            String fechaTexto = c.getFecha().toLocalDate().format(fecha);
+            
+            correo.enviarCorreo(p.get().getCorreo(), "Cita agendada", 
+                    "Cita agendada el dia: " + fechaTexto + " a las " + horaTexto + "\n\n Con el/la dentista"
+                    + d.get().getNombre() + "Con el motivo de tratamiento: " + c.getTratamiento().getNombre()
+            );
             
             return cDAO.create(c);
             

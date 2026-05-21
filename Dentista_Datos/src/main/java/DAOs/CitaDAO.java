@@ -39,6 +39,7 @@ public class CitaDAO implements ICitaDAO {
         try {
             if (entity.getId()== null) {
                 entity.setId(new ObjectId());
+                entity.setEstado("Pendiente");
                 col.insertOne(entity);
                 return true;
             }

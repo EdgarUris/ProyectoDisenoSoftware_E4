@@ -233,7 +233,6 @@ public class pnlAgendarCita extends JPanel {
                         dentista.getFolio(), 
                         fechacita, 
                         t.getNombre(), 
-                        "Cita pendiente", 
                         t)){
                     JOptionPane.showMessageDialog(this, "Cita agendada con exito, en breve se mandará el correo al paciente"
                     , "Cita agendada",JOptionPane.INFORMATION_MESSAGE);

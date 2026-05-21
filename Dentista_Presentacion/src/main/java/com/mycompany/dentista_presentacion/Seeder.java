@@ -59,10 +59,10 @@ public class Seeder {
 //        }
 
         Tratamiento t1 = new Tratamiento("Cambio de ligas",500.0);
-        cs.agendar("EIUB8007", "JEMAALFL", LocalDateTime.of(2026, Month.MAY, 23, 18, 0), "cambio de ligas", "pendiente", t1);
+        cs.agendar("EIUB8007", "JEMAALFL", LocalDateTime.of(2026, Month.MAY, 23, 18, 0), "cambio de ligas", t1);
         
         Tratamiento t2 = new Tratamiento("Limpieza",1200.0);
-        cs.agendar("CIQH7603", "NARUCA", LocalDateTime.of(2026, Month.MAY, 23, 17, 30), "limpieza", "pendiente", t2);
+        cs.agendar("CIQH7603", "NARUCA", LocalDateTime.of(2026, Month.MAY, 23, 17, 30), "limpieza", t2);
 
         Medicamento m1 = new Medicamento("Paracetamol","50mg","2 al dia cada 8 horas","6 dias");
         Medicamento m2 = new Medicamento("Ibuprofeno","50mg","2 al dia cada 10 horas","5 dias");
